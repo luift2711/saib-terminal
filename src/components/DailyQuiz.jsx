@@ -23,7 +23,7 @@ const generateDynamicScenario = () => {
 };
 
 const DailyQuiz = () => {
-  const TOTAL_QUESTIONS = 5;
+  const TOTAL_QUESTIONS = 10;
   const todayStr = new Date().toISOString().split('T')[0];
 
   const [quizActive, setQuizActive] = useState(false);
@@ -46,12 +46,23 @@ const DailyQuiz = () => {
   useEffect(() => { drillStatusRef.current = drillStatus; }, [drillStatus]);
 
   // Kiểm tra khóa ngày khi mở tab
-  useEffect(() => {
+  // Thay đoạn useEffect cũ bằng đoạn này:
+useEffect(() => {
+  const checkStatus = () => {
+    const todayStr = new Date().toISOString().split('T')[0];
     const lastQuizDate = localStorage.getItem('SAIB_last_quiz_date');
     if (lastQuizDate === todayStr) {
       setIsLockedToday(true);
+    } else {
+      setIsLockedToday(false); // Tự mở khóa khi qua ngày mới
     }
-  }, []);
+  };
+  
+  checkStatus();
+  // Lắng nghe sự kiện quay lại tab
+  window.addEventListener('focus', checkStatus);
+  return () => window.removeEventListener('focus', checkStatus);
+}, []);
 
   const startQuiz = () => {
     if (isLockedToday) return;
@@ -179,7 +190,7 @@ const DailyQuiz = () => {
       <div className="max-w-xl mx-auto p-12 bg-[#181A20]/40 border border-white/5 rounded-3xl text-center backdrop-blur-xl shadow-2xl mt-10">
         <div className="text-6xl mb-6">🔒</div>
         <h3 className="text-xl font-black text-white uppercase tracking-widest mb-3">Nhiệm vụ hoàn tất</h3>
-        <p className="text-sm text-[#848E9C] mb-4">Sếp đã rèn luyện xong 5 tình huống của ngày hôm nay. Kỷ luật là sức mạnh, hãy quay lại vào ngày mai để duy trì Chuỗi Streak!</p>
+        <p className="text-sm text-[#848E9C] mb-4">Sếp đã rèn luyện xong 10 tình huống của ngày hôm nay. Kỷ luật là sức mạnh, hãy quay lại vào ngày mai để duy trì Chuỗi Streak!</p>
       </div>
     );
   }
@@ -190,7 +201,7 @@ const DailyQuiz = () => {
         <div className="text-center p-10">
           <div className="w-20 h-20 rounded-full border-2 border-[#FCD535] border-dashed flex items-center justify-center mx-auto mb-6"><span className="text-[#FCD535] font-bold text-3xl">🎯</span></div>
           <h2 className="text-2xl font-black text-white tracking-widest uppercase mb-4">Huấn Luyện Nhãn Quan Hàng Ngày</h2>
-          <p className="text-sm text-[#848E9C] mb-8">Mỗi ngày 5 tình huống ngẫu nhiên. Trả lời sai hệ thống sẽ vạch rõ đường đáp án.</p>
+          <p className="text-sm text-[#848E9C] mb-8">Mỗi ngày 10 tình huống ngẫu nhiên. Trả lời sai hệ thống sẽ vạch rõ đường đáp án.</p>
           <button onClick={startQuiz} className="bg-[#FCD535] text-black font-mono font-black px-10 py-4 rounded-xl hover:scale-105 transition-all shadow-[0_0_15px_rgba(252,213,53,0.4)]">BẮT ĐẦU THỬ THÁCH</button>
         </div>
       ) : (
