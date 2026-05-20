@@ -1,0 +1,242 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { createChart } from 'lightweight-charts';
+
+// --- ENGINE SINH TÌNH HUỐNG NGẪU NHIÊN ---
+const SYMBOLS = ['BTC', 'ETH', 'XAU', 'NVDA', 'VNINDEX'];
+const TIMEFRAMES = ['5m', '15m', 'H1', 'H4'];
+const SITUATIONS = ['BREAKOUT', 'PULLBACK', 'FALSE_BREAKOUT'];
+
+const generateDynamicScenario = () => {
+  const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+  const tf = TIMEFRAMES[Math.floor(Math.random() * TIMEFRAMES.length)];
+  const sit = SITUATIONS[Math.floor(Math.random() * SITUATIONS.length)];
+  const isSupport = Math.random() > 0.5;
+
+  return {
+    symbol, tf, sit,
+    task: `TÌM ${isSupport ? 'HỖ TRỢ (SUPPORT)' : 'KHÁNG CỰ (RESISTANCE)'}`,
+    desc: `Mã: ${symbol} | Khung: ${tf}. Kịch bản: ${sit}. Click cắm cờ vào vùng Cản tối ưu.`,
+    correctPrice: 1000 + Math.random() * 500,
+    tolerance: 25,
+    explanation: `Vùng giá này đã được test nhiều lần. Bất kỳ sự phá vỡ (Breakout) hay rút chân (Fakeout) nào tại đây cũng cho tỷ lệ R:R cực kỳ lý tưởng để vào lệnh.`
+  };
+};
+
+const DailyQuiz = () => {
+  const TOTAL_QUESTIONS = 5;
+  const todayStr = new Date().toISOString().split('T')[0];
+
+  const [quizActive, setQuizActive] = useState(false);
+  const [isLockedToday, setIsLockedToday] = useState(false);
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [score, setScore] = useState(0);
+  const [currentScenario, setCurrentScenario] = useState(null);
+  
+  const [userPrice, setUserPrice] = useState(null);
+  const [drillStatus, setDrillStatus] = useState('idle');
+
+  const containerRef = useRef(null);
+  const chartRef = useRef(null);
+  const seriesRef = useRef(null);
+  const userLineRef = useRef(null);
+  const answerLineRef = useRef(null);
+
+  // Dùng ref để giữ status không bị kẹt khi click
+  const drillStatusRef = useRef('idle');
+  useEffect(() => { drillStatusRef.current = drillStatus; }, [drillStatus]);
+
+  // Kiểm tra khóa ngày khi mở tab
+  useEffect(() => {
+    const lastQuizDate = localStorage.getItem('SAIB_last_quiz_date');
+    if (lastQuizDate === todayStr) {
+      setIsLockedToday(true);
+    }
+  }, []);
+
+  const startQuiz = () => {
+    if (isLockedToday) return;
+    setScore(0);
+    setQuestionIndex(1);
+    setCurrentScenario(generateDynamicScenario());
+    setDrillStatus('idle');
+    setUserPrice(null);
+    setQuizActive(true);
+  };
+
+  const handleNext = () => {
+    if (questionIndex >= TOTAL_QUESTIONS) {
+      localStorage.setItem('SAIB_last_quiz_date', todayStr);
+      setIsLockedToday(true);
+      setQuizActive(false);
+      
+      // Kích hoạt cộng điểm streak
+      const currentStreak = Number(localStorage.getItem('SAIB_day_streak') || 0);
+      localStorage.setItem('SAIB_day_streak', currentStreak + 1);
+      localStorage.setItem('SAIB_last_streak_date', todayStr);
+      return;
+    }
+    
+    // Dọn cờ cũ
+    if (seriesRef.current) {
+        if (userLineRef.current) seriesRef.current.removePriceLine(userLineRef.current);
+        if (answerLineRef.current) seriesRef.current.removePriceLine(answerLineRef.current);
+    }
+
+    setQuestionIndex(prev => prev + 1);
+    setCurrentScenario(generateDynamicScenario());
+    setUserPrice(null);
+    setDrillStatus('idle');
+  };
+
+  const checkAnswer = () => {
+    if (!userPrice || !seriesRef.current) return alert("Sếp phải cắm cờ vào biểu đồ đã!");
+    
+    const isCorrect = Math.abs(userPrice - currentScenario.correctPrice) <= currentScenario.tolerance;
+    setDrillStatus(isCorrect ? 'correct' : 'wrong');
+    if (isCorrect) setScore(prev => prev + 1);
+
+    // Vẽ đáp án chuẩn màu Xanh
+    if (answerLineRef.current) seriesRef.current.removePriceLine(answerLineRef.current);
+    answerLineRef.current = seriesRef.current.createPriceLine({
+      price: currentScenario.correctPrice, 
+      color: '#0ECB81', lineWidth: 2, lineStyle: 0, title: 'ĐÁP ÁN CHUẨN'
+    });
+
+    // Đổi màu đường của người dùng (Đúng = Xanh, Sai = Đỏ)
+    if (userLineRef.current) {
+      userLineRef.current.applyOptions({ 
+          color: isCorrect ? '#0ECB81' : '#F6465D',
+          title: isCorrect ? 'BẠN CHỌN (ĐÚNG)' : 'BẠN CHỌN (SAI)'
+      });
+    }
+  };
+
+  // --- VẼ BIỂU ĐỒ (ĐÃ FIX LỖI CRASH) ---
+  useEffect(() => {
+    if (!quizActive || !currentScenario || !containerRef.current) return;
+    
+    if (chartRef.current) {
+        chartRef.current.remove();
+        chartRef.current = null;
+    }
+    userLineRef.current = null;
+    answerLineRef.current = null;
+
+    // Đợi 50ms để DOM render xong kích thước div mới vẽ chart (Chống lỗi defaultOnUncaughtError)
+    const timeoutId = setTimeout(() => {
+        if (!containerRef.current) return;
+
+        const chart = createChart(containerRef.current, {
+          layout: { background: { type: 'solid', color: '#0B0E11' }, textColor: '#848E9C' },
+          width: containerRef.current.clientWidth, height: 280,
+          grid: { vertLines: { color: '#1F2226' }, horzLines: { color: '#1F2226' } },
+          timeScale: { borderColor: '#2B3139' },
+          handleScroll: false, handleScale: false
+        });
+        
+        const series = chart.addCandlestickSeries({ 
+            upColor: '#0ECB81', downColor: '#F6465D', borderVisible: false,
+            wickUpColor: '#0ECB81', wickDownColor: '#F6465D'
+        });
+        seriesRef.current = series;
+
+        const mockData = [];
+        let base = currentScenario.correctPrice;
+        for(let i=1; i<=30; i++) {
+          const open = base; const close = base + (Math.random()*40 - 20);
+          mockData.push({ 
+              time: `2024-01-${String(i).padStart(2,'0')}`, // Fix lỗi ngày tháng
+              open, high: Math.max(open,close)+10, low: Math.min(open,close)-10, close 
+          });
+          base = close;
+        }
+        series.setData(mockData);
+        chart.timeScale().fitContent();
+
+        chart.subscribeClick((p) => {
+          if (drillStatusRef.current !== 'idle' || !p.point) return;
+          const price = series.coordinateToPrice(p.point.y);
+          setUserPrice(price);
+          
+          if (userLineRef.current) series.removePriceLine(userLineRef.current);
+          userLineRef.current = series.createPriceLine({ 
+              price: price, color: '#FCD535', lineWidth: 2, lineStyle: 2, title: 'BẠN CHỌN' 
+          });
+        });
+
+        chartRef.current = chart;
+    }, 50);
+
+    return () => { 
+        clearTimeout(timeoutId);
+        if (chartRef.current) { chartRef.current.remove(); chartRef.current = null; } 
+    };
+  }, [quizActive, currentScenario]);
+
+  // Màn hình đã khóa
+  if (isLockedToday && !quizActive) {
+    return (
+      <div className="max-w-xl mx-auto p-12 bg-[#181A20]/40 border border-white/5 rounded-3xl text-center backdrop-blur-xl shadow-2xl mt-10">
+        <div className="text-6xl mb-6">🔒</div>
+        <h3 className="text-xl font-black text-white uppercase tracking-widest mb-3">Nhiệm vụ hoàn tất</h3>
+        <p className="text-sm text-[#848E9C] mb-4">Sếp đã rèn luyện xong 5 tình huống của ngày hôm nay. Kỷ luật là sức mạnh, hãy quay lại vào ngày mai để duy trì Chuỗi Streak!</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-[#181A20]/40 border border-white/5 rounded-3xl p-6 max-w-3xl mx-auto backdrop-blur-xl shadow-2xl mt-6">
+      {!quizActive ? (
+        <div className="text-center p-10">
+          <div className="w-20 h-20 rounded-full border-2 border-[#FCD535] border-dashed flex items-center justify-center mx-auto mb-6"><span className="text-[#FCD535] font-bold text-3xl">🎯</span></div>
+          <h2 className="text-2xl font-black text-white tracking-widest uppercase mb-4">Huấn Luyện Nhãn Quan Hàng Ngày</h2>
+          <p className="text-sm text-[#848E9C] mb-8">Mỗi ngày 5 tình huống ngẫu nhiên. Trả lời sai hệ thống sẽ vạch rõ đường đáp án.</p>
+          <button onClick={startQuiz} className="bg-[#FCD535] text-black font-mono font-black px-10 py-4 rounded-xl hover:scale-105 transition-all shadow-[0_0_15px_rgba(252,213,53,0.4)]">BẮT ĐẦU THỬ THÁCH</button>
+        </div>
+      ) : (
+        <div className="space-y-4 animate-in fade-in">
+          <div className="flex justify-between items-center border-b border-white/5 pb-3">
+            <div>
+              <span className={`text-[10px] uppercase font-black tracking-widest ${currentScenario.task.includes('HỖ TRỢ') ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>{currentScenario.task}</span>
+              <p className="text-xs text-[#EAECEF] mt-1">{currentScenario.desc}</p>
+            </div>
+            <div className="text-right">
+                <span className="text-[#848E9C] text-[10px] uppercase font-bold tracking-widest">Tiến độ</span>
+                <p className="text-lg font-mono font-bold text-[#FCD535]">{questionIndex} / {TOTAL_QUESTIONS}</p>
+            </div>
+          </div>
+          
+          {/* Biểu đồ */}
+          <div className="h-[280px] bg-black rounded-xl overflow-hidden relative" ref={containerRef}>
+              {drillStatus === 'idle' && !userPrice && (
+                  <div className="absolute top-2 left-2 z-10 text-[10px] bg-[#2B3139]/90 text-white px-2 py-1 rounded">Click lên biểu đồ để vẽ đường cản</div>
+              )}
+          </div>
+          
+          <div className="flex justify-between items-center pt-2">
+            <span className={`text-xs font-bold ${userPrice ? 'text-[#FCD535]' : 'text-[#848E9C]'}`}>{userPrice ? `Đã cắm cờ: $${userPrice.toFixed(0)}` : 'Đang chờ...'}</span>
+            
+            {drillStatus === 'idle' ? (
+              <button onClick={checkAnswer} className="bg-white/10 hover:bg-[#FCD535] text-white hover:text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl transition-all border border-white/10 hover:border-[#FCD535]">Chấm Điểm</button>
+            ) : (
+              <button onClick={handleNext} className="bg-[#0ECB81] hover:brightness-110 text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl shadow-[0_0_15px_rgba(14,203,129,0.3)] transition-all">
+                  {questionIndex === TOTAL_QUESTIONS ? 'Xem Kết Quả ➔' : 'Câu Tiếp Theo ➔'}
+              </button>
+            )}
+          </div>
+
+          {drillStatus !== 'idle' && (
+            <div className={`p-4 rounded-xl border border-l-4 text-xs mt-4 animate-in slide-in-from-top-2 ${drillStatus === 'correct' ? 'bg-[#0ECB81]/10 border-[#0ECB81]/30 border-l-[#0ECB81]' : 'bg-[#F6465D]/10 border-[#F6465D]/30 border-l-[#F6465D]'}`}>
+              <span className={`font-black uppercase block mb-2 ${drillStatus === 'correct' ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
+                  {drillStatus === 'correct' ? '✅ CHÍNH XÁC TỐI ĐA!' : '❌ BẠN ĐÃ CHỌN SAI!'}
+              </span>
+              <p className="text-[#EAECEF] leading-relaxed">{currentScenario.explanation}</p>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default DailyQuiz;
