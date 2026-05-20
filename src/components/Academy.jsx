@@ -735,7 +735,7 @@ const FinalQuizCh2 = () => {
   );
 };
 // ==========================================
-// 3. DATABASE CHƯƠNG 1 (ĐƯỢC GIỮ NGUYÊN 100% NỘI DUNG CLAUDE)
+// 3. DATABASE CỦA TỪNG CHƯƠNG (ĐƯỢC GIỮ NGUYÊN 100% NỘI DUNG CLAUDE)
 // ==========================================
 const CHAPTER_1_DATA = [
   {
@@ -1216,7 +1216,7 @@ const Academy = () => {
                         <button
                           key={id}
                           onClick={() => setSelectedId(id)}
-                          className={`w-full flex items-center justify-between px-4 py-3 rounded-2xl text-left transition-all border
+                          className={`w-full flex items-start justify-between px-5 py-4 rounded-2xl text-left transition-all border
                           ${
                             active
                               ? "bg-white dark:bg-[#2B3139]/40 border-gray-300 dark:border-white/10 shadow"
