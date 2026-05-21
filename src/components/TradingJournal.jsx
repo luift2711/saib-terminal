@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Lock, ArrowRight, Skull, Flame, Edit2, Compass, Star, Shield, Activity, Flag, Award, Crosshair, Hammer, Zap, Wind, Eye, Sun, Moon } from 'lucide-react';
+
 
 const TradingJournal = () => {
   const [logs, setLogs] = useState([]);
@@ -104,7 +106,7 @@ const TradingJournal = () => {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-[#181A20]/40 border border-white/5 p-4 rounded-2xl backdrop-blur-xl">
              <span className="text-[10px] text-[#848E9C] uppercase tracking-wider block mb-1">Day-Streak</span>
-             <div className="text-2xl font-black text-[#FCD535] flex items-center gap-1">🔥 {streak} Ngày</div>
+             <div className="text-2xl font-black text-[#FCD535] flex items-center gap-1"><Flame size={16} className="inline mr-1 text-orange-500"/> {streak} Ngày</div>
           </div>
           <div className="bg-[#181A20]/40 border border-white/5 p-4 rounded-2xl backdrop-blur-xl">
              <span className="text-[10px] text-[#848E9C] uppercase tracking-wider block mb-1">Win-Rate thực tế</span>

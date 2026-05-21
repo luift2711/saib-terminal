@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { CheckCircle, XCircle, RefreshCw, BarChart2, AlertTriangle, TrendingUp, TrendingDown, MinusCircle, Dices, PartyPopper, Dumbbell, Library, Trophy, Users, Radio, ShoppingCart, BookOpen, Zap, Landmark, DollarSign, Brain, Scale, FileText, Clock, Lightbulb, Lock, ArrowRight, Skull, Flame, Edit2, Compass, Star, Shield, Activity, Flag, Award, Crosshair, Hammer, Wind, Eye, Sun, Moon } from 'lucide-react';
+
 import { AdvancedRealTimeChart } from 'react-ts-tradingview-widgets';
 
 const COINS = [
@@ -158,7 +160,7 @@ const TradingGym = ({ balance, setBalance }) => {
         {challengeStatus !== 'ACTIVE' && (
            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center backdrop-blur-sm ${challengeStatus === 'PASSED' ? 'bg-[#0ECB81]/20' : 'bg-[#F6465D]/20'}`}>
               <h2 className={`text-4xl font-black mb-2 tracking-widest uppercase ${challengeStatus === 'PASSED' ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
-                {challengeStatus === 'PASSED' ? '🏆 VƯỢT QUA BƯỚC 1' : '💀 VI PHẠM LUẬT QUỸ'}
+                {challengeStatus === 'PASSED' ? '<Trophy size={18} className="inline mr-1 text-yellow-500" /> VƯỢT QUA BƯỚC 1' : '<Skull size={24} className="inline mr-1"/> VI PHẠM LUẬT QUỸ'}
               </h2>
               <p className="text-white font-bold mb-6">
                 {challengeStatus === 'FAILED_DAILY' ? 'Lỗi: Vượt quá mức lỗ tối đa trong ngày (5%)' : 

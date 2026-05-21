@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Target, CheckCircle, XCircle, RefreshCw, BarChart2, AlertTriangle, TrendingUp, TrendingDown, MinusCircle, Dices, PartyPopper, Dumbbell, Library, Trophy, Users, Radio, ShoppingCart, BookOpen, Zap, Landmark, DollarSign, Brain, Scale, FileText, Clock, Lightbulb, Lock, ArrowRight, Skull, Flame, Edit2, Compass, Star, Shield, Activity, Flag, Award, Crosshair, Hammer, Wind, Eye, Sun, Moon } from 'lucide-react';
+
 import { createChart } from 'lightweight-charts';
 
 // --- ENGINE SINH TÌNH HUỐNG NGẪU NHIÊN ---
@@ -188,7 +190,7 @@ useEffect(() => {
   if (isLockedToday && !quizActive) {
     return (
       <div className="max-w-xl mx-auto p-12 bg-[#181A20]/40 border border-white/5 rounded-3xl text-center backdrop-blur-xl shadow-2xl mt-10">
-        <div className="text-6xl mb-6">🔒</div>
+        <div className="text-6xl mb-6"><Lock size={16} className="inline mr-1"/></div>
         <h3 className="text-xl font-black text-white uppercase tracking-widest mb-3">Nhiệm vụ hoàn tất</h3>
         <p className="text-sm text-[#848E9C] mb-4">Sếp đã rèn luyện xong 10 tình huống của ngày hôm nay. Kỷ luật là sức mạnh, hãy quay lại vào ngày mai để duy trì Chuỗi Streak!</p>
       </div>
@@ -199,7 +201,7 @@ useEffect(() => {
     <div className="bg-[#181A20]/40 border border-white/5 rounded-3xl p-6 max-w-3xl mx-auto backdrop-blur-xl shadow-2xl mt-6">
       {!quizActive ? (
         <div className="text-center p-10">
-          <div className="w-20 h-20 rounded-full border-2 border-[#FCD535] border-dashed flex items-center justify-center mx-auto mb-6"><span className="text-[#FCD535] font-bold text-3xl">🎯</span></div>
+          <div className="w-20 h-20 rounded-full border-2 border-[#FCD535] border-dashed flex items-center justify-center mx-auto mb-6"><Target size={24} className="text-[#c8922a] dark:text-[#00d084] shrink-0" /></div>
           <h2 className="text-2xl font-black text-white tracking-widest uppercase mb-4">Huấn Luyện Nhãn Quan Hàng Ngày</h2>
           <p className="text-sm text-[#848E9C] mb-8">Mỗi ngày 10 tình huống ngẫu nhiên. Trả lời sai hệ thống sẽ vạch rõ đường đáp án.</p>
           <button onClick={startQuiz} className="bg-[#FCD535] text-black font-mono font-black px-10 py-4 rounded-xl hover:scale-105 transition-all shadow-[0_0_15px_rgba(252,213,53,0.4)]">BẮT ĐẦU THỬ THÁCH</button>
@@ -231,7 +233,7 @@ useEffect(() => {
               <button onClick={checkAnswer} className="bg-white/10 hover:bg-[#FCD535] text-white hover:text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl transition-all border border-white/10 hover:border-[#FCD535]">Chấm Điểm</button>
             ) : (
               <button onClick={handleNext} className="bg-[#0ECB81] hover:brightness-110 text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl shadow-[0_0_15px_rgba(14,203,129,0.3)] transition-all">
-                  {questionIndex === TOTAL_QUESTIONS ? 'Xem Kết Quả ➔' : 'Câu Tiếp Theo ➔'}
+                  {questionIndex === TOTAL_QUESTIONS ? 'Xem Kết Quả <ArrowRight size={16} className="inline mr-1"/>' : 'Câu Tiếp Theo <ArrowRight size={16} className="inline mr-1"/>'}
               </button>
             )}
           </div>
@@ -239,7 +241,7 @@ useEffect(() => {
           {drillStatus !== 'idle' && (
             <div className={`p-4 rounded-xl border border-l-4 text-xs mt-4 animate-in slide-in-from-top-2 ${drillStatus === 'correct' ? 'bg-[#0ECB81]/10 border-[#0ECB81]/30 border-l-[#0ECB81]' : 'bg-[#F6465D]/10 border-[#F6465D]/30 border-l-[#F6465D]'}`}>
               <span className={`font-black uppercase block mb-2 ${drillStatus === 'correct' ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
-                  {drillStatus === 'correct' ? '✅ CHÍNH XÁC TỐI ĐA!' : '❌ BẠN ĐÃ CHỌN SAI!'}
+                  {drillStatus === 'correct' ? '<CheckCircle size={18} className="inline mr-2"/> CHÍNH XÁC TỐI ĐA!' : '<XCircle size={18} className="inline mr-2"/> BẠN ĐÃ CHỌN SAI!'}
               </span>
               <p className="text-[#EAECEF] leading-relaxed">{currentScenario.explanation}</p>
             </div>
