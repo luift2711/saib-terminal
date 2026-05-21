@@ -20,11 +20,11 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
             const isChosen = selected === i;
-            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-yellow-500 dark:hover:border-[#FCD535] hover:bg-yellow-50 dark:hover:bg-[#FCD535]/5 bg-white dark:bg-transparent";
+            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
             let letterClass = "bg-gray-100 dark:bg-[#181A20] text-gray-500 dark:text-[#848E9C]";
             if (selected !== null) {
-              if (i === correctIdx) { btnClass = "border-green-500 dark:border-[#0ECB81] bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] font-bold"; letterClass = "bg-green-500 dark:bg-[#0ECB81] text-white"; }
-              else if (isChosen) { btnClass = "border-red-500 dark:border-[#F6465D] bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]"; letterClass = "bg-red-500 dark:bg-[#F6465D] text-white"; }
+              if (i === correctIdx) { btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]"; letterClass = "bg-green-500 dark:bg-[#0ECB81] text-white"; }
+              else if (isChosen) { btnClass = "border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none font-bold relative overflow-hidden"; letterClass = "bg-red-500 dark:bg-[#F6465D] text-white"; }
               else { btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-400 dark:text-[#64748B] opacity-50 cursor-not-allowed bg-white dark:bg-transparent"; }
             }
             return (
@@ -181,7 +181,7 @@ const EMAVisualizer = () => {
   return (
     <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-3xl p-8 my-8 shadow-lg transition-colors">
       <div className="flex items-center gap-3 mb-6 border-b border-gray-200 dark:border-[#2B3139] pb-4">
-        <Ruler size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">EMA/SMA/WMA Visualizer</h3>
+        <Ruler size={24} className="text-[#d97706] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">EMA/SMA/WMA Visualizer</h3>
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-3 py-1 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -218,7 +218,7 @@ const RSISimulator = () => {
   return (
     <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-3xl p-8 my-8 shadow-lg transition-colors">
       <div className="flex items-center gap-3 mb-8 border-b border-gray-200 dark:border-[#2B3139] pb-4">
-        <Thermometer size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">RSI Simulator</h3>
+        <Thermometer size={24} className="text-[#d97706] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">RSI Simulator</h3>
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-3 py-1 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       
@@ -303,7 +303,7 @@ const RSILab = () => {
   return (
     <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-3xl p-8 my-8 shadow-md transition-colors">
       <div className="flex justify-between items-center mb-6 border-b border-gray-200 dark:border-[#2B3139] pb-4">
-        <h3 className="font-bold text-lg text-black dark:text-white flex items-center gap-2"><Microscope size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /> RSI Lab</h3>
+        <h3 className="font-bold text-lg text-black dark:text-white flex items-center gap-2"><Microscope size={24} className="text-[#d97706] dark:text-[#00d084] shrink-0" /> RSI Lab</h3>
         <span className="text-xs font-mono text-gray-500 dark:text-[#848E9C]">Câu {qIdx+1}/{scenarios.length}</span>
       </div>
       <div className="text-xs font-mono text-gray-500 dark:text-[#848E9C] mb-4">{s.title}</div>
@@ -320,10 +320,10 @@ const RSILab = () => {
       <div className="text-[16px] font-bold text-black dark:text-white mb-6">{s.q}</div>
       <div className="space-y-3 mb-6">
         {s.opts.map((o,i) => {
-          let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-blue-500 dark:hover:border-[#378ADD] bg-white dark:bg-transparent";
+          let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
           if(selected !== null) {
-            if(i === s.c) btnClass = "border-green-500 dark:border-[#0ECB81] bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]";
-            else if(selected === i) btnClass = "border-red-500 dark:border-[#F6465D] bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]";
+            if(i === s.c) btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]";
+            else if(selected === i) btnClass = "border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none font-bold relative overflow-hidden";
             else btnClass = "border-gray-200 dark:border-[#2B3139] opacity-50 bg-white dark:bg-transparent";
           }
           return <button key={i} disabled={selected!==null} onClick={()=>setSelected(i)} className={`w-full text-left p-4 border-2 rounded-xl text-[15px] transition-all ${btnClass}`}>{String.fromCharCode(65+i)}. {o}</button>
@@ -369,7 +369,7 @@ const DCACalculator = () => {
   return (
     <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-3xl p-8 my-8 shadow-lg transition-colors">
       <div className="flex items-center gap-3 mb-8 border-b border-gray-200 dark:border-[#2B3139] pb-4">
-        <Calculator size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">DCA Simulator</h3>
+        <Calculator size={24} className="text-[#d97706] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">DCA Simulator</h3>
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-3 py-1 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
@@ -428,7 +428,7 @@ const ResourceCard = ({ type, name, lang, desc, why, link }) => {
   return (
     <div className="border border-gray-200 dark:border-[#2B3139] rounded-2xl overflow-hidden mb-4 bg-white dark:bg-[#181A20] shadow-sm hover:shadow-md dark:shadow-none transition-all">
       <div onClick={()=>setOpen(!open)} className="p-5 flex gap-4 items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-[#2B3139]/40">
-        <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] flex justify-center items-center text-xl shrink-0"><Library size={20} className="text-[#b45309] dark:text-[#00d084]"/></div>
+        <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] flex justify-center items-center text-xl shrink-0"><Library size={20} className="text-[#d97706] dark:text-[#00d084]"/></div>
         <div className="flex-1">
           <div className="text-[11px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-1">{type}</div>
           <div className="font-bold text-[16px] text-black dark:text-white">{name}</div>
@@ -477,10 +477,10 @@ const FinalQuizCh2 = () => {
               const isSelected = answers[qIdx] === oIdx;
               const isCorrect = showRes && q.c === oIdx;
               const isWrong = showRes && isSelected && q.c !== oIdx;
-              let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-yellow-500 dark:hover:border-[#FCD535] bg-white dark:bg-transparent";
+              let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
               if (showRes) {
-                if (isCorrect) btnClass = "border-green-500 dark:border-[#0ECB81] bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] font-bold";
-                else if (isWrong) btnClass = "border-red-500 dark:border-[#F6465D] bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] opacity-60";
+                if (isCorrect) btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]";
+                else if (isWrong) btnClass = "border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none font-bold relative overflow-hidden opacity-60";
                 else btnClass = "border-gray-200 dark:border-[#2B3139] opacity-30 bg-white dark:bg-transparent";
               } else if (isSelected) btnClass = "border-blue-500 dark:border-[#378ADD] bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] font-bold";
               return <button key={oIdx} onClick={() => !showRes && setAnswers({...answers, [qIdx]: oIdx})} className={`text-left p-4 border-2 rounded-2xl text-[16px] transition-all ${btnClass}`}>{String.fromCharCode(65+oIdx)}. {opt}</button>;
@@ -645,14 +645,14 @@ const CHAPTER_2_DATA = [
             <polyline points="20,142 80,138 140,132 200,124 260,116 320,106 380,94 440,80 500,68 560,58 640,50" stroke="#4a9eff" strokeWidth="2.5" fill="none" opacity="0.9"/>
             <text x="648" y="54" fill="#4a9eff" fontSize="11" fontFamily="monospace">EMA50</text>
             {/* EMA21 - gold (fastest) */}
-            <polyline points="20,135 80,128 140,120 200,110 260,100 320,88 380,74 440,58 500,44 560,32 640,22" stroke="#b45309" strokeWidth="3" fill="none"/>
-            <text x="648" y="26" fill="#b45309" fontSize="11" fontFamily="monospace">EMA21</text>
+            <polyline points="20,135 80,128 140,120 200,110 260,100 320,88 380,74 440,58 500,44 560,32 640,22" stroke="#d97706" strokeWidth="3" fill="none"/>
+            <text x="648" y="26" fill="#d97706" fontSize="11" fontFamily="monospace">EMA21</text>
             {/* Dividing line showing trend boundary */}
             <line x1="340" y1="0" x2="340" y2="160" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="4 4"/>
           </svg>
           <div className="flex gap-6 mt-3 text-[13px] font-mono text-gray-400 flex-wrap">
             <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-white opacity-30 inline-block"></span> Giá</span>
-            <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-[#b45309] inline-block"></span> EMA21 (nhanh nhất)</span>
+            <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-[#d97706] inline-block"></span> EMA21 (nhanh nhất)</span>
             <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-[#4a9eff] inline-block"></span> EMA50</span>
             <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-[#b57bee] inline-block"></span> EMA200 (chậm nhất)</span>
           </div>
@@ -666,7 +666,7 @@ const CHAPTER_2_DATA = [
             ["<span class='text-green-600 dark:text-[#0ECB81] font-bold'>EMA21 > 50 > 200</span>", "Strong Uptrend", "Chỉ BUY. Mua mọi pullback về EMA21."],
             ["<span class='text-red-600 dark:text-[#F6465D] font-bold'>EMA21 < 50 < 200</span>", "Strong Downtrend", "Chỉ SELL. Bán mọi rebound lên EMA21."],
             ["<span class='text-yellow-600 dark:text-[#FCD535] font-bold'>Đan xen nhau</span>", "Sideway / Chuyển đổi", "Thận trọng. Đứng ngoài."],
-            ["<span class='text-[#b45309] dark:text-[#f5a623] font-mono'>Golden Cross</span>", "EMA21 cắt EMA50 từ dưới lên (cả 2 đang dốc lên)", "Tín hiệu mạnh — chỉ tìm BUY, không SELL"],
+            ["<span class='text-[#d97706] dark:text-[#f5a623] font-mono'>Golden Cross</span>", "EMA21 cắt EMA50 từ dưới lên (cả 2 đang dốc lên)", "Tín hiệu mạnh — chỉ tìm BUY, không SELL"],
             ["<span class='text-red-600 dark:text-[#F6465D] font-mono'>Death Cross</span>", "EMA21 cắt EMA50 từ trên xuống (cả 2 đang dốc xuống)", "Tín hiệu giảm — chỉ tìm SELL, cẩn thận với BUY"]
           ]}
         />
@@ -789,13 +789,12 @@ const CHAPTER_2_DATA = [
       <>
         <SectionHead icon={<Library size={16}/>} title="Sách & Video chọn lọc" desc="Không phải Google, đây là những nguồn thực sự đáng giá." />
         <div className="space-y-4">
-          <ResourceCard type="Sách Kinh Điển" name="Technical Analysis of the Financial Markets — John Murphy" lang="Tiếng Anh · ~600 trang" desc='Cuốn nền tảng của phân tích kỹ thuật, bao phủ nến Nhật, S/R, xu hướng, volume, Fibonacci và nhiều công cụ khác theo cách hệ thống.' why="Đọc chương 1-6 trước để xây nền lý thuyết, bỏ qua phần quá nâng cao và quay lại sau." link="https://www.amazon.com/Technical-Analysis-Financial-Markets-Comprehensive/dp/0735200661"/>
-          <ResourceCard type="Sách Tâm Lý" name="Trading in the Zone — Mark Douglas" lang="Tiếng Anh · ~240 trang" desc="Một trong những sách tâm lý trading nổi tiếng nhất, giải thích vì sao trader có hệ thống tốt vẫn thua nếu tư duy xác suất và kỷ luật chưa đúng." why="Nên đọc sau khi đã demo hoặc live nhỏ vài tháng để nội dung thấm hơn." link="https://www.amazon.com/Trading-Zone-Confidence-Discipline-Attitude/dp/0735201447"/>
-          <ResourceCard type="Website Miễn phí" name="Investopedia — RSI, EMA, MACD Deep Dives" lang="Tiếng Anh · miễn phí" desc="Nguồn tra cứu thuật ngữ tài chính có ví dụ, công thức và cách dùng thực tế cho từng indicator." why='Khi gặp thuật ngữ mới, tìm "[thuật ngữ] investopedia" để đọc nhanh và đối chiếu.' link="https://www.investopedia.com"/>
-          <ResourceCard type="Tài liệu RSI gốc" name="New Concepts in Technical Trading Systems — J. Welles Wilder" lang="Tiếng Anh · sách gốc RSI" desc="Cuốn sách nơi Wilder giới thiệu RSI lần đầu, cùng ATR và Parabolic SAR. Hữu ích để hiểu RSI được thiết kế với mục đích gì." why="Đọc nguồn gốc giúp tránh học RSI theo kiểu tam sao thất bản." link="https://archive.org/search?query=New+Concepts+in+Technical+Trading+Systems+Wilder"/>
-          <ResourceCard type="YouTube · RSI" name="RSI Indicator Explained — Rayner Teo" lang="Video tiếng Anh · khoảng 20 phút" desc="Giải thích RSI từ cơ bản đến phân kỳ và cách lọc tín hiệu giả bằng ví dụ chart thực tế." why="Củng cố phần RSI trước khi học các setup nâng cao." link="https://www.youtube.com/@RaynerTeo"/>
-          <ResourceCard type="YouTube · DCA" name="Dollar Cost Averaging — Ben Felix" lang="Video tiếng Anh · dựa trên dữ liệu" desc="So sánh DCA và Lump Sum bằng dữ liệu lịch sử, giúp hiểu DCA là công cụ kỷ luật và tâm lý, không phải phép màu." why="Hiểu đúng khi nào DCA phù hợp và khi nào Lump Sum có lợi thế hơn." link="https://www.youtube.com/@BenFelixCSI"/>
-          <ResourceCard type="Tool thực hành" name="TradingView — Public Indicators & Scripts" lang="Website · miễn phí/có trả phí" desc="Thư viện indicator công khai, có mô tả và đôi khi có code Pine Script để đọc cách indicator được tính." why="Tốt nhất để luyện vẽ S/R, EMA, RSI divergence và lưu template cá nhân." link="https://www.tradingview.com/scripts/"/>
+          <ResourceCard type="YouTube · Kháng Cự & Hỗ Trợ" name="How To Trade Support And Resistance (Mới Nhất 2024)" lang="Video thực chiến (Có Vietsub) · Nhanh gọn" desc='Hướng dẫn cực kỳ trực quan về cách vẽ Hỗ trợ/Kháng cự, nguyên tắc Role Reversal và cách tránh bị "quét stoploss" (Fakeout) tại các vùng này.' why="Click vào xem ngay để biết cách không vẽ sai S/R. Đây là nền tảng số 1." link="https://www.youtube.com/watch?v=8-x2S8owxYQ"/>
+          <ResourceCard type="YouTube · EMA & WMA" name="Moving Average Strategy for 2024" lang="Video thực chiến (Có Vietsub) · Nhanh gọn" desc="Cách sử dụng Moving Average (EMA/SMA) để xác định xu hướng, điểm vào lệnh (pullback) và điểm chốt lời một cách thực dụng nhất." why="Giúp bạn hiểu ngay cách dùng bộ 3 EMA thay vì chỉ lý thuyết suông." link="https://www.youtube.com/watch?v=bO_qQi-NJEo"/>
+          <ResourceCard type="YouTube · RSI" name="RSI Indicator Strategy 2024" lang="Video thực chiến (Có Vietsub) · Nhanh gọn" desc="Phá bỏ những sai lầm kinh điển như 'RSI > 70 là bán'. Hướng dẫn cách dùng RSI để tìm phân kỳ (Divergence) và xác nhận sức mạnh xu hướng." why="Video thực chiến giải quyết bài toán dùng RSI bị sai lầm mà đa số người mới mắc phải." link="https://www.youtube.com/watch?v=JWcX8YA0G3A"/>
+          <ResourceCard type="YouTube · MACD" name="MACD Trading Strategy (Mới Nhất 2024)" lang="Video thực chiến (Có Vietsub) · Nhanh gọn" desc="Hướng dẫn trực tiếp trên biểu đồ cách đọc Histogram, sự giao cắt giữa MACD Line và Signal Line để bắt những đợt sóng lớn." why="Xem xong áp dụng được luôn vào biểu đồ để đo động lượng (momentum)." link="https://www.youtube.com/watch?v=rf_EQvubKlk"/>
+          <ResourceCard type="Website Thực hành" name="Investopedia — Technical Analysis 2024 Guide" lang="Bài viết Tiếng Anh · miễn phí" desc="Bài viết tổng hợp cực kỳ chất lượng về nến Nhật, khối lượng (Volume) và các chỉ báo cơ bản kèm ví dụ thực tế trên thị trường thật." why='Khi cần đọc lại lý thuyết nhanh chóng, đây là bài viết tốt nhất để tra cứu.' link="https://www.investopedia.com/articles/active-trading/102914/technical-analysis-strategies-beginners.asp"/>
+          <ResourceCard type="Tool Thực Chiến" name="TradingView Chart" lang="Công cụ biểu đồ · Miễn phí" desc="Nền tảng phân tích kỹ thuật số 1 thế giới. Đừng chỉ học, hãy mở chart lên và tự mình vẽ các đường hỗ trợ kháng cự ngay lúc này." why="Học phải đi đôi với hành. Click mở biểu đồ ngay!" link="https://www.tradingview.com/chart/"/>
         </div>
       </>
     )

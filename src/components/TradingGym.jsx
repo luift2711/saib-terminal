@@ -18,11 +18,62 @@ const PROFIT_TARGET_PERCENT = 10; // Mục tiêu BƯỚC 1: 10%
 const DAILY_LOSS_PERCENT = 5;     // Lỗ tối đa ngày: 5%
 const MAX_LOSS_PERCENT = 10;      // Lỗ tối đa tổng: 10%
 
-const TradingGym = ({ balance, setBalance, isDarkMode }) => {
+const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
   const [activeCoin, setActiveCoin] = useState(COINS[0]);
   const [currentPrice, setCurrentPrice] = useState(65000);
   const [position, setPosition] = useState(null);
   const [pendingOrder, setPendingOrder] = useState(null);
+
+  const dict = {
+    vi: {
+      failAlert: 'Sếp đã bị tước quyền thi quỹ. Vui lòng Reset!',
+      oneOrderAlert: 'Kỷ luật: Chỉ được mở 1 lệnh tại 1 thời điểm!',
+      slAlert: 'Kỷ luật thép: Bắt buộc nhập Stoploss!',
+      hlAlert: "Nhập đủ High/Low của nến tín hiệu!",
+      passTitle: "VƯỢT QUA BƯỚC 1",
+      failTitle: "VI PHẠM LUẬT QUỸ",
+      failDailyDesc: "Lỗi: Vượt quá mức lỗ tối đa trong ngày (5%)",
+      failMaxDesc: "Lỗi: Vượt quá mức lỗ tối đa tài khoản (10%)",
+      passDesc: "Tuyệt vời! Sếp đã đạt mục tiêu lợi nhuận 10% an toàn.",
+      resetBtn: "Thử Lại (Reset Account)",
+      profitTarget: "Mục Tiêu Lợi Nhuận (10%)",
+      dailyLoss: "Lỗ Tối Đa Ngày (5%)",
+      maxLoss: "Lỗ Tối Đa (10%)",
+      manualBtn: "Thủ Công",
+      autoBtn: "Bẫy H/L",
+      riskLevel: "Mức Rủi Ro",
+      slLabel: "Stoploss (Bắt buộc)",
+      tpLabel: "Take Profit (Tùy chọn)",
+      waitLabel: "⏳ Chờ",
+      cancelBtn: "Hủy",
+      closeBtn: "Chốt Lệnh"
+    },
+    en: {
+      failAlert: 'You have been disqualified from the challenge. Please Reset!',
+      oneOrderAlert: 'Discipline: Only 1 order allowed at a time!',
+      slAlert: 'Iron Discipline: Stoploss is mandatory!',
+      hlAlert: "Enter both High and Low of the signal candle!",
+      passTitle: "PASSED PHASE 1",
+      failTitle: "CHALLENGE FAILED",
+      failDailyDesc: "Error: Exceeded daily max loss (5%)",
+      failMaxDesc: "Error: Exceeded maximum account loss (10%)",
+      passDesc: "Excellent! You have safely reached the 10% profit target.",
+      resetBtn: "Try Again (Reset Account)",
+      profitTarget: "Profit Target (10%)",
+      dailyLoss: "Daily Max Loss (5%)",
+      maxLoss: "Max Loss (10%)",
+      manualBtn: "Manual",
+      autoBtn: "H/L Trap",
+      riskLevel: "Risk Level",
+      slLabel: "Stoploss (Required)",
+      tpLabel: "Take Profit (Optional)",
+      waitLabel: "⏳ Waiting",
+      cancelBtn: "Cancel",
+      closeBtn: "Close Position"
+    }
+  };
+  const t = dict[lang];
+
   
   // Trạng thái Form Đặt lệnh
   const [orderType, setOrderType] = useState('MANUAL');
@@ -114,10 +165,10 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
 
   // 3. HÀM VÀO LỆNH
   const openManualPosition = (type) => {
-    if (challengeStatus !== 'ACTIVE') return alert('Sếp đã bị tước quyền thi quỹ. Vui lòng Reset!');
-    if (position || pendingOrder) return alert('Kỷ luật: Chỉ được mở 1 lệnh tại 1 thời điểm!');
+    if (challengeStatus !== 'ACTIVE') return alert(t.failAlert);
+    if (position || pendingOrder) return alert(t.oneOrderAlert);
     const sl = Number(slInput); const tp = Number(tpInput);
-    if (!sl) return alert('Kỷ luật thép: Bắt buộc nhập Stoploss!');
+    if (!sl) return alert(t.slAlert);
 
     const riskAmount = balance * (riskPercent / 100);
     const volume = riskAmount / Math.abs(currentPrice - sl);
@@ -125,10 +176,10 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
   };
 
   const placePendingOrder = (type) => {
-    if (challengeStatus !== 'ACTIVE') return alert('Sếp đã bị tước quyền thi quỹ. Vui lòng Reset!');
-    if (position || pendingOrder) return alert('Kỷ luật: Chỉ được mở 1 lệnh tại 1 thời điểm!');
+    if (challengeStatus !== 'ACTIVE') return alert(t.failAlert);
+    if (position || pendingOrder) return alert(t.oneOrderAlert);
     const H = Number(highInput); const L = Number(lowInput); const buffer = Number(bufferInput); const rr = Number(rrInput);
-    if (!H || !L) return alert("Nhập đủ High/Low của nến tín hiệu!");
+    if (!H || !L) return alert(t.hlAlert);
     
     let entry, sl, tp;
     if (type === 'LONG') { entry = H + buffer; sl = L - buffer; tp = entry + ((entry - sl) * rr); } 
@@ -160,14 +211,14 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
         {challengeStatus !== 'ACTIVE' && (
            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center backdrop-blur-sm ${challengeStatus === 'PASSED' ? 'bg-[#0ECB81]/20' : 'bg-[#F6465D]/20'}`}>
               <h2 className={`text-4xl font-black mb-2 tracking-widest uppercase ${challengeStatus === 'PASSED' ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
-                {challengeStatus === 'PASSED' ? <><Trophy size={18} className="inline mr-1 text-yellow-500" /> VƯỢT QUA BƯỚC 1</> : <><Skull size={24} className="inline mr-1"/> VI PHẠM LUẬT QUỸ</>}
+                {challengeStatus === 'PASSED' ? <><Trophy size={18} className="inline mr-1 text-yellow-500" /> {t.passTitle}</> : <><Skull size={24} className="inline mr-1"/> {t.failTitle}</>}
               </h2>
               <p className="text-[#0f1117] dark:text-white font-bold mb-6">
-                {challengeStatus === 'FAILED_DAILY' ? 'Lỗi: Vượt quá mức lỗ tối đa trong ngày (5%)' : 
-                 challengeStatus === 'FAILED_MAX' ? 'Lỗi: Vượt quá mức lỗ tối đa tài khoản (10%)' : 
-                 'Tuyệt vời! Sếp đã đạt mục tiêu lợi nhuận 10% an toàn.'}
+                {challengeStatus === 'FAILED_DAILY' ? t.failDailyDesc : 
+                 challengeStatus === 'FAILED_MAX' ? t.failMaxDesc : 
+                 t.passDesc}
               </p>
-              <button onClick={resetChallenge} className="bg-[#0f1117] dark:bg-white text-white dark:text-black font-black px-8 py-3 rounded-full hover:scale-105 transition-transform uppercase">Thử Lại (Reset Account)</button>
+              <button onClick={resetChallenge} className="bg-[#0f1117] dark:bg-white text-white dark:text-black font-black px-8 py-3 rounded-full hover:scale-105 transition-transform uppercase">{t.resetBtn}</button>
            </div>
         )}
 
@@ -189,7 +240,7 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
             {/* Lợi nhuận */}
             <div className="bg-[#faf9f6] dark:bg-[#0B0E11] p-4 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
                <div className="flex justify-between text-xs mb-2">
-                 <span className="text-[#636878] dark:text-[#848E9C]">Mục Tiêu Lợi Nhuận (10%)</span>
+                 <span className="text-[#636878] dark:text-[#848E9C]">{t.profitTarget}</span>
                  <span className="text-[#0ECB81] font-bold">${profitTarget.toLocaleString()}</span>
                </div>
                <div className="w-full bg-[#fff] dark:bg-[#111827] h-2 rounded-full overflow-hidden">
@@ -199,17 +250,17 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
             {/* Drawdown Ngày */}
             <div className="bg-[#faf9f6] dark:bg-[#0B0E11] p-4 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
                <div className="flex justify-between text-xs mb-2">
-                 <span className="text-[#636878] dark:text-[#848E9C]">Lỗ Tối Đa Ngày (5%)</span>
-                 <span className="text-[#b45309] dark:text-[#00d084] font-bold">${maxDailyLossLimit.toLocaleString()}</span>
+                 <span className="text-[#636878] dark:text-[#848E9C]">{t.dailyLoss}</span>
+                 <span className="text-[#d97706] dark:text-[#00d084] font-bold">${maxDailyLossLimit.toLocaleString()}</span>
                </div>
                <div className="w-full bg-[#fff] dark:bg-[#111827] h-2 rounded-full overflow-hidden flex justify-end">
-                  <div className="bg-[#b45309] dark:bg-[#00d084] h-full transition-all" style={{width: `${Math.max(0, Math.min(100, ((INITIAL_BALANCE - equity) / (INITIAL_BALANCE * DAILY_LOSS_PERCENT / 100)) * 100))}%`}}></div>
+                  <div className="bg-[#d97706] dark:bg-[#00d084] h-full transition-all" style={{width: `${Math.max(0, Math.min(100, ((INITIAL_BALANCE - equity) / (INITIAL_BALANCE * DAILY_LOSS_PERCENT / 100)) * 100))}%`}}></div>
                </div>
             </div>
             {/* Drawdown Tổng */}
             <div className="bg-[#faf9f6] dark:bg-[#0B0E11] p-4 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
                <div className="flex justify-between text-xs mb-2">
-                 <span className="text-[#636878] dark:text-[#848E9C]">Lỗ Tối Đa (10%)</span>
+                 <span className="text-[#636878] dark:text-[#848E9C]">{t.maxLoss}</span>
                  <span className="text-[#F6465D] font-bold">${maxTotalLossLimit.toLocaleString()}</span>
                </div>
                <div className="w-full bg-[#fff] dark:bg-[#111827] h-2 rounded-full overflow-hidden flex justify-end">
@@ -236,20 +287,20 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
             <span className="font-mono font-bold text-[#0ECB81] text-xl">${currentPrice.toLocaleString()}</span>
           </div>
           <div className="h-[550px]">
-            <AdvancedRealTimeChart theme={isDarkMode ? "dark" : "light"} symbol={activeCoin.tvSymbol} interval="15" autosize hide_top_toolbar={false} hide_side_toolbar={false} />
+            <AdvancedRealTimeChart key={isDarkMode ? "dark" : "light"} theme={isDarkMode ? "dark" : "light"} symbol={activeCoin.tvSymbol} interval="15" autosize hide_top_toolbar={false} hide_side_toolbar={false} />
           </div>
         </div>
         
         {/* ORDER PANEL */}
         <div className="bg-[#fff] dark:bg-[#111827] p-6 rounded-2xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] flex flex-col shadow-lg">
            <div className="flex space-x-2 mb-6 bg-[#faf9f6] dark:bg-[#0B0E11] p-1.5 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
-              <button onClick={() => setOrderType('MANUAL')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'MANUAL' ? 'bg-[#2B3139] text-[#0f1117] dark:text-white shadow-sm' : 'text-[#636878] dark:text-[#848E9C]'}`}>Thủ Công</button>
-              <button onClick={() => setOrderType('AUTO')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'AUTO' ? 'bg-[#2B3139] text-[#b45309] dark:text-[#00d084] shadow-sm' : 'text-[#636878] dark:text-[#848E9C]'}`}>Bẫy H/L</button>
+              <button onClick={() => setOrderType('MANUAL')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'MANUAL' ? 'bg-[#2B3139] text-[#0f1117] dark:text-white shadow-sm' : 'text-[#636878] dark:text-[#848E9C]'}`}>{t.manualBtn}</button>
+              <button onClick={() => setOrderType('AUTO')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'AUTO' ? 'bg-[#2B3139] text-[#d97706] dark:text-[#00d084] shadow-sm' : 'text-[#636878] dark:text-[#848E9C]'}`}>{t.autoBtn}</button>
            </div>
            
            <div className="mb-6">
               <label className="text-[11px] font-bold uppercase tracking-wider text-[#636878] dark:text-[#848E9C] flex justify-between mb-3">
-                <span>Mức Rủi Ro</span> 
+                <span>{t.riskLevel}</span> 
                 <span className="text-[#F6465D] bg-[#F6465D]/10 px-2 py-0.5 rounded">{riskPercent}% (${(balance * riskPercent / 100).toFixed(0)})</span>
               </label>
               <input type="range" min="0.5" max="5" step="0.5" value={riskPercent} onChange={(e) => setRiskPercent(Number(e.target.value))} className="w-full accent-[#F6465D]" />
@@ -258,11 +309,11 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
            {orderType === 'MANUAL' ? (
              <div className="space-y-4">
                 <div>
-                  <label className="text-[10px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">Stoploss (Bắt buộc)</label>
+                  <label className="text-[10px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">{t.slLabel}</label>
                   <input type="number" value={slInput} onChange={e => setSlInput(e.target.value)} className="w-full bg-[#faf9f6] dark:bg-[#0B0E11] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] p-3 text-sm text-[#0f1117] dark:text-white rounded-xl focus:border-[#F6465D] focus:outline-none" />
                 </div>
                 <div>
-                  <label className="text-[10px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">Take Profit (Tùy chọn)</label>
+                  <label className="text-[10px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">{t.tpLabel}</label>
                   <input type="number" value={tpInput} onChange={e => setTpInput(e.target.value)} className="w-full bg-[#faf9f6] dark:bg-[#0B0E11] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] p-3 text-sm text-[#0f1117] dark:text-white rounded-xl focus:border-[#0ECB81] focus:outline-none" />
                 </div>
                 <div className="flex gap-3 pt-4 border-t border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
@@ -291,8 +342,8 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
                   </div>
                 </div>
                 <div className="flex gap-2 pt-3">
-                  <button onClick={() => placePendingOrder('LONG')} className="flex-1 bg-[#b45309] dark:bg-[#00d084]/10 text-[#b45309] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#b45309] dark:border-[#00d084]/30 hover:border-[#b45309] dark:border-[#00d084]">BUY STOP</button>
-                  <button onClick={() => placePendingOrder('SHORT')} className="flex-1 bg-[#b45309] dark:bg-[#00d084]/10 text-[#b45309] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#b45309] dark:border-[#00d084]/30 hover:border-[#b45309] dark:border-[#00d084]">SELL STOP</button>
+                  <button onClick={() => placePendingOrder('LONG')} className="flex-1 bg-[#d97706] dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706] dark:border-[#00d084]/30 hover:border-[#d97706] dark:border-[#00d084]">BUY STOP</button>
+                  <button onClick={() => placePendingOrder('SHORT')} className="flex-1 bg-[#d97706] dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706] dark:border-[#00d084]/30 hover:border-[#d97706] dark:border-[#00d084]">SELL STOP</button>
                 </div>
              </div>
            )}
@@ -300,12 +351,12 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
            {/* HIỂN THỊ LỆNH ĐANG CHẠY */}
            <div className="mt-auto pt-6">
               {pendingOrder && (
-                <div className="p-4 border border-dashed border-[#b45309] dark:border-[#00d084]/50 bg-[#b45309] dark:bg-[#00d084]/5 rounded-xl mb-3 flex justify-between items-center">
+                <div className="p-4 border border-dashed border-[#d97706] dark:border-[#00d084]/50 bg-[#d97706] dark:bg-[#00d084]/5 rounded-xl mb-3 flex justify-between items-center">
                   <div className="text-[11px]">
-                    <span className="text-[#b45309] dark:text-[#00d084] font-bold block mb-1">⏳ Chờ {pendingOrder.type}</span>
+                    <span className="text-[#d97706] dark:text-[#00d084] font-bold block mb-1">{t.waitLabel} {pendingOrder.type}</span>
                     <span className="text-[#636878] dark:text-[#848E9C] font-mono">${pendingOrder.entryPrice.toLocaleString()}</span>
                   </div>
-                  <button onClick={() => setPendingOrder(null)} className="text-[#F6465D] text-xs font-bold bg-[#F6465D]/10 px-3 py-1.5 rounded-lg hover:bg-[#F6465D] hover:text-[#0f1117] dark:text-white transition-colors">Hủy</button>
+                  <button onClick={() => setPendingOrder(null)} className="text-[#F6465D] text-xs font-bold bg-[#F6465D]/10 px-3 py-1.5 rounded-lg hover:bg-[#F6465D] hover:text-[#0f1117] dark:text-white transition-colors">{t.cancelBtn}</button>
                 </div>
               )}
               {position && (
@@ -319,7 +370,7 @@ const TradingGym = ({ balance, setBalance, isDarkMode }) => {
                       <span>Entry: ${position.entryPrice}</span>
                       <span>SL: ${position.sl}</span>
                    </div>
-                   <button onClick={closePositionManual} className="w-full bg-[#0f1117] dark:bg-white text-white dark:text-black py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#848E9C] transition-colors">Chốt Lệnh</button>
+                   <button onClick={closePositionManual} className="w-full bg-[#0f1117] dark:bg-white text-white dark:text-black py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#848E9C] transition-colors">{t.closeBtn}</button>
                 </div>
               )}
            </div>

@@ -84,15 +84,15 @@ const MatchGame = () => {
       (side === 'L' && matched.includes(id)) ||
       (side === 'R' && matched.some((leftId) => pairs[leftId] === id))
     ) {
-      return 'border-green-500 dark:border-[#0ECB81] bg-green-50 dark:bg-[#0ECB81]/10 text-green-700 dark:text-[#0ECB81] pointer-events-none';
+      return 'border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] pointer-events-none shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]';
     }
     if (flash && ((side === 'L' && flash.l === id) || (side === 'R' && flash.r === id))) {
-      return 'border-red-500 dark:border-[#F6465D] bg-red-50 dark:bg-[#F6465D]/10 text-red-700 dark:text-[#F6465D] opacity-50';
+      return 'border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] opacity-50 relative overflow-hidden';
     }
     if ((side === 'L' && selL === id) || (side === 'R' && selR === id)) {
-      return 'border-blue-500 dark:border-[#378ADD] bg-blue-50 dark:bg-[#378ADD]/20 text-blue-700 dark:text-[#378ADD]';
+      return 'border-transparent dark:border-[#378ADD] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#378ADD]/20 text-[#1C2C44] dark:text-[#378ADD] shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]';
     }
-    return 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-gray-800 dark:text-[#EAECEF] hover:border-yellow-500 dark:hover:border-[#FCD535] hover:bg-yellow-50 dark:hover:bg-[#FCD535]/10';
+    return 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-[#1C2C44] dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#FCD535]/10 transition-colors';
   };
 
   return (
@@ -534,11 +534,10 @@ const CandleQuiz = () => {
             const isChosen = selected === index;
             const isCorrect = selected !== null && index === q.c;
             const isWrong = selected !== null && isChosen && index !== q.c;
-            let btnClass =
-              'border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-yellow-500 dark:hover:border-[#FCD535] hover:bg-yellow-50 dark:hover:bg-[#FCD535]/5 bg-white dark:bg-transparent';
-            if (isCorrect) btnClass = 'border-green-500 dark:border-[#0ECB81] bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] font-bold';
-            else if (isWrong) btnClass = 'border-red-500 dark:border-[#F6465D] bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]';
-            else if (selected !== null) btnClass = 'border-gray-200 dark:border-[#2B3139] text-gray-400 dark:text-[#64748B] opacity-50 bg-white dark:bg-transparent';
+            let btnClass = 'border-gray-200 dark:border-[#2B3139] text-[#1C2C44] dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#FCD535]/5 bg-white dark:bg-transparent';
+            if (isCorrect) btnClass = 'border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]';
+            else if (isWrong) btnClass = 'border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none relative overflow-hidden';
+            else if (selected !== null) btnClass = 'border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] text-[#9ba0ad] dark:text-[#64748B] opacity-50 cursor-not-allowed bg-white dark:bg-transparent';
 
             return (
               <button
@@ -663,11 +662,10 @@ const FinalQuiz = () => {
               const isSelected = answers[qIdx] === oIdx;
               const isCorrect = showRes && q.c === oIdx;
               const isWrong = showRes && isSelected && q.c !== oIdx;
-              let btnClass =
-                'border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#b45309] dark:hover:border-[#FCD535] bg-white dark:bg-[#0B0E11]';
-              if (isCorrect) btnClass = 'border-green-500 bg-green-50 dark:bg-[#0ECB81]/10 text-green-700 dark:text-[#0ECB81] font-bold';
-              if (isWrong) btnClass = 'border-red-500 bg-red-50 dark:bg-[#F6465D]/10 text-red-700 dark:text-[#F6465D]';
-              if (!showRes && isSelected) btnClass = 'border-blue-500 bg-blue-50 dark:bg-[#378ADD]/10 text-blue-700 dark:text-[#378ADD] font-bold';
+              let btnClass = 'border-gray-200 dark:border-[#2B3139] text-[#1C2C44] dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]';
+              if (isCorrect) btnClass = 'border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]';
+              if (isWrong) btnClass = 'border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none font-bold relative overflow-hidden';
+              if (!showRes && isSelected) btnClass = 'border-transparent dark:border-[#378ADD] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#378ADD]/10 text-[#1C2C44] dark:text-[#378ADD] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]';
 
               return (
                 <button
@@ -1160,10 +1158,10 @@ const CHAPTER_1_DATA = [
                 ].map(([tf, candle, purpose, trader, hold, highlight]) => (
                   <tr key={tf} className={`border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] last:border-0 transition-colors ${
                     highlight
-                      ? 'bg-[#b45309]/15/50 dark:bg-[#b45309]/10 font-semibold text-[#0f1117] dark:text-[#e8eaf0]'
+                      ? 'bg-[#d97706]/15/50 dark:bg-[#d97706]/10 font-semibold text-[#0f1117] dark:text-[#e8eaf0]'
                       : 'hover:bg-[#faf9f6] dark:hover:bg-[rgba(255,255,255,0.02)]'
                   }`}>
-                    <td className={`p-4 font-mono font-bold ${ highlight ? 'text-[#b45309] dark:text-[#f5a623]' : 'text-[#0f1117] dark:text-[#e8eaf0]'}`}>{tf}</td>
+                    <td className={`p-4 font-mono font-bold ${ highlight ? 'text-[#d97706] dark:text-[#f5a623]' : 'text-[#0f1117] dark:text-[#e8eaf0]'}`}>{tf}</td>
                     <td className="p-4">{candle}</td>
                     <td className="p-4 leading-snug">{purpose}</td>
                     <td className="p-4">{trader}</td>

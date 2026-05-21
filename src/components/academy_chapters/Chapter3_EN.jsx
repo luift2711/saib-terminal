@@ -21,11 +21,11 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
             const isChosen = selected === i;
-            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-yellow-500 dark:hover:border-[#FCD535] hover:bg-yellow-50 dark:hover:bg-[#FCD535]/5 bg-white dark:bg-transparent";
+            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
             let letterClass = "bg-gray-100 dark:bg-[#181A20] text-gray-500 dark:text-[#848E9C]";
             if (selected !== null) {
-              if (i === correctIdx) { btnClass = "border-green-500 dark:border-[#0ECB81] bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] font-bold"; letterClass = "bg-green-500 dark:bg-[#0ECB81] text-white"; }
-              else if (isChosen) { btnClass = "border-red-500 dark:border-[#F6465D] bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]"; letterClass = "bg-red-500 dark:bg-[#F6465D] text-white"; }
+              if (i === correctIdx) { btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]"; letterClass = "bg-green-500 dark:bg-[#0ECB81] text-white"; }
+              else if (isChosen) { btnClass = "border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none font-bold relative overflow-hidden"; letterClass = "bg-red-500 dark:bg-[#F6465D] text-white"; }
               else { btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-400 dark:text-[#64748B] opacity-50 cursor-not-allowed bg-white dark:bg-transparent"; }
             }
             return (
@@ -85,7 +85,7 @@ const FibCalculator = () => {
   return (
     <div className="border border-gray-200 dark:border-[#2B3139] rounded-3xl overflow-hidden my-8 bg-gray-50 dark:bg-[#0B0E11] shadow-md dark:shadow-xl transition-colors">
       <div className="bg-white dark:bg-[#181A20] p-6 flex items-center gap-4 border-b border-gray-200 dark:border-[#2B3139] transition-colors">
-        <Ruler size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-black dark:text-white text-lg flex-1">Fibonacci Calculator NNN</h3>
+        <Ruler size={24} className="text-[#d97706] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-black dark:text-white text-lg flex-1">Fibonacci Calculator NNN</h3>
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-4 py-1.5 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       <div className="p-8">
@@ -185,10 +185,10 @@ const FinalQuizCh3 = () => {
               const isSelected = answers[qIdx] === oIdx;
               const isCorrect = showRes && q.c === oIdx;
               const isWrong = showRes && isSelected && q.c !== oIdx;
-              let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-yellow-500 dark:hover:border-[#FCD535] bg-white dark:bg-transparent";
+              let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
               if (showRes) {
-                if (isCorrect) btnClass = "border-green-500 dark:border-[#0ECB81] bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] font-bold";
-                else if (isWrong) btnClass = "border-red-500 dark:border-[#F6465D] bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] opacity-60";
+                if (isCorrect) btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]";
+                else if (isWrong) btnClass = "border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none font-bold relative overflow-hidden opacity-60";
                 else btnClass = "border-gray-200 dark:border-[#2B3139] opacity-30 bg-white dark:bg-transparent";
               } else if (isSelected) btnClass = "border-blue-500 dark:border-[#378ADD] bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] font-bold";
               return <button key={oIdx} onClick={() => !showRes && setAnswers({...answers, [qIdx]: oIdx})} className={`text-left p-4 border-2 rounded-2xl text-[16px] transition-all ${btnClass}`}>{String.fromCharCode(65+oIdx)}. {opt}</button>;
@@ -304,8 +304,8 @@ const NNNChart2 = () => (
       <rect x="540" y="198" width="135" height="20" fill="#ff525215" rx="4"/>
       <text x="547" y="212" fill="#ff5252" fontSize="11" fontFamily="monospace">✗ Hủy Sell Stop</text>
       {/* TP markers */}
-      <line x1="355" y1="5" x2="700" y2="5" stroke="#b45309" strokeWidth="1" strokeDasharray="4 3" opacity="0.5"/>
-      <text x="625" y="14" fill="#b45309" fontSize="10" fontFamily="monospace">TP</text>
+      <line x1="355" y1="5" x2="700" y2="5" stroke="#d97706" strokeWidth="1" strokeDasharray="4 3" opacity="0.5"/>
+      <text x="625" y="14" fill="#d97706" fontSize="10" fontFamily="monospace">TP</text>
     </svg>
   </div>
 );
@@ -315,8 +315,8 @@ const NNNChart3 = () => (
     <div className="text-[11px] text-gray-400 font-mono uppercase tracking-widest mb-3">// NNN③ Minh họa — Nến đóng cửa trên EMA21 → BUY Setup + Pullback Entry</div>
     <svg viewBox="0 0 700 215" className="w-full h-auto min-w-[500px]" role="img">
       {/* EMA21 curved line */}
-      <path d="M 0,170 C 80,165 150,155 220,140 S 330,110 400,90 S 520,62 700,38" stroke="#b45309" strokeWidth="3" fill="none" opacity="0.9"/>
-      <text x="648" y="34" fill="#b45309" fontSize="11" fontFamily="monospace" fontWeight="bold">EMA21</text>
+      <path d="M 0,170 C 80,165 150,155 220,140 S 330,110 400,90 S 520,62 700,38" stroke="#d97706" strokeWidth="3" fill="none" opacity="0.9"/>
+      <text x="648" y="34" fill="#d97706" fontSize="11" fontFamily="monospace" fontWeight="bold">EMA21</text>
       {/* Candles BELOW EMA21 (downtrend context) */}
       <line x1="55" y1="155" x2="55" y2="200" stroke="#ff5252" strokeWidth="1.5"/>
       <rect x="47" y="162" width="16" height="32" fill="#ff5252" rx="2" opacity="0.85"/>
@@ -360,8 +360,8 @@ const NNNChart4 = () => {
       <div className="text-[11px] text-gray-400 font-mono uppercase tracking-widest mb-3">// NNN④ Minh họa — Fibonacci NNN: Swing Low→High → Pullback 62% → Entry → TP1/TP2</div>
       <svg viewBox="0 0 720 260" className="w-full h-auto min-w-[520px]" role="img">
         {/* Fibonacci horizontal levels */}
-        <line x1="30" y1={tp1} x2="690" y2={tp1} stroke="#b45309" strokeWidth="1" strokeDasharray="5 3" opacity="0.7"/>
-        <text x="32" y={tp1 - 4} fill="#b45309" fontSize="10" fontFamily="monospace">127% — TP1</text>
+        <line x1="30" y1={tp1} x2="690" y2={tp1} stroke="#d97706" strokeWidth="1" strokeDasharray="5 3" opacity="0.7"/>
+        <text x="32" y={tp1 - 4} fill="#d97706" fontSize="10" fontFamily="monospace">127% — TP1</text>
         <line x1="30" y1={SH} x2="690" y2={SH} stroke="#e8eaf0" strokeWidth="1.5" strokeDasharray="5 3" opacity="0.5"/>
         <text x="32" y={SH - 4} fill="#e8eaf0" fontSize="10" fontFamily="monospace">100% Swing High</text>
         <line x1="30" y1={f62} x2="690" y2={f62} stroke="#00d084" strokeWidth="2" strokeDasharray="6 3" opacity="0.9"/>
@@ -385,8 +385,8 @@ const NNNChart4 = () => {
         {/* BUY entry arrow */}
         <polyline points={`478,${f62 - 18} 530,${f62 - 50} 590,${SH + 20} 650,${tp1 + 15}`} stroke="#00d084" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
         {/* TP1 marker */}
-        <circle cx="630" cy={tp1 + 8} r="6" fill="#b45309" opacity="0.9"/>
-        <text x="642" y={tp1 + 12} fill="#b45309" fontSize="11" fontFamily="monospace" fontWeight="bold">TP1</text>
+        <circle cx="630" cy={tp1 + 8} r="6" fill="#d97706" opacity="0.9"/>
+        <text x="642" y={tp1 + 12} fill="#d97706" fontSize="11" fontFamily="monospace" fontWeight="bold">TP1</text>
         {/* SL reference */}
         <line x1="460" y1={SL - 5} x2="560" y2={SL - 5} stroke="#ff5252" strokeWidth="1" strokeDasharray="3 3" opacity="0.6"/>
         <text x="564" y={SL - 1} fill="#ff5252" fontSize="10" fontFamily="monospace" opacity="0.8">SL</text>
@@ -404,38 +404,38 @@ const NNNChart4 = () => {
 
 const CHAPTER_3_DATA = [
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "0. Tổng quan Chương 3",
+    chapter: "Chapter 3: Price Action & Candles", title: "0. Chapter 3 Overview",
     content: (
       <>
-        <SectionHead icon={<Compass size={16} className="inline mr-1"/>} title="Phương pháp NNN & Nghệ thuật đọc nến" desc="Chương này dạy bạn hệ thống giao dịch cụ thể của thầy Nguyễn Ngọc Nghĩa — 4 phương pháp rõ ràng từ A đến Z. Kết hợp với 9 mẫu nến nâng cao giúp bạn đọc được tâm lý thị trường chính xác hơn bất kỳ indicator nào." />
-        <StoryBox label="Triết lý của thầy Nguyễn Ngọc Nghĩa" icon={<BookOpen size={16}/>}>
-          "Thị trường nói chuyện qua nến. Nếu bạn biết đọc ngôn ngữ đó, bạn không cần indicator phức tạp. <strong>Price action là sự thật. Indicator là bóng của sự thật.</strong>"<br/><br/>
-          4 phương pháp NNN được xây dựng hoàn toàn trên price action và các công cụ đơn giản nhất — nhưng được áp dụng một cách <em>kỷ luật và nhất quán</em>. Đây là điểm mấu chốt.
+        <SectionHead icon={<Compass size={16} className="inline mr-1"/>} title="NNN Method & The Art of Candlestick Reading" desc="This chapter teaches you the specific trading system of Mr. Nguyen Ngoc Nghia — 4 clear methods from A to Z. Combined with 9 advanced candlestick patterns to help you read market psychology more accurately than any indicator." />
+        <StoryBox label="Philosophy of Mr. Nguyen Ngoc Nghia" icon={<BookOpen size={16}/>}>
+          "The market talks through candlesticks. If you can read that language, you don't need complex indicators. <strong>Price action is the truth. Indicators are the shadow of the truth.</strong>"<br/><br/>
+          The 4 NNN methods are built entirely on price action and the simplest tools — but applied <em>disciplined and consistently</em>. This is the key.
         </StoryBox>
 
-        <SectionHead icon={<Map size={16}/>} title="Bản đồ Chương 3" desc="11 bài học · Học theo thứ tự." />
+        <SectionHead icon={<Map size={16}/>} title="Chapter 3 Map" desc="11 lessons · Learn in order." />
         <CyberTable
-          headers={["Phần", "Nội dung", "Mục tiêu"]}
+          headers={["Part", "Content", "Objective"]}
           rows={[
-            ["I", "4 Phương pháp NNN: Nến thân ngắn, Nến ôm, EMA21, Fibonacci NNN", "Có quy trình entry/SL/TP rõ ràng cho từng setup."],
-            ["II", "9 mẫu nến nâng cao: Engulfing, Hammer/Star, Doji, Morning/Evening, Harami, Three Soldiers", "Đọc được tâm lý thị trường qua cấu trúc nến."],
-            [<Star size={16} className="inline mr-1 text-yellow-500"/>, "Confluence + Quiz 15 câu", "Biết khi nào vào lệnh, khi nào giảm size, khi nào đứng ngoài."]
+            ["I", "4 NNN Methods: Short Body, Inside Bar, EMA21, NNN Fibonacci", "Have clear entry/SL/TP procedures for each setup."],
+            ["II", "9 advanced candlestick patterns: Engulfing, Hammer/Star, Doji, Morning/Evening, Harami, Three Soldiers", "Read market psychology through candlestick structure."],
+            [<Star size={16} className="inline mr-1 text-yellow-500"/>, "Confluence + 15-question Quiz", "Know when to enter, when to reduce size, when to stay out."]
           ]}
         />
-        <Callout type="ok" title="Cách học hiệu quả nhất:">Đọc từng phương pháp → mở TradingView song song → tìm ngay pattern đó trên chart thật → ghi vào notebook. Đừng đọc hết rồi mới thực hành — đọc 1 bài, thực hành ngay.</Callout>
+        <Callout type="ok" title="Most effective way to learn:">Read each method → open TradingView alongside → find that exact pattern on a real chart → log it in notebook. Don't read everything before practicing — read 1 lesson, practice immediately.</Callout>
         
-        <h3 className="text-2xl font-bold text-black dark:text-white mt-12 mb-6 border-b border-gray-200 dark:border-[#2B3139] pb-4">Nguyên tắc vàng của NNN</h3>
+        <h3 className="text-2xl font-bold text-black dark:text-white mt-12 mb-6 border-b border-gray-200 dark:border-[#2B3139] pb-4">NNN Golden Rules</h3>
         <div className="space-y-5">
-          <div className="flex gap-4 items-start"><div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-[#378ADD]/20 text-blue-600 dark:text-[#378ADD] font-bold flex items-center justify-center shrink-0 mt-1">1</div><div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]"><strong>Confluence (Hội tụ) là vua.</strong> Một tín hiệu NNN đơn lẻ = chỉ đáng chú ý. 2 tín hiệu = đáng cân nhắc. 3+ tín hiệu hội tụ = có thể lập kế hoạch vào lệnh nếu R:R và rủi ro đạt chuẩn. Không bao giờ vào lệnh chỉ vì một điều kiện.</div></div>
-          <div className="flex gap-4 items-start"><div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-[#378ADD]/20 text-blue-600 dark:text-[#378ADD] font-bold flex items-center justify-center shrink-0 mt-1">2</div><div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]"><strong>Xu hướng D1 là luật pháp.</strong> Không ưu tiên giao dịch ngược chiều D1. Nếu setup nhỏ hơn đi ngược khung lớn, giảm size mạnh hoặc bỏ qua.</div></div>
-          <div className="flex gap-4 items-start"><div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-[#378ADD]/20 text-blue-600 dark:text-[#378ADD] font-bold flex items-center justify-center shrink-0 mt-1">3</div><div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]"><strong>Nến phải ĐÓNG CỬA xác nhận.</strong> Không vào lệnh khi nến chưa đóng. Bóng nến nhú qua không phải tín hiệu. Thân nến đóng cửa bên kia mới là tín hiệu.</div></div>
-          <div className="flex gap-4 items-start"><div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-[#378ADD]/20 text-blue-600 dark:text-[#378ADD] font-bold flex items-center justify-center shrink-0 mt-1">4</div><div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]"><strong>Luôn biết SL và TP trước khi vào lệnh.</strong> Không vào lệnh mà không biết mình sẽ cắt lỗ ở đâu và chốt lời ở đâu. R:R tối thiểu 1:2.</div></div>
+          <div className="flex gap-4 items-start"><div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-[#378ADD]/20 text-blue-600 dark:text-[#378ADD] font-bold flex items-center justify-center shrink-0 mt-1">1</div><div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]"><strong>Confluence is king.</strong> A single NNN signal = only noteworthy. 2 signals = worth considering. 3+ confluent signals = can plan an entry if R:R and risk meet standards. Never enter based on just one condition.</div></div>
+          <div className="flex gap-4 items-start"><div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-[#378ADD]/20 text-blue-600 dark:text-[#378ADD] font-bold flex items-center justify-center shrink-0 mt-1">2</div><div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]"><strong>D1 Trend is the law.</strong> Do not prioritize trading against D1. If a lower timeframe setup goes against the higher timeframe, drastically reduce size or skip.</div></div>
+          <div className="flex gap-4 items-start"><div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-[#378ADD]/20 text-blue-600 dark:text-[#378ADD] font-bold flex items-center justify-center shrink-0 mt-1">3</div><div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]"><strong>Candles MUST CLOSE to confirm.</strong> Do not enter when the candle hasn't closed. A wick poking through is not a signal. The body closing on the other side is the signal.</div></div>
+          <div className="flex gap-4 items-start"><div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-[#378ADD]/20 text-blue-600 dark:text-[#378ADD] font-bold flex items-center justify-center shrink-0 mt-1">4</div><div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]"><strong>Always know your SL and TP before entering.</strong> Never enter a trade without knowing where you will cut losses and take profits. Minimum R:R 1:2.</div></div>
         </div>
       </>
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "1. NNN① Nến thân ngắn",
+    chapter: "Chapter 3: Price Action & Candles", title: "1. NNN① Short Body Candle",
     content: (
       <>
         <SectionHead icon="①" title="Nến Thân Ngắn" desc="Thị trường đang do dự — Khi thân nến cực nhỏ, đó là lúc phe mua và phe bán đang 'hòa nhau'." />
@@ -475,7 +475,7 @@ const CHAPTER_3_DATA = [
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "2. NNN② Nến ôm",
+    chapter: "Chapter 3: Price Action & Candles", title: "2. NNN② Inside Bar",
     content: (
       <>
         <SectionHead icon="②" title="Nến Ôm (Inside Bar)" desc="Sức mạnh bị 'giam lỏng' — giao dịch khi năng lượng bị nén." />
@@ -502,7 +502,7 @@ const CHAPTER_3_DATA = [
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "3. NNN③ EMA21",
+    chapter: "Chapter 3: Price Action & Candles", title: "3. NNN③ EMA21",
     content: (
       <>
         <SectionHead icon="③" title="EMA21" desc="Đường ranh giới Bull vs Bear — Giá đóng cửa một phía, bạn theo phía đó." />
@@ -530,7 +530,7 @@ const CHAPTER_3_DATA = [
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "4. NNN④ Fibonacci",
+    chapter: "Chapter 3: Price Action & Candles", title: "4. NNN④ Fibonacci",
     content: (
       <>
         <SectionHead icon="④" title="Fibonacci NNN (62·79·88·127·162)" desc="Hệ thống hoàn chỉnh nhất trong 4 phương pháp." />
@@ -567,7 +567,7 @@ const CHAPTER_3_DATA = [
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "5. Engulfing (Nhấn chìm)",
+    chapter: "Chapter 3: Price Action & Candles", title: "5. Engulfing",
     content: (
       <>
         <SectionHead icon={<Award size={16} className="inline mr-1 text-yellow-500"/>} title="Engulfing Pattern" desc="Mẫu nến đảo chiều mạnh khi xuất hiện đúng bối cảnh." />
@@ -613,7 +613,7 @@ const CHAPTER_3_DATA = [
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "6. Hammer & Shooting Star",
+    chapter: "Chapter 3: Price Action & Candles", title: "6. Hammer & Shooting Star",
     content: (
       <>
         <SectionHead icon={<Hammer size={16} className="inline mr-1"/>} title="Hammer & Shooting Star" desc="Cú đánh trả của kẻ bại trận." />
@@ -648,7 +648,7 @@ const CHAPTER_3_DATA = [
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "7. Doji & Biến thể",
+    chapter: "Chapter 3: Price Action & Candles", title: "7. Doji & Variants",
     content: (
       <>
         <SectionHead icon={<Scale size={16}/>} title="Doji & Các biến thể" desc="Khoảnh khắc cân bằng tuyệt đối. Nền tảng của phương pháp NNN①." />
@@ -671,7 +671,7 @@ const CHAPTER_3_DATA = [
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "8. Morning & Evening Star",
+    chapter: "Chapter 3: Price Action & Candles", title: "8. Morning & Evening Star",
     content: (
       <>
         <SectionHead icon={<Star size={16}/>} title="Morning & Evening Star" desc="Mẫu 3 nến đáng tin nhất cho đảo chiều." />
@@ -711,7 +711,7 @@ const CHAPTER_3_DATA = [
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "9. Harami & Three Soldiers",
+    chapter: "Chapter 3: Price Action & Candles", title: "9. Harami & Three Soldiers",
     content: (
       <>
         <SectionHead icon="🪖" title="Harami & Three Soldiers" desc="Tích lũy (suy yếu) và Momentum bùng nổ." />
@@ -749,7 +749,7 @@ const CHAPTER_3_DATA = [
     )
   },
   {
-    chapter: "Chương 3: PP NNN & Nến", title: "10. Confluence & Quiz",
+    chapter: "Chapter 3: Price Action & Candles", title: "10. Confluence & Quiz",
     content: (
       <>
         <SectionHead icon={<Target size={16}/>} title="Confluence (Hội tụ)" desc="Khi tất cả hội tụ về một điểm. Đây là bài học quan trọng nhất." />

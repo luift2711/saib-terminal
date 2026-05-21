@@ -8,7 +8,7 @@ const SYMBOLS = ['BTC', 'ETH', 'XAU', 'NVDA', 'VNINDEX'];
 const TIMEFRAMES = ['5m', '15m', 'H1', 'H4'];
 const SITUATIONS = ['BREAKOUT', 'PULLBACK', 'FALSE_BREAKOUT'];
 
-const generateDynamicScenario = () => {
+const generateDynamicScenario = (lang) => {
   const symbol = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
   const tf = TIMEFRAMES[Math.floor(Math.random() * TIMEFRAMES.length)];
   const sit = SITUATIONS[Math.floor(Math.random() * SITUATIONS.length)];
@@ -16,15 +16,15 @@ const generateDynamicScenario = () => {
 
   return {
     symbol, tf, sit,
-    task: `TÌM ${isSupport ? 'HỖ TRỢ (SUPPORT)' : 'KHÁNG CỰ (RESISTANCE)'}`,
-    desc: `Mã: ${symbol} | Khung: ${tf}. Kịch bản: ${sit}. Click cắm cờ vào vùng Cản tối ưu.`,
+    task: lang === 'en' ? `FIND ${isSupport ? 'SUPPORT' : 'RESISTANCE'}` : `TÌM ${isSupport ? 'HỖ TRỢ (SUPPORT)' : 'KHÁNG CỰ (RESISTANCE)'}`,
+    desc: lang === 'en' ? `Symbol: ${symbol} | TF: ${tf}. Scenario: ${sit}. Click to plant flag at optimal zone.` : `Mã: ${symbol} | Khung: ${tf}. Kịch bản: ${sit}. Click cắm cờ vào vùng Cản tối ưu.`,
     correctPrice: 1000 + Math.random() * 500,
     tolerance: 25,
-    explanation: `Vùng giá này đã được test nhiều lần. Bất kỳ sự phá vỡ (Breakout) hay rút chân (Fakeout) nào tại đây cũng cho tỷ lệ R:R cực kỳ lý tưởng để vào lệnh.`
+    explanation: lang === 'en' ? `This price zone has been tested multiple times. Any Breakout or Fakeout here provides an ideal R:R ratio for entry.` : `Vùng giá này đã được test nhiều lần. Bất kỳ sự phá vỡ (Breakout) hay rút chân (Fakeout) nào tại đây cũng cho tỷ lệ R:R cực kỳ lý tưởng để vào lệnh.`
   };
 };
 
-const DailyQuiz = () => {
+const DailyQuiz = ({ lang = 'vi' }) => {
   const TOTAL_QUESTIONS = 10;
   const todayStr = new Date().toISOString().split('T')[0];
 
@@ -70,7 +70,7 @@ useEffect(() => {
     if (isLockedToday) return;
     setScore(0);
     setQuestionIndex(1);
-    setCurrentScenario(generateDynamicScenario());
+    setCurrentScenario(generateDynamicScenario(lang));
     setDrillStatus('idle');
     setUserPrice(null);
     setQuizActive(true);
@@ -96,13 +96,13 @@ useEffect(() => {
     }
 
     setQuestionIndex(prev => prev + 1);
-    setCurrentScenario(generateDynamicScenario());
+    setCurrentScenario(generateDynamicScenario(lang));
     setUserPrice(null);
     setDrillStatus('idle');
   };
 
   const checkAnswer = () => {
-    if (!userPrice || !seriesRef.current) return alert("Sếp phải cắm cờ vào biểu đồ đã!");
+    if (!userPrice || !seriesRef.current) return alert(lang === 'en' ? "Boss, you need to plant a flag on the chart first!" : "Sếp phải cắm cờ vào biểu đồ đã!");
     
     const isCorrect = Math.abs(userPrice - currentScenario.correctPrice) <= currentScenario.tolerance;
     setDrillStatus(isCorrect ? 'correct' : 'wrong');
@@ -112,14 +112,14 @@ useEffect(() => {
     if (answerLineRef.current) seriesRef.current.removePriceLine(answerLineRef.current);
     answerLineRef.current = seriesRef.current.createPriceLine({
       price: currentScenario.correctPrice, 
-      color: '#0ECB81', lineWidth: 2, lineStyle: 0, title: 'ĐÁP ÁN CHUẨN'
+      color: '#0ECB81', lineWidth: 2, lineStyle: 0, title: lang === 'en' ? 'CORRECT ANSWER' : 'ĐÁP ÁN CHUẨN'
     });
 
     // Đổi màu đường của người dùng (Đúng = Xanh, Sai = Đỏ)
     if (userLineRef.current) {
       userLineRef.current.applyOptions({ 
           color: isCorrect ? '#0ECB81' : '#F6465D',
-          title: isCorrect ? 'BẠN CHỌN (ĐÚNG)' : 'BẠN CHỌN (SAI)'
+          title: isCorrect ? (lang === 'en' ? 'YOURS (CORRECT)' : 'BẠN CHỌN (ĐÚNG)') : (lang === 'en' ? 'YOURS (WRONG)' : 'BẠN CHỌN (SAI)')
       });
     }
   };
@@ -173,7 +173,7 @@ useEffect(() => {
           
           if (userLineRef.current) series.removePriceLine(userLineRef.current);
           userLineRef.current = series.createPriceLine({ 
-              price: price, color: '#FCD535', lineWidth: 2, lineStyle: 2, title: 'BẠN CHỌN' 
+              price: price, color: '#FCD535', lineWidth: 2, lineStyle: 2, title: lang === 'en' ? 'YOUR CHOICE' : 'BẠN CHỌN' 
           });
         });
 
@@ -186,13 +186,49 @@ useEffect(() => {
     };
   }, [quizActive, currentScenario]);
 
+  const dict = {
+    vi: {
+      missionComplete: "Nhiệm vụ hoàn tất",
+      missionDesc: "Sếp đã rèn luyện xong 10 tình huống của ngày hôm nay. Kỷ luật là sức mạnh, hãy quay lại vào ngày mai để duy trì Chuỗi Streak!",
+      title: "Huấn Luyện Nhãn Quan Hàng Ngày",
+      subtitle: "Mỗi ngày 10 tình huống ngẫu nhiên. Trả lời sai hệ thống sẽ vạch rõ đường đáp án.",
+      startBtn: "BẮT ĐẦU THỬ THÁCH",
+      progress: "Tiến độ",
+      clickChart: "Click lên biểu đồ để vẽ đường cản",
+      waiting: "Đang chờ...",
+      flagged: "Đã cắm cờ: $",
+      gradeBtn: "Chấm Điểm",
+      viewResultBtn: "Xem Kết Quả",
+      nextQBtn: "Câu Tiếp Theo",
+      correctTitle: "CHÍNH XÁC TỐI ĐA!",
+      wrongTitle: "BẠN ĐÃ CHỌN SAI!"
+    },
+    en: {
+      missionComplete: "Mission Accomplished",
+      missionDesc: "You have completed 10 scenarios for today. Discipline is power, come back tomorrow to maintain your Streak!",
+      title: "Daily Vision Training",
+      subtitle: "10 random scenarios daily. Wrong answers will reveal the correct lines.",
+      startBtn: "START CHALLENGE",
+      progress: "Progress",
+      clickChart: "Click on the chart to draw the line",
+      waiting: "Waiting...",
+      flagged: "Flagged: $",
+      gradeBtn: "Grade Answer",
+      viewResultBtn: "View Results",
+      nextQBtn: "Next Question",
+      correctTitle: "PERFECTLY CORRECT!",
+      wrongTitle: "YOU CHOSE WRONG!"
+    }
+  };
+  const t = dict[lang];
+
   // Màn hình đã khóa
   if (isLockedToday && !quizActive) {
     return (
       <div className="max-w-xl mx-auto p-12 bg-[#fff]/80 dark:bg-[#111827]/60 border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] rounded-3xl text-center backdrop-blur-xl shadow-2xl mt-10">
         <div className="text-6xl mb-6"><Lock size={16} className="inline mr-1"/></div>
-        <h3 className="text-xl font-black text-[#0f1117] dark:text-white uppercase tracking-widest mb-3">Nhiệm vụ hoàn tất</h3>
-        <p className="text-sm text-[#636878] dark:text-[#848E9C] mb-4">Sếp đã rèn luyện xong 10 tình huống của ngày hôm nay. Kỷ luật là sức mạnh, hãy quay lại vào ngày mai để duy trì Chuỗi Streak!</p>
+        <h3 className="text-xl font-black text-[#0f1117] dark:text-white uppercase tracking-widest mb-3">{t.missionComplete}</h3>
+        <p className="text-sm text-[#636878] dark:text-[#848E9C] mb-4">{t.missionDesc}</p>
       </div>
     );
   }
@@ -201,39 +237,39 @@ useEffect(() => {
     <div className="bg-[#fff]/80 dark:bg-[#111827]/60 border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] rounded-3xl p-6 max-w-3xl mx-auto backdrop-blur-xl shadow-2xl mt-6">
       {!quizActive ? (
         <div className="text-center p-10">
-          <div className="w-20 h-20 rounded-full border-2 border-[#b45309] dark:border-[#00d084] border-dashed flex items-center justify-center mx-auto mb-6"><Target size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /></div>
-          <h2 className="text-2xl font-black text-[#0f1117] dark:text-white tracking-widest uppercase mb-4">Huấn Luyện Nhãn Quan Hàng Ngày</h2>
-          <p className="text-sm text-[#636878] dark:text-[#848E9C] mb-8">Mỗi ngày 10 tình huống ngẫu nhiên. Trả lời sai hệ thống sẽ vạch rõ đường đáp án.</p>
-          <button onClick={startQuiz} className="bg-[#b45309] dark:bg-[#00d084] text-white dark:text-black font-mono font-black px-10 py-4 rounded-xl hover:scale-105 transition-all shadow-[0_0_15px_rgba(180,83,9,0.4)] dark:shadow-[0_0_15px_rgba(0,208,132,0.4)]">BẮT ĐẦU THỬ THÁCH</button>
+          <div className="w-20 h-20 rounded-full border-2 border-[#d97706] dark:border-[#00d084] border-dashed flex items-center justify-center mx-auto mb-6"><Target size={24} className="text-[#d97706] dark:text-[#00d084] shrink-0" /></div>
+          <h2 className="text-2xl font-black text-[#0f1117] dark:text-white tracking-widest uppercase mb-4">{t.title}</h2>
+          <p className="text-sm text-[#636878] dark:text-[#848E9C] mb-8">{t.subtitle}</p>
+          <button onClick={startQuiz} className="bg-[#d97706] dark:bg-[#00d084] text-white dark:text-black font-mono font-black px-10 py-4 rounded-xl hover:scale-105 transition-all shadow-[0_0_15px_rgba(180,83,9,0.4)] dark:shadow-[0_0_15px_rgba(0,208,132,0.4)]">{t.startBtn}</button>
         </div>
       ) : (
         <div className="space-y-4 animate-in fade-in">
           <div className="flex justify-between items-center border-b border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] pb-3">
             <div>
-              <span className={`text-[10px] uppercase font-black tracking-widest ${currentScenario.task.includes('HỖ TRỢ') ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>{currentScenario.task}</span>
+              <span className={`text-[10px] uppercase font-black tracking-widest ${currentScenario.task.includes('HỖ TRỢ') || currentScenario.task.includes('SUPPORT') ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>{currentScenario.task}</span>
               <p className="text-xs text-[#0f1117] dark:text-[#EAECEF] mt-1">{currentScenario.desc}</p>
             </div>
             <div className="text-right">
-                <span className="text-[#636878] dark:text-[#848E9C] text-[10px] uppercase font-bold tracking-widest">Tiến độ</span>
-                <p className="text-lg font-mono font-bold text-[#b45309] dark:text-[#00d084]">{questionIndex} / {TOTAL_QUESTIONS}</p>
+                <span className="text-[#636878] dark:text-[#848E9C] text-[10px] uppercase font-bold tracking-widest">{t.progress}</span>
+                <p className="text-lg font-mono font-bold text-[#d97706] dark:text-[#00d084]">{questionIndex} / {TOTAL_QUESTIONS}</p>
             </div>
           </div>
           
           {/* Biểu đồ */}
           <div className="h-[280px] bg-[#faf9f6] dark:bg-[#0B0E11] rounded-xl overflow-hidden relative" ref={containerRef}>
               {drillStatus === 'idle' && !userPrice && (
-                  <div className="absolute top-2 left-2 z-10 text-[10px] bg-[#2B3139]/90 text-[#0f1117] dark:text-white px-2 py-1 rounded">Click lên biểu đồ để vẽ đường cản</div>
+                  <div className="absolute top-2 left-2 z-10 text-[10px] bg-[#2B3139]/90 text-[#0f1117] dark:text-white px-2 py-1 rounded">{t.clickChart}</div>
               )}
           </div>
           
           <div className="flex justify-between items-center pt-2">
-            <span className={`text-xs font-bold ${userPrice ? 'text-[#b45309] dark:text-[#00d084]' : 'text-[#636878] dark:text-[#848E9C]'}`}>{userPrice ? `Đã cắm cờ: $${userPrice.toFixed(0)}` : 'Đang chờ...'}</span>
+            <span className={`text-xs font-bold ${userPrice ? 'text-[#d97706] dark:text-[#00d084]' : 'text-[#636878] dark:text-[#848E9C]'}`}>{userPrice ? `${t.flagged}${userPrice.toFixed(0)}` : t.waiting}</span>
             
             {drillStatus === 'idle' ? (
-              <button onClick={checkAnswer} className="bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] hover:bg-[#b45309] dark:bg-[#00d084] text-[#0f1117] dark:text-white hover:text-white dark:text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl transition-all border border-white/10 hover:border-[#b45309] dark:border-[#00d084]">Chấm Điểm</button>
+              <button onClick={checkAnswer} className="bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] hover:bg-[#d97706] dark:bg-[#00d084] text-[#0f1117] dark:text-white hover:text-white dark:text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl transition-all border border-white/10 hover:border-[#d97706] dark:border-[#00d084]">{t.gradeBtn}</button>
             ) : (
               <button onClick={handleNext} className="bg-[#0ECB81] hover:brightness-110 text-white dark:text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl shadow-[0_0_15px_rgba(14,203,129,0.3)] transition-all">
-                  {questionIndex === TOTAL_QUESTIONS ? <>Xem Kết Quả <ArrowRight size={16} className="inline mr-1"/></> : <>Câu Tiếp Theo <ArrowRight size={16} className="inline mr-1"/></>}
+                  {questionIndex === TOTAL_QUESTIONS ? <>{t.viewResultBtn} <ArrowRight size={16} className="inline mr-1"/></> : <>{t.nextQBtn} <ArrowRight size={16} className="inline mr-1"/></>}
               </button>
             )}
           </div>
@@ -241,7 +277,7 @@ useEffect(() => {
           {drillStatus !== 'idle' && (
             <div className={`p-4 rounded-xl border border-l-4 text-xs mt-4 animate-in slide-in-from-top-2 ${drillStatus === 'correct' ? 'bg-[#0ECB81]/10 border-[#0ECB81]/30 border-l-[#0ECB81]' : 'bg-[#F6465D]/10 border-[#F6465D]/30 border-l-[#F6465D]'}`}>
               <span className={`font-black uppercase block mb-2 ${drillStatus === 'correct' ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
-                  {drillStatus === 'correct' ? <><CheckCircle size={18} className="inline mr-2"/> CHÍNH XÁC TỐI ĐA!</> : <><XCircle size={18} className="inline mr-2"/> BẠN ĐÃ CHỌN SAI!</>}
+                  {drillStatus === 'correct' ? <><CheckCircle size={18} className="inline mr-2"/> {t.correctTitle}</> : <><XCircle size={18} className="inline mr-2"/> {t.wrongTitle}</>}
               </span>
               <p className="text-[#0f1117] dark:text-[#EAECEF] leading-relaxed">{currentScenario.explanation}</p>
             </div>
