@@ -14,7 +14,7 @@ export const Callout = ({ type, title, children }) => {
       icon: <Info size={20} /> 
     },
     warn: { 
-      light: "bg-[#fff8e6] border-[#c8922a] text-[#5a3d00]", 
+      light: "bg-[#fff8e6] border-[#b45309] text-[#5a3d00]", 
       dark: "dark:bg-[#f5a623]/10 dark:border-[#f5a623]/50 dark:text-[#f5a623]", 
       icon: <AlertTriangle size={20} /> 
     },
@@ -47,14 +47,14 @@ export const Callout = ({ type, title, children }) => {
 export const StoryBox = ({ label, icon, children }) => (
   <motion.div 
     initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
-    className="bg-[#0f1117] dark:bg-[#1e2535] border border-[#e2c078] dark:border-[rgba(255,255,255,0.1)] rounded-2xl p-8 my-8 relative overflow-hidden group shadow-lg"
+    className="bg-[#0f1117] dark:bg-[#1e2535] border border-[#b45309]/40 dark:border-[rgba(255,255,255,0.1)] rounded-2xl p-8 my-8 relative overflow-hidden group shadow-lg"
   >
-    <div className="absolute top-0 right-0 w-32 h-32 bg-[#c8922a]/20 dark:bg-[#00d084]/10 rounded-full blur-3xl group-hover:bg-[#c8922a]/30 dark:group-hover:bg-[#00d084]/20 transition-all duration-700"></div>
-    <div className="text-[11px] font-mono tracking-[0.2em] uppercase text-[#c8922a] dark:text-[#f5a623] mb-5 flex items-center gap-3">
+    <div className="absolute top-0 right-0 w-32 h-32 bg-[#b45309]/20 dark:bg-[#00d084]/10 rounded-full blur-3xl group-hover:bg-[#b45309]/30 dark:group-hover:bg-[#00d084]/20 transition-all duration-700"></div>
+    <div className="text-[11px] font-mono tracking-[0.2em] uppercase text-[#b45309] dark:text-[#f5a623] mb-5 flex items-center gap-3">
       {icon ? <span className="text-xl opacity-80">{icon}</span> : <Cpu size={16} />}
       {label}
     </div>
-    <div className="text-[15px] leading-[1.9] text-[rgba(255,255,255,0.85)] dark:text-[#e8eaf0] relative z-10 font-light">{children}</div>
+    <div className="text-[15px] leading-[1.9] text-[rgba(255,255,255,0.85)] dark:text-[#e8eaf0] relative z-10 font-medium">{children}</div>
   </motion.div>
 );
 
@@ -63,7 +63,7 @@ export const SectionHead = ({ icon, title, desc }) => (
     initial={{ opacity: 0, y: 15 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
     className="mt-14 mb-8 flex items-center gap-5"
   >
-    <div className="w-12 h-12 rounded-xl bg-[#f5e4c0] dark:bg-[#00d084]/10 border border-[#e2c078] dark:border-[#00d084]/30 text-[#c8922a] dark:text-[#00d084] flex items-center justify-center text-xl shrink-0">
+    <div className="w-12 h-12 rounded-xl bg-[#b45309]/15 dark:bg-[#00d084]/10 border border-[#b45309]/40 dark:border-[#00d084]/30 text-[#b45309] dark:text-[#00d084] flex items-center justify-center text-xl shrink-0">
       {icon ? <span>{icon}</span> : <Target size={24} />}
     </div>
     <div>
@@ -84,7 +84,7 @@ export const CyberTable = ({ headers, rows }) => (
           {headers.map((h, i) => <th key={i} className="p-4 font-semibold">{h}</th>)}
         </tr>
       </thead>
-      <tbody className="text-[14px] text-[#2a2e3a] dark:text-[#9ca3b0] font-light">
+      <tbody className="text-[14px] text-[#2a2e3a] dark:text-[#9ca3b0] font-medium">
         {rows.map((row, i) => (
           <tr key={i} className="border-b border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.07)] hover:bg-[#faf9f6] dark:hover:bg-[rgba(255,255,255,0.02)] transition-colors last:border-0">
             {row.map((cell, j) => (
@@ -106,16 +106,16 @@ export const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
     >
       <div className="p-8">
         <div className="text-[16px] font-semibold text-[#0f1117] dark:text-[#e8eaf0] mb-6 leading-relaxed flex items-start gap-3">
-          <Zap size={20} className="text-[#c8922a] dark:text-[#00d084] shrink-0 mt-1" />
+          <Zap size={20} className="text-[#b45309] dark:text-[#00d084] shrink-0 mt-1" />
           <div>
             {q}
-            {context && <span className="block text-[13px] text-[#636878] dark:text-[#9ca3b0] font-mono mt-2 font-normal">{context}</span>}
+            {context && <span className="block text-[13px] text-[#636878] dark:text-[#9ca3b0] font-mono mt-2 font-medium">{context}</span>}
           </div>
         </div>
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
             const isChosen = selected === i;
-            let btnClass = "border-[rgba(15,17,23,0.18)] dark:border-[rgba(255,255,255,0.13)] text-[#2a2e3a] dark:text-[#9ca3b0] hover:border-[#c8922a] dark:hover:border-[#00d084] hover:bg-[#f5e4c0] dark:hover:bg-[#00d084]/10 bg-transparent";
+            let btnClass = "border-[rgba(15,17,23,0.18)] dark:border-[rgba(255,255,255,0.13)] text-[#2a2e3a] dark:text-[#9ca3b0] hover:border-[#b45309] dark:hover:border-[#00d084] hover:bg-[#b45309]/15 dark:hover:bg-[#00d084]/10 bg-transparent";
             let letterClass = "bg-[#f2f0ea] dark:bg-[#1e2535] text-[#0f1117] dark:text-[#e8eaf0] font-mono";
             
             if (selected !== null) {
@@ -151,7 +151,7 @@ export const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
                   {selected === correctIdx ? <CheckCircle size={14} /> : <XOctagon size={14} />}
                   {selected === correctIdx ? 'Verified' : 'Invalid'}
                 </strong> 
-                <span className="font-light">{explanation}</span>
+                <span className="font-medium">{explanation}</span>
               </div>
             </motion.div>
           )}
@@ -195,17 +195,17 @@ export const TermCard = ({ name, eng, simple, example }) => {
 export const ExerciseBox = ({ title, desc, steps }) => (
   <motion.div 
     initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
-    className="bg-gradient-to-br from-[#0f1117] to-[#1e2438] dark:from-[#0e1117] dark:to-[#161b25] border border-[#e2c078] dark:border-[#00d084]/20 rounded-2xl p-8 my-8 text-white shadow-xl relative overflow-hidden"
+    className="bg-gradient-to-br from-[#0f1117] to-[#1e2438] dark:from-[#0e1117] dark:to-[#161b25] border border-[#b45309]/40 dark:border-[#00d084]/20 rounded-2xl p-8 my-8 text-white shadow-xl relative overflow-hidden"
   >
-    <div className="absolute top-0 right-0 w-64 h-64 bg-[#c8922a]/20 dark:bg-[#00d084]/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#c8922a] dark:text-[#00d084] mb-4 flex items-center gap-2"><Shield size={14}/> SYSTEM PROTOCOL</div>
+    <div className="absolute top-0 right-0 w-64 h-64 bg-[#b45309]/20 dark:bg-[#00d084]/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div className="text-[10px] font-mono tracking-[0.2em] uppercase text-[#b45309] dark:text-[#00d084] mb-4 flex items-center gap-2"><Shield size={14}/> SYSTEM PROTOCOL</div>
     <h3 className="text-xl font-serif font-bold mb-2 text-[#fff] dark:text-[#e8eaf0]">{title}</h3>
-    <p className="text-[14px] text-[rgba(255,255,255,0.7)] dark:text-[#9ca3b0] mb-6 font-light">{desc}</p>
+    <p className="text-[14px] text-[rgba(255,255,255,0.7)] dark:text-[#9ca3b0] mb-6 font-medium">{desc}</p>
     <div className="space-y-4">
       {steps.map((s, i) => (
         <div key={i} className="flex gap-4 items-start group">
-          <div className="w-6 h-6 rounded-md bg-[rgba(200,146,42,0.2)] dark:bg-[#00d084]/10 border border-[rgba(200,146,42,0.5)] dark:border-[#00d084]/50 text-[#c8922a] dark:text-[#00d084] text-[11px] font-mono flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#c8922a] dark:group-hover:bg-[#00d084] group-hover:text-white dark:group-hover:text-[#0e1117] transition-colors">{s.n || i+1}</div>
-          <div className="text-[14px] font-light leading-[1.7] text-[rgba(255,255,255,0.9)] dark:text-[#e8eaf0] transition-colors" dangerouslySetInnerHTML={{__html: s.d}}></div>
+          <div className="w-6 h-6 rounded-md bg-[rgba(180,83,9,0.2)] dark:bg-[#00d084]/10 border border-[rgba(180,83,9,0.5)] dark:border-[#00d084]/50 text-[#b45309] dark:text-[#00d084] text-[11px] font-mono flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#b45309] dark:group-hover:bg-[#00d084] group-hover:text-white dark:group-hover:text-[#0e1117] transition-colors">{s.n || i+1}</div>
+          <div className="text-[14px] font-medium leading-[1.7] text-[rgba(255,255,255,0.9)] dark:text-[#e8eaf0] transition-colors" dangerouslySetInnerHTML={{__html: s.d}}></div>
         </div>
       ))}
     </div>
@@ -217,10 +217,10 @@ export const ResourceCard = ({ type, name, lang, desc, why, link }) => {
   return (
     <motion.div 
       initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-      className="border border-[rgba(15,17,23,0.18)] dark:border-[rgba(255,255,255,0.13)] rounded-xl overflow-hidden mb-3 bg-[#fff] dark:bg-[#161b25] hover:border-[#c8922a] dark:hover:border-[rgba(255,255,255,0.3)] transition-colors"
+      className="border border-[rgba(15,17,23,0.18)] dark:border-[rgba(255,255,255,0.13)] rounded-xl overflow-hidden mb-3 bg-[#fff] dark:bg-[#161b25] hover:border-[#b45309] dark:hover:border-[rgba(255,255,255,0.3)] transition-colors"
     >
       <div onClick={()=>setOpen(!open)} className="p-4 flex gap-4 items-center cursor-pointer bg-[#f2f0ea] dark:bg-[#1e2535]">
-        <div className="w-10 h-10 rounded-lg bg-[#fff] dark:bg-[#252d3e] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.07)] flex justify-center items-center text-[#c8922a] dark:text-[#00d084] shrink-0"><BookOpen size={18}/></div>
+        <div className="w-10 h-10 rounded-lg bg-[#fff] dark:bg-[#252d3e] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.07)] flex justify-center items-center text-[#b45309] dark:text-[#00d084] shrink-0"><BookOpen size={18}/></div>
         <div className="flex-1">
           <div className="text-[10px] font-mono text-[#636878] dark:text-[#5a6275] uppercase tracking-widest mb-1">{type}</div>
           <div className="font-semibold text-[15px] text-[#0f1117] dark:text-[#e8eaf0]">{name}</div>
@@ -234,9 +234,9 @@ export const ResourceCard = ({ type, name, lang, desc, why, link }) => {
             initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <div className="p-5 border-t border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.07)] text-[14px] font-light leading-relaxed text-[#2a2e3a] dark:text-[#e8eaf0]">
+            <div className="p-5 border-t border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.07)] text-[14px] font-medium leading-relaxed text-[#2a2e3a] dark:text-[#e8eaf0]">
               <p className="mb-4">{desc}</p>
-              <div className="text-[#c8922a] dark:text-[#00d084] font-mono text-[12px] mb-5 border-l-2 border-[#c8922a] dark:border-[#00d084] pl-3">→ {why}</div>
+              <div className="text-[#b45309] dark:text-[#00d084] font-mono text-[12px] mb-5 border-l-2 border-[#b45309] dark:border-[#00d084] pl-3">→ {why}</div>
               <a href={link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-[#0f1117] dark:bg-[#00d084] text-[#fff] dark:text-[#0e1117] px-5 py-2 rounded-lg font-mono text-[12px] hover:bg-[#2a2e3a] dark:hover:bg-[#00e691] transition-colors">
                 ACCESS SYSTEM
               </a>

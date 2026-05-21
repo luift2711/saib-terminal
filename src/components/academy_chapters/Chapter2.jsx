@@ -15,7 +15,7 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
       <div className="p-8">
         <div className="text-lg md:text-xl font-bold text-black dark:text-white mb-6 leading-relaxed transition-colors">
           {q}
-          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-normal mt-3 italic transition-colors">{context}</span>}
+          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
         </div>
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
@@ -181,7 +181,7 @@ const EMAVisualizer = () => {
   return (
     <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-3xl p-8 my-8 shadow-lg transition-colors">
       <div className="flex items-center gap-3 mb-6 border-b border-gray-200 dark:border-[#2B3139] pb-4">
-        <Ruler size={24} className="text-[#c8922a] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">EMA/SMA/WMA Visualizer</h3>
+        <Ruler size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">EMA/SMA/WMA Visualizer</h3>
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-3 py-1 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -218,7 +218,7 @@ const RSISimulator = () => {
   return (
     <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-3xl p-8 my-8 shadow-lg transition-colors">
       <div className="flex items-center gap-3 mb-8 border-b border-gray-200 dark:border-[#2B3139] pb-4">
-        <Thermometer size={24} className="text-[#c8922a] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">RSI Simulator</h3>
+        <Thermometer size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">RSI Simulator</h3>
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-3 py-1 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       
@@ -303,7 +303,7 @@ const RSILab = () => {
   return (
     <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-3xl p-8 my-8 shadow-md transition-colors">
       <div className="flex justify-between items-center mb-6 border-b border-gray-200 dark:border-[#2B3139] pb-4">
-        <h3 className="font-bold text-lg text-black dark:text-white flex items-center gap-2"><Microscope size={24} className="text-[#c8922a] dark:text-[#00d084] shrink-0" /> RSI Lab</h3>
+        <h3 className="font-bold text-lg text-black dark:text-white flex items-center gap-2"><Microscope size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /> RSI Lab</h3>
         <span className="text-xs font-mono text-gray-500 dark:text-[#848E9C]">Câu {qIdx+1}/{scenarios.length}</span>
       </div>
       <div className="text-xs font-mono text-gray-500 dark:text-[#848E9C] mb-4">{s.title}</div>
@@ -369,7 +369,7 @@ const DCACalculator = () => {
   return (
     <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-3xl p-8 my-8 shadow-lg transition-colors">
       <div className="flex items-center gap-3 mb-8 border-b border-gray-200 dark:border-[#2B3139] pb-4">
-        <Calculator size={24} className="text-[#c8922a] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">DCA Simulator</h3>
+        <Calculator size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-lg text-black dark:text-white flex-1">DCA Simulator</h3>
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-3 py-1 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
@@ -428,7 +428,7 @@ const ResourceCard = ({ type, name, lang, desc, why, link }) => {
   return (
     <div className="border border-gray-200 dark:border-[#2B3139] rounded-2xl overflow-hidden mb-4 bg-white dark:bg-[#181A20] shadow-sm hover:shadow-md dark:shadow-none transition-all">
       <div onClick={()=>setOpen(!open)} className="p-5 flex gap-4 items-center cursor-pointer hover:bg-gray-50 dark:hover:bg-[#2B3139]/40">
-        <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] flex justify-center items-center text-xl shrink-0"><Library size={20} className="text-[#c8922a] dark:text-[#00d084]"/></div>
+        <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] flex justify-center items-center text-xl shrink-0"><Library size={20} className="text-[#b45309] dark:text-[#00d084]"/></div>
         <div className="flex-1">
           <div className="text-[11px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-1">{type}</div>
           <div className="font-bold text-[16px] text-black dark:text-white">{name}</div>
@@ -645,14 +645,14 @@ const CHAPTER_2_DATA = [
             <polyline points="20,142 80,138 140,132 200,124 260,116 320,106 380,94 440,80 500,68 560,58 640,50" stroke="#4a9eff" strokeWidth="2.5" fill="none" opacity="0.9"/>
             <text x="648" y="54" fill="#4a9eff" fontSize="11" fontFamily="monospace">EMA50</text>
             {/* EMA21 - gold (fastest) */}
-            <polyline points="20,135 80,128 140,120 200,110 260,100 320,88 380,74 440,58 500,44 560,32 640,22" stroke="#c8922a" strokeWidth="3" fill="none"/>
-            <text x="648" y="26" fill="#c8922a" fontSize="11" fontFamily="monospace">EMA21</text>
+            <polyline points="20,135 80,128 140,120 200,110 260,100 320,88 380,74 440,58 500,44 560,32 640,22" stroke="#b45309" strokeWidth="3" fill="none"/>
+            <text x="648" y="26" fill="#b45309" fontSize="11" fontFamily="monospace">EMA21</text>
             {/* Dividing line showing trend boundary */}
             <line x1="340" y1="0" x2="340" y2="160" stroke="rgba(255,255,255,0.1)" strokeWidth="1" strokeDasharray="4 4"/>
           </svg>
           <div className="flex gap-6 mt-3 text-[13px] font-mono text-gray-400 flex-wrap">
             <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-white opacity-30 inline-block"></span> Giá</span>
-            <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-[#c8922a] inline-block"></span> EMA21 (nhanh nhất)</span>
+            <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-[#b45309] inline-block"></span> EMA21 (nhanh nhất)</span>
             <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-[#4a9eff] inline-block"></span> EMA50</span>
             <span className="flex items-center gap-2"><span className="w-4 h-0.5 bg-[#b57bee] inline-block"></span> EMA200 (chậm nhất)</span>
           </div>
@@ -666,7 +666,7 @@ const CHAPTER_2_DATA = [
             ["<span class='text-green-600 dark:text-[#0ECB81] font-bold'>EMA21 > 50 > 200</span>", "Strong Uptrend", "Chỉ BUY. Mua mọi pullback về EMA21."],
             ["<span class='text-red-600 dark:text-[#F6465D] font-bold'>EMA21 < 50 < 200</span>", "Strong Downtrend", "Chỉ SELL. Bán mọi rebound lên EMA21."],
             ["<span class='text-yellow-600 dark:text-[#FCD535] font-bold'>Đan xen nhau</span>", "Sideway / Chuyển đổi", "Thận trọng. Đứng ngoài."],
-            ["<span class='text-[#c8922a] dark:text-[#f5a623] font-mono'>Golden Cross</span>", "EMA21 cắt EMA50 từ dưới lên (cả 2 đang dốc lên)", "Tín hiệu mạnh — chỉ tìm BUY, không SELL"],
+            ["<span class='text-[#b45309] dark:text-[#f5a623] font-mono'>Golden Cross</span>", "EMA21 cắt EMA50 từ dưới lên (cả 2 đang dốc lên)", "Tín hiệu mạnh — chỉ tìm BUY, không SELL"],
             ["<span class='text-red-600 dark:text-[#F6465D] font-mono'>Death Cross</span>", "EMA21 cắt EMA50 từ trên xuống (cả 2 đang dốc xuống)", "Tín hiệu giảm — chỉ tìm SELL, cẩn thận với BUY"]
           ]}
         />

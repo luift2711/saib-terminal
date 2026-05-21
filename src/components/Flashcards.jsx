@@ -16,27 +16,27 @@ const Flashcards = () => {
   const handlePrev = () => { setIsFlipped(false); setTimeout(() => setCardIndex(prev => prev > 0 ? prev - 1 : FLASHCARDS.length - 1), 150); };
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-[#181A20]/40 border border-white/5 rounded-3xl backdrop-blur-xl shadow-2xl text-center">
-      <h4 className="text-[10px] font-black text-[#848E9C] uppercase tracking-[0.2em] mb-6 border-b border-white/5 pb-3">Hệ thống thẻ phản xạ 3D</h4>
+    <div className="max-w-xl mx-auto p-6 bg-[#fff]/80 dark:bg-[#111827]/60 border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] rounded-3xl backdrop-blur-xl shadow-xl dark:shadow-none text-center transition-colors duration-500">
+      <h4 className="text-[10px] font-black text-[#636878] dark:text-[#9ca3b0] uppercase tracking-[0.2em] mb-6 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.08)] pb-3">Hệ thống thẻ phản xạ 3D</h4>
       
       <div className="relative w-full h-56 cursor-pointer [perspective:1000px]" onClick={() => setIsFlipped(!isFlipped)}>
         <div className={`w-full h-full transition-all duration-500 [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
           {/* Mặt trước */}
-          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] bg-[#0B0E11] border border-white/5 group-hover:border-[#FCD535]/30 rounded-2xl flex flex-col items-center justify-center p-6 shadow-inner">
-            <p className="font-bold text-lg text-[#EAECEF]">{FLASHCARDS[cardIndex].front}</p>
-            <span className="absolute bottom-3 text-[9px] text-[#666] uppercase tracking-wider">Click để lật</span>
+          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] bg-[#faf9f6] dark:bg-[#0e1117] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.05)] hover:border-[#b45309]/50 dark:hover:border-[#00d084]/50 rounded-2xl flex flex-col items-center justify-center p-6 shadow-inner transition-colors duration-300">
+            <p className="font-bold text-lg text-[#0f1117] dark:text-[#e8eaf0]">{FLASHCARDS[cardIndex].front}</p>
+            <span className="absolute bottom-3 text-[9px] text-[#636878] dark:text-[#9ca3b0] uppercase tracking-wider">Click để lật</span>
           </div>
           {/* Mặt sau */}
-          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-[#2B3139] to-[#181A20] border border-[#0ECB81]/30 rounded-2xl flex items-center justify-center p-6 shadow-2xl">
-            <p className="font-bold text-base text-[#0ECB81] leading-relaxed">{FLASHCARDS[cardIndex].back}</p>
+          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-[rgba(180,83,9,0.08)] to-[#faf9f6] dark:from-[rgba(0,208,132,0.15)] dark:to-[#0e1117] border border-[#b45309]/30 dark:border-[#00d084]/30 rounded-2xl flex items-center justify-center p-6 shadow-xl transition-colors duration-300">
+            <p className="font-bold text-base text-[#b45309] dark:text-[#00d084] leading-relaxed">{FLASHCARDS[cardIndex].back}</p>
           </div>
         </div>
       </div>
       
       <div className="flex justify-between items-center mt-6 px-2">
-        <button onClick={handlePrev} className="text-[#848E9C] hover:text-white text-xs font-bold px-4 py-2 bg-[#0B0E11] rounded-xl border border-white/5">← Trôi Lại</button>
-        <span className="text-xs font-mono text-[#666]">{cardIndex + 1} / {FLASHCARDS.length}</span>
-        <button onClick={handleNext} className="text-black text-xs font-bold px-5 py-2 bg-[#FCD535] rounded-xl hover:brightness-110 transition-all">Tiếp →</button>
+        <button onClick={handlePrev} className="text-[#636878] dark:text-[#9ca3b0] hover:text-[#0f1117] dark:hover:text-white text-[11px] font-bold px-5 py-2.5 bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] rounded-xl border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.05)] transition-colors">← Trôi Lại</button>
+        <span className="text-[11px] font-mono font-bold text-[#636878] dark:text-[#9ca3b0]">{cardIndex + 1} / {FLASHCARDS.length}</span>
+        <button onClick={handleNext} className="text-white dark:text-black text-[11px] font-bold px-6 py-2.5 bg-[#b45309] dark:bg-[#00d084] rounded-xl hover:brightness-110 shadow-md transition-all">Tiếp →</button>
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ const PROFIT_TARGET_PERCENT = 10; // Mục tiêu BƯỚC 1: 10%
 const DAILY_LOSS_PERCENT = 5;     // Lỗ tối đa ngày: 5%
 const MAX_LOSS_PERCENT = 10;      // Lỗ tối đa tổng: 10%
 
-const TradingGym = ({ balance, setBalance }) => {
+const TradingGym = ({ balance, setBalance, isDarkMode }) => {
   const [activeCoin, setActiveCoin] = useState(COINS[0]);
   const [currentPrice, setCurrentPrice] = useState(65000);
   const [position, setPosition] = useState(null);
@@ -155,29 +155,29 @@ const TradingGym = ({ balance, setBalance }) => {
     <div className="space-y-6 animate-in fade-in duration-500">
       
       {/* THANH TRẠNG THÁI QUỸ (PROP FIRM DASHBOARD) */}
-      <div className="bg-[#181A20] border border-[#2B3139] rounded-2xl p-6 shadow-xl relative overflow-hidden">
+      <div className="bg-[#fff] dark:bg-[#111827] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] rounded-2xl p-6 shadow-xl relative overflow-hidden">
         {/* Lớp mờ nếu Fail hoặc Pass */}
         {challengeStatus !== 'ACTIVE' && (
            <div className={`absolute inset-0 z-10 flex flex-col items-center justify-center backdrop-blur-sm ${challengeStatus === 'PASSED' ? 'bg-[#0ECB81]/20' : 'bg-[#F6465D]/20'}`}>
               <h2 className={`text-4xl font-black mb-2 tracking-widest uppercase ${challengeStatus === 'PASSED' ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
-                {challengeStatus === 'PASSED' ? '<Trophy size={18} className="inline mr-1 text-yellow-500" /> VƯỢT QUA BƯỚC 1' : '<Skull size={24} className="inline mr-1"/> VI PHẠM LUẬT QUỸ'}
+                {challengeStatus === 'PASSED' ? <><Trophy size={18} className="inline mr-1 text-yellow-500" /> VƯỢT QUA BƯỚC 1</> : <><Skull size={24} className="inline mr-1"/> VI PHẠM LUẬT QUỸ</>}
               </h2>
-              <p className="text-white font-bold mb-6">
+              <p className="text-[#0f1117] dark:text-white font-bold mb-6">
                 {challengeStatus === 'FAILED_DAILY' ? 'Lỗi: Vượt quá mức lỗ tối đa trong ngày (5%)' : 
                  challengeStatus === 'FAILED_MAX' ? 'Lỗi: Vượt quá mức lỗ tối đa tài khoản (10%)' : 
                  'Tuyệt vời! Sếp đã đạt mục tiêu lợi nhuận 10% an toàn.'}
               </p>
-              <button onClick={resetChallenge} className="bg-white text-black font-black px-8 py-3 rounded-full hover:scale-105 transition-transform uppercase">Thử Lại (Reset Account)</button>
+              <button onClick={resetChallenge} className="bg-[#0f1117] dark:bg-white text-white dark:text-black font-black px-8 py-3 rounded-full hover:scale-105 transition-transform uppercase">Thử Lại (Reset Account)</button>
            </div>
         )}
 
         <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
               <span className="bg-[#378ADD]/20 text-[#378ADD] text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">Phase 1 Challenge</span>
-              <h2 className="text-xl font-bold text-white">SAIB.Funding</h2>
+              <h2 className="text-xl font-bold text-[#0f1117] dark:text-white">SAIB.Funding</h2>
             </div>
             <div className="text-right">
-              <span className="text-[10px] text-[#848E9C] uppercase tracking-wider block">Current Equity</span>
+              <span className="text-[10px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider block">Current Equity</span>
               <span className={`text-3xl font-mono font-black ${equity >= INITIAL_BALANCE ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
                 ${equity.toLocaleString(undefined, {minimumFractionDigits: 2})}
               </span>
@@ -187,32 +187,32 @@ const TradingGym = ({ balance, setBalance }) => {
         {/* Thanh Progress và Luật quỹ */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Lợi nhuận */}
-            <div className="bg-[#0B0E11] p-4 rounded-xl border border-[#2B3139]">
+            <div className="bg-[#faf9f6] dark:bg-[#0B0E11] p-4 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
                <div className="flex justify-between text-xs mb-2">
-                 <span className="text-[#848E9C]">Mục Tiêu Lợi Nhuận (10%)</span>
+                 <span className="text-[#636878] dark:text-[#848E9C]">Mục Tiêu Lợi Nhuận (10%)</span>
                  <span className="text-[#0ECB81] font-bold">${profitTarget.toLocaleString()}</span>
                </div>
-               <div className="w-full bg-[#181A20] h-2 rounded-full overflow-hidden">
+               <div className="w-full bg-[#fff] dark:bg-[#111827] h-2 rounded-full overflow-hidden">
                   <div className="bg-[#0ECB81] h-full transition-all" style={{width: `${Math.max(0, Math.min(100, ((equity - INITIAL_BALANCE) / (profitTarget - INITIAL_BALANCE)) * 100))}%`}}></div>
                </div>
             </div>
             {/* Drawdown Ngày */}
-            <div className="bg-[#0B0E11] p-4 rounded-xl border border-[#2B3139]">
+            <div className="bg-[#faf9f6] dark:bg-[#0B0E11] p-4 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
                <div className="flex justify-between text-xs mb-2">
-                 <span className="text-[#848E9C]">Lỗ Tối Đa Ngày (5%)</span>
-                 <span className="text-[#FCD535] font-bold">${maxDailyLossLimit.toLocaleString()}</span>
+                 <span className="text-[#636878] dark:text-[#848E9C]">Lỗ Tối Đa Ngày (5%)</span>
+                 <span className="text-[#b45309] dark:text-[#00d084] font-bold">${maxDailyLossLimit.toLocaleString()}</span>
                </div>
-               <div className="w-full bg-[#181A20] h-2 rounded-full overflow-hidden flex justify-end">
-                  <div className="bg-[#FCD535] h-full transition-all" style={{width: `${Math.max(0, Math.min(100, ((INITIAL_BALANCE - equity) / (INITIAL_BALANCE * DAILY_LOSS_PERCENT / 100)) * 100))}%`}}></div>
+               <div className="w-full bg-[#fff] dark:bg-[#111827] h-2 rounded-full overflow-hidden flex justify-end">
+                  <div className="bg-[#b45309] dark:bg-[#00d084] h-full transition-all" style={{width: `${Math.max(0, Math.min(100, ((INITIAL_BALANCE - equity) / (INITIAL_BALANCE * DAILY_LOSS_PERCENT / 100)) * 100))}%`}}></div>
                </div>
             </div>
             {/* Drawdown Tổng */}
-            <div className="bg-[#0B0E11] p-4 rounded-xl border border-[#2B3139]">
+            <div className="bg-[#faf9f6] dark:bg-[#0B0E11] p-4 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
                <div className="flex justify-between text-xs mb-2">
-                 <span className="text-[#848E9C]">Lỗ Tối Đa (10%)</span>
+                 <span className="text-[#636878] dark:text-[#848E9C]">Lỗ Tối Đa (10%)</span>
                  <span className="text-[#F6465D] font-bold">${maxTotalLossLimit.toLocaleString()}</span>
                </div>
-               <div className="w-full bg-[#181A20] h-2 rounded-full overflow-hidden flex justify-end">
+               <div className="w-full bg-[#fff] dark:bg-[#111827] h-2 rounded-full overflow-hidden flex justify-end">
                   <div className="bg-[#F6465D] h-full transition-all" style={{width: `${Math.max(0, Math.min(100, ((INITIAL_BALANCE - equity) / (INITIAL_BALANCE * MAX_LOSS_PERCENT / 100)) * 100))}%`}}></div>
                </div>
             </div>
@@ -221,34 +221,34 @@ const TradingGym = ({ balance, setBalance }) => {
 
       <div className="flex flex-wrap gap-2">
         {COINS.map(c => (
-          <button key={c.symbol} onClick={() => { if(!position && !pendingOrder) setActiveCoin(c); }} className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeCoin.symbol === c.symbol ? 'bg-[#2B3139] text-white border border-[#848E9C]' : 'bg-[#181A20] border border-[#2B3139] text-[#848E9C] hover:bg-[#2B3139]/50'}`}>{c.symbol}</button>
+          <button key={c.symbol} onClick={() => { if(!position && !pendingOrder) setActiveCoin(c); }} className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeCoin.symbol === c.symbol ? 'bg-[#2B3139] text-[#0f1117] dark:text-white border border-[#848E9C]' : 'bg-[#fff] dark:bg-[#111827] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] text-[#636878] dark:text-[#848E9C] hover:bg-[#2B3139]/50'}`}>{c.symbol}</button>
         ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         
         {/* CHART AREA */}
-        <div className="lg:col-span-3 bg-[#181A20] border border-[#2B3139] rounded-2xl overflow-hidden shadow-lg">
-          <div className="p-4 border-b border-[#2B3139] flex justify-between bg-[#0B0E11]">
-            <h2 className="font-bold text-white flex items-center gap-2">
+        <div className="lg:col-span-3 bg-[#fff] dark:bg-[#111827] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] rounded-2xl overflow-hidden shadow-lg">
+          <div className="p-4 border-b border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] flex justify-between bg-[#faf9f6] dark:bg-[#0B0E11]">
+            <h2 className="font-bold text-[#0f1117] dark:text-white flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#0ECB81] animate-pulse"></span> {activeCoin.name}
             </h2>
             <span className="font-mono font-bold text-[#0ECB81] text-xl">${currentPrice.toLocaleString()}</span>
           </div>
           <div className="h-[550px]">
-            <AdvancedRealTimeChart theme="dark" symbol={activeCoin.tvSymbol} interval="15" autosize hide_top_toolbar={false} hide_side_toolbar={false} />
+            <AdvancedRealTimeChart theme={isDarkMode ? "dark" : "light"} symbol={activeCoin.tvSymbol} interval="15" autosize hide_top_toolbar={false} hide_side_toolbar={false} />
           </div>
         </div>
         
         {/* ORDER PANEL */}
-        <div className="bg-[#181A20] p-6 rounded-2xl border border-[#2B3139] flex flex-col shadow-lg">
-           <div className="flex space-x-2 mb-6 bg-[#0B0E11] p-1.5 rounded-xl border border-[#2B3139]">
-              <button onClick={() => setOrderType('MANUAL')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'MANUAL' ? 'bg-[#2B3139] text-white shadow-sm' : 'text-[#848E9C]'}`}>Thủ Công</button>
-              <button onClick={() => setOrderType('AUTO')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'AUTO' ? 'bg-[#2B3139] text-[#FCD535] shadow-sm' : 'text-[#848E9C]'}`}>Bẫy H/L</button>
+        <div className="bg-[#fff] dark:bg-[#111827] p-6 rounded-2xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] flex flex-col shadow-lg">
+           <div className="flex space-x-2 mb-6 bg-[#faf9f6] dark:bg-[#0B0E11] p-1.5 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
+              <button onClick={() => setOrderType('MANUAL')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'MANUAL' ? 'bg-[#2B3139] text-[#0f1117] dark:text-white shadow-sm' : 'text-[#636878] dark:text-[#848E9C]'}`}>Thủ Công</button>
+              <button onClick={() => setOrderType('AUTO')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'AUTO' ? 'bg-[#2B3139] text-[#b45309] dark:text-[#00d084] shadow-sm' : 'text-[#636878] dark:text-[#848E9C]'}`}>Bẫy H/L</button>
            </div>
            
            <div className="mb-6">
-              <label className="text-[11px] font-bold uppercase tracking-wider text-[#848E9C] flex justify-between mb-3">
+              <label className="text-[11px] font-bold uppercase tracking-wider text-[#636878] dark:text-[#848E9C] flex justify-between mb-3">
                 <span>Mức Rủi Ro</span> 
                 <span className="text-[#F6465D] bg-[#F6465D]/10 px-2 py-0.5 rounded">{riskPercent}% (${(balance * riskPercent / 100).toFixed(0)})</span>
               </label>
@@ -258,41 +258,41 @@ const TradingGym = ({ balance, setBalance }) => {
            {orderType === 'MANUAL' ? (
              <div className="space-y-4">
                 <div>
-                  <label className="text-[10px] text-[#848E9C] uppercase tracking-wider mb-1 block">Stoploss (Bắt buộc)</label>
-                  <input type="number" value={slInput} onChange={e => setSlInput(e.target.value)} className="w-full bg-[#0B0E11] border border-[#2B3139] p-3 text-sm text-white rounded-xl focus:border-[#F6465D] focus:outline-none" />
+                  <label className="text-[10px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">Stoploss (Bắt buộc)</label>
+                  <input type="number" value={slInput} onChange={e => setSlInput(e.target.value)} className="w-full bg-[#faf9f6] dark:bg-[#0B0E11] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] p-3 text-sm text-[#0f1117] dark:text-white rounded-xl focus:border-[#F6465D] focus:outline-none" />
                 </div>
                 <div>
-                  <label className="text-[10px] text-[#848E9C] uppercase tracking-wider mb-1 block">Take Profit (Tùy chọn)</label>
-                  <input type="number" value={tpInput} onChange={e => setTpInput(e.target.value)} className="w-full bg-[#0B0E11] border border-[#2B3139] p-3 text-sm text-white rounded-xl focus:border-[#0ECB81] focus:outline-none" />
+                  <label className="text-[10px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">Take Profit (Tùy chọn)</label>
+                  <input type="number" value={tpInput} onChange={e => setTpInput(e.target.value)} className="w-full bg-[#faf9f6] dark:bg-[#0B0E11] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] p-3 text-sm text-[#0f1117] dark:text-white rounded-xl focus:border-[#0ECB81] focus:outline-none" />
                 </div>
-                <div className="flex gap-3 pt-4 border-t border-[#2B3139]">
+                <div className="flex gap-3 pt-4 border-t border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
                   <button onClick={() => openManualPosition('LONG')} className="flex-1 bg-[#0ECB81]/10 border border-[#0ECB81]/30 hover:border-[#0ECB81] text-[#0ECB81] py-4 rounded-xl font-black text-[13px] tracking-wider transition-all">LONG</button>
                   <button onClick={() => openManualPosition('SHORT')} className="flex-1 bg-[#F6465D]/10 border border-[#F6465D]/30 hover:border-[#F6465D] text-[#F6465D] py-4 rounded-xl font-black text-[13px] tracking-wider transition-all">SHORT</button>
                 </div>
              </div>
            ) : (
-             <div className="space-y-3 bg-[#0B0E11] p-4 rounded-xl border border-[#2B3139]">
+             <div className="space-y-3 bg-[#faf9f6] dark:bg-[#0B0E11] p-4 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-[9px] text-[#848E9C] uppercase tracking-wider mb-1 block">High</label>
-                    <input type="number" value={highInput} onChange={e => setHighInput(e.target.value)} className="bg-[#181A20] p-2 text-xs text-white rounded-lg w-full border border-[#2B3139]" />
+                    <label className="text-[9px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">High</label>
+                    <input type="number" value={highInput} onChange={e => setHighInput(e.target.value)} className="bg-[#fff] dark:bg-[#111827] p-2 text-xs text-[#0f1117] dark:text-white rounded-lg w-full border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]" />
                   </div>
                   <div>
-                    <label className="text-[9px] text-[#848E9C] uppercase tracking-wider mb-1 block">Low</label>
-                    <input type="number" value={lowInput} onChange={e => setLowInput(e.target.value)} className="bg-[#181A20] p-2 text-xs text-white rounded-lg w-full border border-[#2B3139]" />
+                    <label className="text-[9px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">Low</label>
+                    <input type="number" value={lowInput} onChange={e => setLowInput(e.target.value)} className="bg-[#fff] dark:bg-[#111827] p-2 text-xs text-[#0f1117] dark:text-white rounded-lg w-full border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]" />
                   </div>
                   <div>
-                    <label className="text-[9px] text-[#848E9C] uppercase tracking-wider mb-1 block">Buffer</label>
-                    <input type="number" value={bufferInput} onChange={e => setBufferInput(e.target.value)} className="bg-[#181A20] p-2 text-xs text-white rounded-lg w-full border border-[#2B3139]" />
+                    <label className="text-[9px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">Buffer</label>
+                    <input type="number" value={bufferInput} onChange={e => setBufferInput(e.target.value)} className="bg-[#fff] dark:bg-[#111827] p-2 text-xs text-[#0f1117] dark:text-white rounded-lg w-full border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]" />
                   </div>
                   <div>
-                    <label className="text-[9px] text-[#848E9C] uppercase tracking-wider mb-1 block">R:R</label>
-                    <input type="number" value={rrInput} onChange={e => setRrInput(e.target.value)} className="bg-[#181A20] p-2 text-xs text-white rounded-lg w-full border border-[#2B3139]" />
+                    <label className="text-[9px] text-[#636878] dark:text-[#848E9C] uppercase tracking-wider mb-1 block">R:R</label>
+                    <input type="number" value={rrInput} onChange={e => setRrInput(e.target.value)} className="bg-[#fff] dark:bg-[#111827] p-2 text-xs text-[#0f1117] dark:text-white rounded-lg w-full border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]" />
                   </div>
                 </div>
                 <div className="flex gap-2 pt-3">
-                  <button onClick={() => placePendingOrder('LONG')} className="flex-1 bg-[#FCD535]/10 text-[#FCD535] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#FCD535]/30 hover:border-[#FCD535]">BUY STOP</button>
-                  <button onClick={() => placePendingOrder('SHORT')} className="flex-1 bg-[#FCD535]/10 text-[#FCD535] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#FCD535]/30 hover:border-[#FCD535]">SELL STOP</button>
+                  <button onClick={() => placePendingOrder('LONG')} className="flex-1 bg-[#b45309] dark:bg-[#00d084]/10 text-[#b45309] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#b45309] dark:border-[#00d084]/30 hover:border-[#b45309] dark:border-[#00d084]">BUY STOP</button>
+                  <button onClick={() => placePendingOrder('SHORT')} className="flex-1 bg-[#b45309] dark:bg-[#00d084]/10 text-[#b45309] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#b45309] dark:border-[#00d084]/30 hover:border-[#b45309] dark:border-[#00d084]">SELL STOP</button>
                 </div>
              </div>
            )}
@@ -300,26 +300,26 @@ const TradingGym = ({ balance, setBalance }) => {
            {/* HIỂN THỊ LỆNH ĐANG CHẠY */}
            <div className="mt-auto pt-6">
               {pendingOrder && (
-                <div className="p-4 border border-dashed border-[#FCD535]/50 bg-[#FCD535]/5 rounded-xl mb-3 flex justify-between items-center">
+                <div className="p-4 border border-dashed border-[#b45309] dark:border-[#00d084]/50 bg-[#b45309] dark:bg-[#00d084]/5 rounded-xl mb-3 flex justify-between items-center">
                   <div className="text-[11px]">
-                    <span className="text-[#FCD535] font-bold block mb-1">⏳ Chờ {pendingOrder.type}</span>
-                    <span className="text-[#848E9C] font-mono">${pendingOrder.entryPrice.toLocaleString()}</span>
+                    <span className="text-[#b45309] dark:text-[#00d084] font-bold block mb-1">⏳ Chờ {pendingOrder.type}</span>
+                    <span className="text-[#636878] dark:text-[#848E9C] font-mono">${pendingOrder.entryPrice.toLocaleString()}</span>
                   </div>
-                  <button onClick={() => setPendingOrder(null)} className="text-[#F6465D] text-xs font-bold bg-[#F6465D]/10 px-3 py-1.5 rounded-lg hover:bg-[#F6465D] hover:text-white transition-colors">Hủy</button>
+                  <button onClick={() => setPendingOrder(null)} className="text-[#F6465D] text-xs font-bold bg-[#F6465D]/10 px-3 py-1.5 rounded-lg hover:bg-[#F6465D] hover:text-[#0f1117] dark:text-white transition-colors">Hủy</button>
                 </div>
               )}
               {position && (
-                <div className="p-5 bg-gradient-to-br from-[#181A20] to-[#0B0E11] rounded-xl border border-[#2B3139] shadow-inner relative overflow-hidden">
+                <div className="p-5 bg-gradient-to-br from-[#181A20] to-[#0B0E11] rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] shadow-inner relative overflow-hidden">
                    <div className={`absolute top-0 left-0 w-1 h-full ${position.type === 'LONG' ? 'bg-[#0ECB81]' : 'bg-[#F6465D]'}`}></div>
-                   <p className="text-[#848E9C] text-[10px] uppercase tracking-widest mb-1">{position.type} {position.coin}</p>
+                   <p className="text-[#636878] dark:text-[#848E9C] text-[10px] uppercase tracking-widest mb-1">{position.type} {position.coin}</p>
                    <p className={`text-3xl font-mono font-black mb-1 tracking-tighter ${currentPnL >= 0 ? 'text-[#0ECB81]' : 'text-[#F6465D]'}`}>
                       {currentPnL >= 0 ? '+' : ''}${currentPnL.toFixed(2)}
                    </p>
-                   <div className="flex justify-between text-[10px] font-mono text-[#848E9C] mb-5">
+                   <div className="flex justify-between text-[10px] font-mono text-[#636878] dark:text-[#848E9C] mb-5">
                       <span>Entry: ${position.entryPrice}</span>
                       <span>SL: ${position.sl}</span>
                    </div>
-                   <button onClick={closePositionManual} className="w-full bg-white text-black py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#848E9C] transition-colors">Chốt Lệnh</button>
+                   <button onClick={closePositionManual} className="w-full bg-[#0f1117] dark:bg-white text-white dark:text-black py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#848E9C] transition-colors">Chốt Lệnh</button>
                 </div>
               )}
            </div>

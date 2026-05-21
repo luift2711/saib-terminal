@@ -664,7 +664,7 @@ const FinalQuiz = () => {
               const isCorrect = showRes && q.c === oIdx;
               const isWrong = showRes && isSelected && q.c !== oIdx;
               let btnClass =
-                'border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#c8922a] dark:hover:border-[#FCD535] bg-white dark:bg-[#0B0E11]';
+                'border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#b45309] dark:hover:border-[#FCD535] bg-white dark:bg-[#0B0E11]';
               if (isCorrect) btnClass = 'border-green-500 bg-green-50 dark:bg-[#0ECB81]/10 text-green-700 dark:text-[#0ECB81] font-bold';
               if (isWrong) btnClass = 'border-red-500 bg-red-50 dark:bg-[#F6465D]/10 text-red-700 dark:text-[#F6465D]';
               if (!showRes && isSelected) btnClass = 'border-blue-500 bg-blue-50 dark:bg-[#378ADD]/10 text-blue-700 dark:text-[#378ADD] font-bold';
@@ -882,7 +882,7 @@ const CHAPTER_1_DATA = [
               className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl shadow-sm dark:shadow-none"
             >
               <h4 className="text-black dark:text-white font-bold text-lg mb-2">
-                {title} <span className="text-gray-500 dark:text-[#848E9C] text-[14px] font-normal ml-2">{meta}</span>
+                {title} <span className="text-gray-500 dark:text-[#848E9C] text-[14px] font-medium ml-2">{meta}</span>
               </h4>
               <p className="text-gray-600 dark:text-[#848E9C] text-[15px] leading-[1.7]">{desc}</p>
             </div>
@@ -1160,10 +1160,10 @@ const CHAPTER_1_DATA = [
                 ].map(([tf, candle, purpose, trader, hold, highlight]) => (
                   <tr key={tf} className={`border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] last:border-0 transition-colors ${
                     highlight
-                      ? 'bg-[#f5e4c0]/50 dark:bg-[#c8922a]/10 font-semibold text-[#0f1117] dark:text-[#e8eaf0]'
+                      ? 'bg-[#b45309]/15/50 dark:bg-[#b45309]/10 font-semibold text-[#0f1117] dark:text-[#e8eaf0]'
                       : 'hover:bg-[#faf9f6] dark:hover:bg-[rgba(255,255,255,0.02)]'
                   }`}>
-                    <td className={`p-4 font-mono font-bold ${ highlight ? 'text-[#c8922a] dark:text-[#f5a623]' : 'text-[#0f1117] dark:text-[#e8eaf0]'}`}>{tf}</td>
+                    <td className={`p-4 font-mono font-bold ${ highlight ? 'text-[#b45309] dark:text-[#f5a623]' : 'text-[#0f1117] dark:text-[#e8eaf0]'}`}>{tf}</td>
                     <td className="p-4">{candle}</td>
                     <td className="p-4 leading-snug">{purpose}</td>
                     <td className="p-4">{trader}</td>

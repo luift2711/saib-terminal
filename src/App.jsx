@@ -35,42 +35,55 @@ const App = () => {
     }
   };
 
+  const getTabClass = (tabName) => {
+    const isActive = activeTab === tabName;
+    return `px-4 py-1.5 rounded-full text-[11px] font-black transition-all border ${
+      isActive 
+        ? 'bg-[#b45309] dark:bg-[#00d084]/15 border-[#b45309] dark:border-[#00d084]/30 text-white dark:text-[#00d084] shadow-sm' 
+        : 'border-transparent text-[#636878] dark:text-[#9ca3b0] hover:text-[#0f1117] dark:hover:text-[#e8eaf0] hover:bg-[rgba(15,17,23,0.04)] dark:hover:bg-[rgba(255,255,255,0.04)]'
+    }`;
+  };
+
   return (
-    <div className="min-h-screen bg-[#faf9f6] dark:bg-[#0B0E11] text-[#1a1a18] dark:text-[#EAECEF] font-sans selection:bg-[#F6465D] selection:text-white transition-colors duration-300">
+    <div className="h-screen flex flex-col bg-[#faf9f6] dark:bg-[#0e1117] text-[#0f1117] dark:text-[#e8eaf0] font-sans font-medium subpixel-antialiased selection:bg-[#b45309]/30 dark:selection:bg-[#00d084]/30 transition-colors duration-300">
       
       {/* NAVBAR */}
-      <nav className="bg-white dark:bg-[#181A20] border-b border-gray-200 dark:border-[#2B3139] px-6 py-3 flex justify-between items-center sticky top-0 z-20 shadow-sm dark:shadow-xl transition-colors duration-300">
+      <nav className="bg-[#fff]/80 dark:bg-[#0e1117]/80 backdrop-blur-md border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] px-6 py-3 flex justify-between items-center shrink-0 z-20 transition-colors duration-300">
         <div className="flex items-center space-x-6">
-          <h1 className="text-xl font-black tracking-tighter text-black dark:text-[#EAECEF]">SAIB<span className="text-[#F6465D]">.</span></h1>
-          <div className="flex space-x-1.5 bg-gray-100 dark:bg-[#0B0E11] p-1 rounded-full border border-gray-200 dark:border-white/5">
-            <button onClick={() => setActiveTab('academy')} className={`px-4 py-1.5 rounded-full text-[11px] font-black transition-all ${activeTab === 'academy' ? 'bg-[#F6465D] text-white' : 'text-gray-500 dark:text-[#848E9C] hover:text-black dark:hover:text-white'}`}>📚 HOC VIEN</button>
-            <button onClick={() => setActiveTab('flashcards')} className={`px-4 py-1.5 rounded-full text-[11px] font-black transition-all ${activeTab === 'flashcards' ? 'bg-gray-300 dark:bg-white/10 text-black dark:text-white' : 'text-gray-500 dark:text-[#848E9C] hover:text-black dark:hover:text-white'}`}>🎴 FLASHCARD</button>
-            <button onClick={() => setActiveTab('quiz')} className={`px-4 py-1.5 rounded-full text-[11px] font-black transition-all ${activeTab === 'quiz' ? 'bg-[#FCD535] text-black shadow-md' : 'text-gray-500 dark:text-[#848E9C] hover:text-[#c8922a] dark:hover:text-[#FCD535]'}`}>🎯 DAILY QUIZ</button>
-            <button onClick={() => setActiveTab('journal')} className={`px-4 py-1.5 rounded-full text-[11px] font-black transition-all ${activeTab === 'journal' ? 'bg-[#378ADD] text-white shadow-lg' : 'text-gray-500 dark:text-[#848E9C] hover:text-black dark:hover:text-white'}`}>📊 JOURNAL & COACH</button>
-            <button onClick={() => setActiveTab('gym')} className={`px-4 py-1.5 rounded-full text-[11px] font-black transition-all ${activeTab === 'gym' ? 'bg-[#0ECB81] text-black font-bold' : 'text-gray-500 dark:text-[#848E9C] hover:text-black dark:hover:text-white'}`}>⚔️ TRADING GYM</button>
+          <h1 className="text-xl font-black tracking-tighter text-[#0f1117] dark:text-[#e8eaf0]">SAIB<span className="text-[#b45309] dark:text-[#00d084]">.</span></h1>
+          <div className="flex space-x-1 bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] p-1 rounded-full border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)]">
+            <button onClick={() => setActiveTab('academy')} className={getTabClass('academy')}>📚 HOC VIEN</button>
+            <button onClick={() => setActiveTab('flashcards')} className={getTabClass('flashcards')}>🎴 FLASHCARD</button>
+            <button onClick={() => setActiveTab('quiz')} className={getTabClass('quiz')}>🎯 DAILY QUIZ</button>
+            <button onClick={() => setActiveTab('journal')} className={getTabClass('journal')}>📊 JOURNAL & COACH</button>
+            <button onClick={() => setActiveTab('gym')} className={getTabClass('gym')}>⚔️ TRADING GYM</button>
           </div>
         </div>
         <div className="flex items-center space-x-6">
           
           {/* NÚT CÔNG TẮC DARK/LIGHT MODE */}
-          <button onClick={toggleTheme} className="text-xl p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#181A20] dark:hover:bg-[#2B3139] border border-gray-200 dark:border-[#2B3139] transition-all shadow-sm">
+          <button onClick={toggleTheme} className="text-xl p-2 rounded-full bg-[rgba(15,17,23,0.03)] hover:bg-[rgba(15,17,23,0.08)] dark:bg-[rgba(255,255,255,0.03)] dark:hover:bg-[rgba(255,255,255,0.08)] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] transition-all shadow-sm">
             {isDarkMode ? '☀️' : '🌙'}
           </button>
           
           <div className="text-right">
-            <p className="text-[9px] font-bold text-gray-500 dark:text-[#848E9C] uppercase tracking-widest">Vốn Cấp Phát</p>
-            <p className="text-base font-mono font-bold text-[#2d7a4f] dark:text-[#0ECB81]">${balance.toLocaleString(undefined, {minimumFractionDigits: 2})}</p>
+            <p className="text-[9px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase tracking-widest">Vốn Cấp Phát</p>
+            <p className="text-base font-mono font-bold text-[#b45309] dark:text-[#00d084]">${balance.toLocaleString(undefined, {minimumFractionDigits: 2})}</p>
           </div>
         </div>
       </nav>
 
       {/* ROUTER NỘI DUNG */}
-      <main className="max-w-7xl mx-auto p-6">
+      <main className="flex-1 overflow-y-auto relative custom-scrollbar">
         {activeTab === 'academy' && <Academy />}
-        {activeTab === 'flashcards' && <Flashcards />}
-        {activeTab === 'quiz' && <DailyQuiz />}
-        {activeTab === 'journal' && <TradingJournal />}
-        {activeTab === 'gym' && <TradingGym balance={balance} setBalance={setBalance} />}
+        {activeTab !== 'academy' && (
+          <div className="max-w-7xl mx-auto p-6">
+            {activeTab === 'flashcards' && <Flashcards />}
+            {activeTab === 'quiz' && <DailyQuiz />}
+            {activeTab === 'journal' && <TradingJournal />}
+            {activeTab === 'gym' && <TradingGym balance={balance} setBalance={setBalance} isDarkMode={isDarkMode} />}
+          </div>
+        )}
       </main>
     </div>
   );

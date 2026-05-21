@@ -98,7 +98,7 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
       <div className="p-8">
         <div className="text-lg md:text-xl font-bold text-black dark:text-white mb-6 leading-relaxed transition-colors">
           {q}
-          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-normal mt-3 italic transition-colors">{context}</span>}
+          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
         </div>
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
@@ -297,7 +297,7 @@ const FinalQuiz = () => {
               const isSelected = answers[qIdx] === oIdx;
               const isCorrect = showRes && q.c === oIdx;
               const isWrong = showRes && isSelected && q.c !== oIdx;
-              let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#c8922a] dark:hover:border-[#FCD535] hover:bg-yellow-50 dark:hover:bg-[#FCD535]/5 bg-white dark:bg-transparent";
+              let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#b45309] dark:hover:border-[#FCD535] hover:bg-yellow-50 dark:hover:bg-[#FCD535]/5 bg-white dark:bg-transparent";
               if (showRes) {
                 if (isCorrect) btnClass = "border-green-500 dark:border-[#0ECB81] bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] font-bold";
                 else if (isWrong) btnClass = "border-red-500 dark:border-[#F6465D] bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] opacity-60";
@@ -817,10 +817,10 @@ const CHAPTER_1_DATA = [
       <>
         <SectionHead icon="🏛️" title="4 nhóm người chơi chính" desc="Biết đối thủ của mình là ai. Thị trường không fair nhưng hiểu luật sẽ thắng." />
         <div className="space-y-5 mb-8">
-          <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl shadow-sm dark:shadow-none"><h4 className="text-black dark:text-white font-bold text-lg mb-2">🏛️ Ngân hàng TW (Fed, ECB...) <span className="text-yellow-600 dark:text-[#FCD535] text-[14px] font-normal ml-2">~35% Vol</span></h4><p className="text-gray-600 dark:text-[#848E9C] text-[15px] leading-[1.7]">Quyết định lãi suất. Như "ông trời". Tin cấp 1 mọi trader phải xem.</p></div>
-          <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl shadow-sm dark:shadow-none"><h4 className="text-black dark:text-white font-bold text-lg mb-2">🏦 Tổ chức lớn (Smart Money) <span className="text-green-600 dark:text-[#0ECB81] text-[14px] font-normal ml-2">~55% Vol</span></h4><p className="text-gray-600 dark:text-[#848E9C] text-[15px] leading-[1.7]">"Cá voi". Giao dịch khối lượng khổng lồ. Thường đi ngược đám đông để dọn thanh khoản trước khi đẩy giá.</p></div>
-          <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl shadow-sm dark:shadow-none"><h4 className="text-black dark:text-white font-bold text-lg mb-2">🏢 Quỹ Đầu Tư & DN <span className="text-blue-600 dark:text-[#378ADD] text-[14px] font-normal ml-2">~8% Vol</span></h4><p className="text-gray-600 dark:text-[#848E9C] text-[15px] leading-[1.7]">Hedging rủi ro tỷ giá cho xuất nhập khẩu.</p></div>
-          <div className="bg-yellow-50 dark:bg-[#FCD535]/10 border border-yellow-200 dark:border-[#FCD535]/30 p-6 rounded-2xl shadow-sm dark:shadow-none"><h4 className="text-yellow-700 dark:text-[#FCD535] font-bold text-lg mb-2">🙋 Retail Trader (Chúng ta) <span className="text-red-600 dark:text-[#F6465D] text-[14px] font-normal ml-2">&lt;2% Vol</span></h4><p className="text-gray-800 dark:text-[#EAECEF] text-[15px] leading-[1.7]">Mỗi lệnh của bạn không ảnh hưởng gì đến thị trường. Lợi thế: Có thể "vô hình" vào ra nhanh chóng.</p></div>
+          <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl shadow-sm dark:shadow-none"><h4 className="text-black dark:text-white font-bold text-lg mb-2">🏛️ Ngân hàng TW (Fed, ECB...) <span className="text-yellow-600 dark:text-[#FCD535] text-[14px] font-medium ml-2">~35% Vol</span></h4><p className="text-gray-600 dark:text-[#848E9C] text-[15px] leading-[1.7]">Quyết định lãi suất. Như "ông trời". Tin cấp 1 mọi trader phải xem.</p></div>
+          <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl shadow-sm dark:shadow-none"><h4 className="text-black dark:text-white font-bold text-lg mb-2">🏦 Tổ chức lớn (Smart Money) <span className="text-green-600 dark:text-[#0ECB81] text-[14px] font-medium ml-2">~55% Vol</span></h4><p className="text-gray-600 dark:text-[#848E9C] text-[15px] leading-[1.7]">"Cá voi". Giao dịch khối lượng khổng lồ. Thường đi ngược đám đông để dọn thanh khoản trước khi đẩy giá.</p></div>
+          <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl shadow-sm dark:shadow-none"><h4 className="text-black dark:text-white font-bold text-lg mb-2">🏢 Quỹ Đầu Tư & DN <span className="text-blue-600 dark:text-[#378ADD] text-[14px] font-medium ml-2">~8% Vol</span></h4><p className="text-gray-600 dark:text-[#848E9C] text-[15px] leading-[1.7]">Hedging rủi ro tỷ giá cho xuất nhập khẩu.</p></div>
+          <div className="bg-yellow-50 dark:bg-[#FCD535]/10 border border-yellow-200 dark:border-[#FCD535]/30 p-6 rounded-2xl shadow-sm dark:shadow-none"><h4 className="text-yellow-700 dark:text-[#FCD535] font-bold text-lg mb-2">🙋 Retail Trader (Chúng ta) <span className="text-red-600 dark:text-[#F6465D] text-[14px] font-medium ml-2">&lt;2% Vol</span></h4><p className="text-gray-800 dark:text-[#EAECEF] text-[15px] leading-[1.7]">Mỗi lệnh của bạn không ảnh hưởng gì đến thị trường. Lợi thế: Có thể "vô hình" vào ra nhanh chóng.</p></div>
         </div>
         <StoryBox label="Sự thật quan trọng" icon="⚠️">
           "Smart Money" cần thanh khoản để khớp khối lượng khổng lồ. Họ tạo <em>bẫy Breakout</em> lên trên kháng cự → Đám đông fomo BUY → Smart Money xả (SELL) toàn bộ vào lệnh Buy đó → Giá sập mạnh. Đó là lý do Breakout cơ bản thất bại 70% thời gian.

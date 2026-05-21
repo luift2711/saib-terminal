@@ -16,7 +16,7 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
       <div className="p-8">
         <div className="text-lg md:text-xl font-bold text-black dark:text-white mb-6 leading-relaxed transition-colors">
           {q}
-          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-normal mt-3 italic transition-colors">{context}</span>}
+          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
         </div>
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
@@ -85,7 +85,7 @@ const FibCalculator = () => {
   return (
     <div className="border border-gray-200 dark:border-[#2B3139] rounded-3xl overflow-hidden my-8 bg-gray-50 dark:bg-[#0B0E11] shadow-md dark:shadow-xl transition-colors">
       <div className="bg-white dark:bg-[#181A20] p-6 flex items-center gap-4 border-b border-gray-200 dark:border-[#2B3139] transition-colors">
-        <Ruler size={24} className="text-[#c8922a] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-black dark:text-white text-lg flex-1">Fibonacci Calculator NNN</h3>
+        <Ruler size={24} className="text-[#b45309] dark:text-[#00d084] shrink-0" /><h3 className="font-bold text-black dark:text-white text-lg flex-1">Fibonacci Calculator NNN</h3>
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-4 py-1.5 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       <div className="p-8">
@@ -304,8 +304,8 @@ const NNNChart2 = () => (
       <rect x="540" y="198" width="135" height="20" fill="#ff525215" rx="4"/>
       <text x="547" y="212" fill="#ff5252" fontSize="11" fontFamily="monospace">✗ Hủy Sell Stop</text>
       {/* TP markers */}
-      <line x1="355" y1="5" x2="700" y2="5" stroke="#c8922a" strokeWidth="1" strokeDasharray="4 3" opacity="0.5"/>
-      <text x="625" y="14" fill="#c8922a" fontSize="10" fontFamily="monospace">TP</text>
+      <line x1="355" y1="5" x2="700" y2="5" stroke="#b45309" strokeWidth="1" strokeDasharray="4 3" opacity="0.5"/>
+      <text x="625" y="14" fill="#b45309" fontSize="10" fontFamily="monospace">TP</text>
     </svg>
   </div>
 );
@@ -315,8 +315,8 @@ const NNNChart3 = () => (
     <div className="text-[11px] text-gray-400 font-mono uppercase tracking-widest mb-3">// NNN③ Minh họa — Nến đóng cửa trên EMA21 → BUY Setup + Pullback Entry</div>
     <svg viewBox="0 0 700 215" className="w-full h-auto min-w-[500px]" role="img">
       {/* EMA21 curved line */}
-      <path d="M 0,170 C 80,165 150,155 220,140 S 330,110 400,90 S 520,62 700,38" stroke="#c8922a" strokeWidth="3" fill="none" opacity="0.9"/>
-      <text x="648" y="34" fill="#c8922a" fontSize="11" fontFamily="monospace" fontWeight="bold">EMA21</text>
+      <path d="M 0,170 C 80,165 150,155 220,140 S 330,110 400,90 S 520,62 700,38" stroke="#b45309" strokeWidth="3" fill="none" opacity="0.9"/>
+      <text x="648" y="34" fill="#b45309" fontSize="11" fontFamily="monospace" fontWeight="bold">EMA21</text>
       {/* Candles BELOW EMA21 (downtrend context) */}
       <line x1="55" y1="155" x2="55" y2="200" stroke="#ff5252" strokeWidth="1.5"/>
       <rect x="47" y="162" width="16" height="32" fill="#ff5252" rx="2" opacity="0.85"/>
@@ -360,8 +360,8 @@ const NNNChart4 = () => {
       <div className="text-[11px] text-gray-400 font-mono uppercase tracking-widest mb-3">// NNN④ Minh họa — Fibonacci NNN: Swing Low→High → Pullback 62% → Entry → TP1/TP2</div>
       <svg viewBox="0 0 720 260" className="w-full h-auto min-w-[520px]" role="img">
         {/* Fibonacci horizontal levels */}
-        <line x1="30" y1={tp1} x2="690" y2={tp1} stroke="#c8922a" strokeWidth="1" strokeDasharray="5 3" opacity="0.7"/>
-        <text x="32" y={tp1 - 4} fill="#c8922a" fontSize="10" fontFamily="monospace">127% — TP1</text>
+        <line x1="30" y1={tp1} x2="690" y2={tp1} stroke="#b45309" strokeWidth="1" strokeDasharray="5 3" opacity="0.7"/>
+        <text x="32" y={tp1 - 4} fill="#b45309" fontSize="10" fontFamily="monospace">127% — TP1</text>
         <line x1="30" y1={SH} x2="690" y2={SH} stroke="#e8eaf0" strokeWidth="1.5" strokeDasharray="5 3" opacity="0.5"/>
         <text x="32" y={SH - 4} fill="#e8eaf0" fontSize="10" fontFamily="monospace">100% Swing High</text>
         <line x1="30" y1={f62} x2="690" y2={f62} stroke="#00d084" strokeWidth="2" strokeDasharray="6 3" opacity="0.9"/>
@@ -385,8 +385,8 @@ const NNNChart4 = () => {
         {/* BUY entry arrow */}
         <polyline points={`478,${f62 - 18} 530,${f62 - 50} 590,${SH + 20} 650,${tp1 + 15}`} stroke="#00d084" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
         {/* TP1 marker */}
-        <circle cx="630" cy={tp1 + 8} r="6" fill="#c8922a" opacity="0.9"/>
-        <text x="642" y={tp1 + 12} fill="#c8922a" fontSize="11" fontFamily="monospace" fontWeight="bold">TP1</text>
+        <circle cx="630" cy={tp1 + 8} r="6" fill="#b45309" opacity="0.9"/>
+        <text x="642" y={tp1 + 12} fill="#b45309" fontSize="11" fontFamily="monospace" fontWeight="bold">TP1</text>
         {/* SL reference */}
         <line x1="460" y1={SL - 5} x2="560" y2={SL - 5} stroke="#ff5252" strokeWidth="1" strokeDasharray="3 3" opacity="0.6"/>
         <text x="564" y={SL - 1} fill="#ff5252" fontSize="10" fontFamily="monospace" opacity="0.8">SL</text>
