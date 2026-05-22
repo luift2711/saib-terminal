@@ -23,7 +23,7 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
       <div className="p-8">
         <div className="text-lg md:text-xl font-bold text-black dark:text-white mb-6 leading-relaxed transition-colors">
           {q}
-          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
+          {context && <span className="block text-[17.5px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
         </div>
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
@@ -38,13 +38,13 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
             return (
               <button key={i} disabled={selected !== null} onClick={() => setSelected(i)} className={`flex items-start gap-4 p-5 border-2 rounded-2xl text-left transition-all ${btnClass}`}>
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 transition-colors ${letterClass}`}>{String.fromCharCode(65 + i)}</div>
-                <span className="text-[16px] leading-[1.7] mt-1">{opt}</span>
+                <span className="text-[18.5px] leading-[1.7] mt-1">{opt}</span>
               </button>
             );
           })}
         </div>
         {selected !== null && (
-          <div className={`mt-6 p-6 rounded-2xl text-[16px] leading-relaxed ${selected === correctIdx ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]' : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'}`}>
+          <div className={`mt-6 p-6 rounded-2xl text-[18.5px] leading-relaxed ${selected === correctIdx ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]' : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'}`}>
             <strong className="block text-lg mb-2">{selected === correctIdx ? '✅ Chính xác!' : '❌ Chưa đúng.'}</strong> {explanation}
           </div>
         )}
@@ -86,16 +86,16 @@ const LossStreakSim = () => {
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Vốn ban đầu ($)</label>
-            <input type="number" value={acc} onChange={e => setAcc(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Vốn ban đầu ($)</label>
+            <input type="number" value={acc} onChange={e => setAcc(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk mỗi lệnh (%)</label>
-            <input type="number" value={risk} step={0.5} onChange={e => setRisk(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk mỗi lệnh (%)</label>
+            <input type="number" value={risk} step={0.5} onChange={e => setRisk(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Số lệnh thua liên tiếp</label>
-            <input type="number" value={n} min={1} max={20} onChange={e => setN(Number(e.target.value) || 1)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Số lệnh thua liên tiếp</label>
+            <input type="number" value={n} min={1} max={20} onChange={e => setN(Number(e.target.value) || 1)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
         <div className="flex items-end gap-1 h-20 mb-4 bg-gray-100 dark:bg-[#181A20] rounded-xl px-4 py-3">
@@ -118,15 +118,15 @@ const LossStreakSim = () => {
           </div>
         </div>
         {parseFloat(lostPct) > 50 ? (
-          <div className="mt-4 p-4 rounded-2xl bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] text-[14px] leading-relaxed border border-red-200 dark:border-[#F6465D]/30">
+          <div className="mt-4 p-4 rounded-2xl bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] text-[16.5px] leading-relaxed border border-red-200 dark:border-[#F6465D]/30">
             💀 {n} lệnh thua với risk {risk}% = mất {lostPct}% tài khoản. Cần tăng +{recovery}% để về vốn — có thể mất nhiều năm.
           </div>
         ) : parseFloat(lostPct) > 20 ? (
-          <div className="mt-4 p-4 rounded-2xl bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] text-[14px] leading-relaxed border border-yellow-200 dark:border-[#FCD535]/30">
+          <div className="mt-4 p-4 rounded-2xl bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] text-[16.5px] leading-relaxed border border-yellow-200 dark:border-[#FCD535]/30">
             ⚠️ Mất {lostPct}% là đáng kể. Với risk {risk}%, chỉ cần {n} lệnh thua liên tiếp là DD đáng lo. Cân nhắc giảm risk xuống 1-2%.
           </div>
         ) : (
-          <div className="mt-4 p-4 rounded-2xl bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] text-[14px] leading-relaxed border border-green-200 dark:border-[#0ECB81]/30">
+          <div className="mt-4 p-4 rounded-2xl bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] text-[16.5px] leading-relaxed border border-green-200 dark:border-[#0ECB81]/30">
             ✅ {n} lệnh thua với risk {risk}% chỉ mất {lostPct}%. Có thể phục hồi bình thường. Đây là lý do dùng risk nhỏ.
           </div>
         )}
@@ -156,20 +156,20 @@ const PositionSizeCalc = () => {
         <Callout type="warn">Công thức: Risk Amount ($) = Account × Risk% / 100. Position Size = Risk Amount / (SL pip × Pip Value)</Callout>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 mt-6">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Tài khoản ($)</label>
-            <input type="number" value={accBal} onChange={e => setAccBal(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Tài khoản ($)</label>
+            <input type="number" value={accBal} onChange={e => setAccBal(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk % mỗi lệnh</label>
-            <input type="number" value={riskPct} step={0.1} min={0.1} max={10} onChange={e => setRiskPct(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk % mỗi lệnh</label>
+            <input type="number" value={riskPct} step={0.1} min={0.1} max={10} onChange={e => setRiskPct(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Stop Loss (pip/điểm)</label>
-            <input type="number" value={sl} onChange={e => setSl(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Stop Loss (pip/điểm)</label>
+            <input type="number" value={sl} onChange={e => setSl(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Pip Value ($)</label>
-            <select value={pipVal} onChange={e => setPipVal(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white outline-none transition-colors">
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Pip Value ($)</label>
+            <select value={pipVal} onChange={e => setPipVal(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white outline-none transition-colors">
               <option value={1}>$1 — Mini lot (EUR/USD, GBP/USD)</option>
               <option value={0.1}>$0.1 — Micro lot</option>
               <option value={10}>$10 — Standard lot</option>
@@ -191,9 +191,9 @@ const PositionSizeCalc = () => {
             <div className="text-2xl font-black font-mono text-black dark:text-white">{riskPct}%</div>
           </div>
         </div>
-        {riskPct > 3 && <div className="mt-4 p-4 rounded-2xl bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] text-[14px] border border-red-200 dark:border-[#F6465D]/30">⚠️ Risk {riskPct}% là quá cao cho người mới. Khuyến nghị 1-2%.</div>}
-        {riskPct >= 1 && riskPct <= 3 && <div className="mt-4 p-4 rounded-2xl bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] text-[14px] border border-green-200 dark:border-[#0ECB81]/30">✅ Risk {riskPct}% là phù hợp. Size {size.toFixed(2)} lot, risk ${riskAmt.toFixed(2)}.</div>}
-        {riskPct < 1 && <div className="mt-4 p-4 rounded-2xl bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] text-[14px] border border-blue-200 dark:border-[#378ADD]/30">🛡️ Risk {riskPct}% rất an toàn — phù hợp giai đoạn mới học.</div>}
+        {riskPct > 3 && <div className="mt-4 p-4 rounded-2xl bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] text-[16.5px] border border-red-200 dark:border-[#F6465D]/30">⚠️ Risk {riskPct}% là quá cao cho người mới. Khuyến nghị 1-2%.</div>}
+        {riskPct >= 1 && riskPct <= 3 && <div className="mt-4 p-4 rounded-2xl bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] text-[16.5px] border border-green-200 dark:border-[#0ECB81]/30">✅ Risk {riskPct}% là phù hợp. Size {size.toFixed(2)} lot, risk ${riskAmt.toFixed(2)}.</div>}
+        {riskPct < 1 && <div className="mt-4 p-4 rounded-2xl bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] text-[16.5px] border border-blue-200 dark:border-[#378ADD]/30">🛡️ Risk {riskPct}% rất an toàn — phù hợp giai đoạn mới học.</div>}
       </div>
     </div>
   );
@@ -222,16 +222,16 @@ const ExpectancyCalc = () => {
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Win Rate (%)</label>
-            <input type="number" value={winRate} min={1} max={99} onChange={e => setWinRate(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Win Rate (%)</label>
+            <input type="number" value={winRate} min={1} max={99} onChange={e => setWinRate(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Lời TB mỗi lệnh ($)</label>
-            <input type="number" value={avgWin} onChange={e => setAvgWin(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Lời TB mỗi lệnh ($)</label>
+            <input type="number" value={avgWin} onChange={e => setAvgWin(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Lỗ TB mỗi lệnh ($)</label>
-            <input type="number" value={avgLoss} onChange={e => setAvgLoss(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Lỗ TB mỗi lệnh ($)</label>
+            <input type="number" value={avgLoss} onChange={e => setAvgLoss(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4">
@@ -248,7 +248,7 @@ const ExpectancyCalc = () => {
             <div className={`text-2xl font-black font-mono ${per100 >= 0 ? 'text-green-600 dark:text-[#0ECB81]' : 'text-red-600 dark:text-[#F6465D]'}`}>{per100 >= 0 ? '+' : ''}{per100.toFixed(0)}$</div>
           </div>
         </div>
-        <div className="mt-4 p-4 rounded-2xl bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] text-[14px] border border-blue-200 dark:border-[#378ADD]/30">
+        <div className="mt-4 p-4 rounded-2xl bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] text-[16.5px] border border-blue-200 dark:border-[#378ADD]/30">
           📊 Với R:R 1:{rr.toFixed(1)}, bạn chỉ cần win rate tối thiểu <strong>{breakeven}%</strong> để hòa vốn.
         </div>
       </div>
@@ -280,40 +280,40 @@ const KellyCalc = () => {
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Win Rate (%)</label>
-            <input type="number" value={wr} onChange={e => setWr(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Win Rate (%)</label>
+            <input type="number" value={wr} onChange={e => setWr(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Thắng ($)</label>
-            <input type="number" value={avgW} onChange={e => setAvgW(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Thắng ($)</label>
+            <input type="number" value={avgW} onChange={e => setAvgW(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Thua ($)</label>
-            <input type="number" value={avgL} onChange={e => setAvgL(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Thua ($)</label>
+            <input type="number" value={avgL} onChange={e => setAvgL(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-1">Full Kelly</div>
             <div className="text-2xl font-black font-mono text-red-600 dark:text-[#F6465D]">{fullKelly.toFixed(1)}%</div>
-            <div className="text-[10px] text-red-500 mt-1">⚠️ Quá rủi ro</div>
+            <div className="text-[12.5px] text-red-500 mt-1">⚠️ Quá rủi ro</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-1">Half Kelly</div>
             <div className="text-2xl font-black font-mono text-yellow-600 dark:text-[#FCD535]">{halfKelly.toFixed(1)}%</div>
-            <div className="text-[10px] text-yellow-600 dark:text-[#FCD535] mt-1">Chuyên nghiệp</div>
+            <div className="text-[12.5px] text-yellow-600 dark:text-[#FCD535] mt-1">Chuyên nghiệp</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-1">Quarter Kelly</div>
             <div className="text-2xl font-black font-mono text-green-600 dark:text-[#0ECB81]">{quarterKelly.toFixed(1)}%</div>
-            <div className="text-[10px] text-green-600 dark:text-[#0ECB81] mt-1">Khuyến nghị</div>
+            <div className="text-[12.5px] text-green-600 dark:text-[#0ECB81] mt-1">Khuyến nghị</div>
           </div>
         </div>
         <div className="mb-2 text-xs font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest">Vùng an toàn</div>
         <div className="h-4 rounded-full bg-gradient-to-r from-green-500 via-yellow-400 to-red-500 relative mb-2">
           <div className="absolute top-1/2 -translate-y-1/2 w-1 h-6 bg-white dark:bg-white rounded-full shadow-lg" style={{ left: `${Math.min(kellyLeft * 4, 100)}%` }} />
         </div>
-        <div className="flex justify-between text-[10px] font-mono text-gray-500 dark:text-[#848E9C]">
+        <div className="flex justify-between text-[12.5px] font-mono text-gray-500 dark:text-[#848E9C]">
           <span>0% Quá thận trọng</span><span>Vùng tối ưu</span><span>100% Tự sát tài chính</span>
         </div>
       </div>
@@ -328,7 +328,7 @@ const ScenarioCard = ({ icon, title, badge, badgeColor, children }) => {
     <div className={`border rounded-2xl overflow-hidden mb-4 transition-all ${open ? 'border-yellow-400 dark:border-[#FCD535]' : 'border-gray-200 dark:border-[#2B3139]'} bg-white dark:bg-[#181A20]`}>
       <button onClick={() => setOpen(!open)} className="w-full flex items-center gap-3 p-5 text-left">
         <span className="text-2xl">{icon}</span>
-        <span className="font-bold text-[16px] text-black dark:text-white flex-1">{title}</span>
+        <span className="font-bold text-[18.5px] text-black dark:text-white flex-1">{title}</span>
         <span className={`text-xs font-bold px-3 py-1 rounded-full font-mono ${badgeColor}`}>{badge}</span>
         {open ? <ChevronUp size={16} className="text-gray-500 shrink-0" /> : <ChevronDown size={16} className="text-gray-500 shrink-0" />}
       </button>
@@ -341,7 +341,7 @@ const ScenarioCard = ({ icon, title, badge, badgeColor, children }) => {
 const AntiMartingaleSim = () => {
   const [base, setBase] = useState(1);
   const [inc, setInc] = useState(0.5);
-  const sequence = ['W','W','L','W','W','W','L','L','W','W'];
+  const sequence = ['W', 'W', 'L', 'W', 'W', 'W', 'L', 'L', 'W', 'W'];
   let risk = base;
   let bal = 10000;
   const rows = sequence.map((r, i) => {
@@ -364,12 +364,12 @@ const AntiMartingaleSim = () => {
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk cơ bản (%)</label>
-            <input type="number" value={base} step={0.5} onChange={e => setBase(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk cơ bản (%)</label>
+            <input type="number" value={base} step={0.5} onChange={e => setBase(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Tăng sau thắng (%)</label>
-            <select value={inc} onChange={e => setInc(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white outline-none transition-colors">
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Tăng sau thắng (%)</label>
+            <select value={inc} onChange={e => setInc(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white outline-none transition-colors">
               <option value={0.25}>+0.25% mỗi chuỗi thắng</option>
               <option value={0.5}>+0.5% mỗi chuỗi thắng</option>
               <option value={1}>+1% mỗi chuỗi thắng</option>
@@ -381,7 +381,7 @@ const AntiMartingaleSim = () => {
             <thead><tr className="bg-gray-100 dark:bg-[#181A20] text-gray-500 dark:text-[#848E9C] text-xs uppercase tracking-widest border-b border-gray-200 dark:border-[#2B3139]">
               <th className="p-3 font-black">Lệnh</th><th className="p-3 font-black">Kết quả</th><th className="p-3 font-black">Risk %</th><th className="p-3 font-black">Thay đổi ($)</th><th className="p-3 font-black">Số dư ($)</th>
             </tr></thead>
-            <tbody className="text-[14px]">
+            <tbody className="text-[16.5px]">
               {rows.map(row => (
                 <tr key={row.i} className="border-b border-gray-100 dark:border-[#2B3139]/50 last:border-0">
                   <td className="p-3 font-mono font-bold text-gray-700 dark:text-[#848E9C]">#{row.i + 1}</td>
@@ -402,7 +402,7 @@ const AntiMartingaleSim = () => {
 // ==========================================
 // CHAPTER 4 DATA
 // ==========================================
-const CHAPTER_4_DATA = [
+const CHAPTER_4_DATA_VN = [
   {
     chapter: "Chương 4: Quản lý Vốn & Rủi ro", title: "0. Tại sao Quản lý vốn là số 1?",
     content: (
@@ -444,7 +444,7 @@ const CHAPTER_4_DATA = [
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-[#F6465D]/20 text-red-600 dark:text-[#F6465D] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
@@ -457,7 +457,7 @@ const CHAPTER_4_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 0</div>
           <ul className="space-y-2">
             {['Win rate cao không đảm bảo có lời — R:R và kỷ luật quản lý vốn mới quyết định.', 'Mất 50% tài khoản cần +100% để hoàn vốn — toán học bất đối xứng cực kỳ nguy hiểm.', '3 cách blowup: risk quá lớn, không SL, revenge trading. Tránh được 3 điều này = đã hơn 80% trader.', 'Mục tiêu quản lý vốn: tồn tại đủ lâu, không phải làm giàu nhanh.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -507,7 +507,7 @@ const CHAPTER_4_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 1</div>
           <ul className="space-y-2">
             {['Risk 1-2% mỗi lệnh = quy tắc vàng. Người mới nên bắt đầu với 0.5-1%.', 'Position Size = (Tài khoản × Risk%) ÷ (SL pip × Pip Value). Tính trước khi vào lệnh, không đoán.', 'Risk % ảnh hưởng phi tuyến tính: 5% risk × 8 thua = mất 33% tài khoản. 1% risk × 8 thua = chỉ mất 7.7%.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -557,7 +557,7 @@ const CHAPTER_4_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 2</div>
           <ul className="space-y-2">
             {['R:R = Lợi nhuận kỳ vọng / Rủi ro. R:R 1:2 = chỉ cần thắng 34% để có lời.', 'Kỳ vọng = (Win%×TB thắng) − (Loss%×TB thua). Phải dương mới chơi.', 'Kỹ thuật tốt nhất: Partial Exit (50% TP1) + Move to BE + để 50% chạy đến TP2.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -578,7 +578,7 @@ const CHAPTER_4_DATA = [
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
@@ -616,7 +616,7 @@ const CHAPTER_4_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 3</div>
           <ul className="space-y-2">
             {['Tăng risk chỉ khi: 3+ tháng, 50+ lệnh, kỳ vọng dương nhất quán, DD trong dự báo.', 'Anti-Martingale: tăng size khi chuỗi thắng, giảm khi chuỗi thua. Ngược Martingale.', 'Lộ trình: 0.5-1% (newbie) → 1-2% (intermediate) → 2-3% (advanced). Không bao giờ >5%.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -628,7 +628,7 @@ const CHAPTER_4_DATA = [
     content: (
       <>
         <SectionHead icon="🔒" title="Fixed Fractional — Phương pháp an toàn nhất" />
-        <p className="text-[16px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
+        <p className="text-[18.5px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
           Đây chính xác là quy tắc 1-2% bạn đã học, nhưng được hệ thống hóa thành phương pháp đầy đủ. <strong className="text-black dark:text-white">Fixed Fractional</strong> = luôn risk một tỷ lệ cố định của tài khoản HIỆN TẠI (không phải tài khoản ban đầu).
         </p>
 
@@ -671,7 +671,7 @@ const CHAPTER_4_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 4</div>
           <ul className="space-y-2">
             {['Fixed Fractional: risk % cố định của tài khoản hiện tại — đơn giản, bền vững, tự động bảo vệ.', 'Kelly Criterion: công thức tính size tối ưu dựa trên win rate và R:R thực tế.', 'Dùng Quarter Kelly (25% Kelly) = an toàn nhất. Full Kelly = quá rủi ro về tâm lý.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -691,9 +691,9 @@ const CHAPTER_4_DATA = [
         <div className="my-6">
           <div className="text-xs font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">Kim tự tháp ĐÚNG (safe pyramiding)</div>
           <div className="flex flex-col items-center gap-1">
-            <div className="flex items-center justify-center rounded-lg text-white text-sm font-bold py-2 bg-green-500 dark:bg-[#0ECB81]" style={{width:'80%'}}>Lệnh 1: 1.0 lot (Entry gốc)</div>
-            <div className="flex items-center justify-center rounded-lg text-white text-sm font-bold py-2 bg-green-400 dark:bg-[#0ECB81]/70" style={{width:'55%'}}>Lệnh 2: 0.5 lot (Breakout xác nhận)</div>
-            <div className="flex items-center justify-center rounded-lg text-white text-xs font-bold py-2 bg-green-300 dark:bg-[#0ECB81]/45" style={{width:'35%'}}>Lệnh 3: 0.25 lot (Tiếp diễn)</div>
+            <div className="flex items-center justify-center rounded-lg text-white text-sm font-bold py-2 bg-green-500 dark:bg-[#0ECB81]" style={{ width: '80%' }}>Lệnh 1: 1.0 lot (Entry gốc)</div>
+            <div className="flex items-center justify-center rounded-lg text-white text-sm font-bold py-2 bg-green-400 dark:bg-[#0ECB81]/70" style={{ width: '55%' }}>Lệnh 2: 0.5 lot (Breakout xác nhận)</div>
+            <div className="flex items-center justify-center rounded-lg text-white text-xs font-bold py-2 bg-green-300 dark:bg-[#0ECB81]/45" style={{ width: '35%' }}>Lệnh 3: 0.25 lot (Tiếp diễn)</div>
           </div>
         </div>
 
@@ -707,7 +707,7 @@ const CHAPTER_4_DATA = [
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
@@ -723,7 +723,7 @@ const CHAPTER_4_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 5</div>
           <ul className="space-y-2">
             {['Pyramid thuận (kim tự tháp bình thường): lệnh đầu lớn nhất, thêm dần nhỏ hơn.', 'Chỉ pyramid sau khi đã Move to BE lệnh gốc. Mỗi lệnh thêm ≤50% lệnh trước.', 'Dùng trailing stop cho toàn bộ vị thế pyramid.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -754,7 +754,7 @@ const CHAPTER_4_DATA = [
           ].map((s, i) => (
             <div key={i} className={`flex gap-4 items-start p-4 rounded-xl ${s.color === 'red' ? 'bg-red-50 dark:bg-[#F6465D]/10 border border-red-200 dark:border-[#F6465D]/30' : 'bg-yellow-50 dark:bg-[#FCD535]/10 border border-yellow-200 dark:border-[#FCD535]/30'}`}>
               <span className="text-2xl shrink-0">{s.icon}</span>
-              <div className={`text-[15px] leading-[1.8] ${s.color === 'red' ? 'text-red-800 dark:text-[#F6465D]' : 'text-yellow-800 dark:text-[#FCD535]'}`}>{s.text}</div>
+              <div className={`text-[17.5px] leading-[1.8] ${s.color === 'red' ? 'text-red-800 dark:text-[#F6465D]' : 'text-yellow-800 dark:text-[#FCD535]'}`}>{s.text}</div>
             </div>
           ))}
         </div>
@@ -769,7 +769,7 @@ const CHAPTER_4_DATA = [
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
@@ -778,7 +778,7 @@ const CHAPTER_4_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 6</div>
           <ul className="space-y-2">
             {['3 loại DD: Current, Max, Daily. Circuit Breaker: Daily >5% → dừng ngày; Monthly >20% → dừng 1 tháng.', 'Phục hồi đúng: nghỉ ngơi → review không cảm xúc → quay lại size 50% → tăng dần.', 'Thua đúng hệ thống ≠ thua vì vi phạm quy tắc. Chỉ sửa loại 2.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -806,7 +806,7 @@ const CHAPTER_4_DATA = [
         />
 
         <ScenarioCard icon="💱" title="Tình huống: EUR/USD H4, tài khoản $5,000" badge="Ổn định nhất" badgeColor="bg-blue-100 dark:bg-[#378ADD]/20 text-blue-700 dark:text-[#378ADD]">
-          <p className="text-[14px] text-gray-700 dark:text-[#9ca3b0] mb-4">Forex có volatility thấp nhất trong 4 thị trường, spread thấp, thanh khoản cao → phù hợp nhất cho người mới. SL cần đặt đủ rộng để tránh bị "stop hunted" (SM quét SL rồi giá đi đúng hướng).</p>
+          <p className="text-[16.5px] text-gray-700 dark:text-[#9ca3b0] mb-4">Forex có volatility thấp nhất trong 4 thị trường, spread thấp, thanh khoản cao → phù hợp nhất cho người mới. SL cần đặt đủ rộng để tránh bị "stop hunted" (SM quét SL rồi giá đi đúng hướng).</p>
           <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-xl p-4 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
             <div>// Tính Position Size</div>
             <div>Entry: 1.0850 | SL: 1.0810 (40 pip) | TP1: 1.0930 (80 pip) | TP2: 1.0980 (130 pip)</div>
@@ -826,7 +826,7 @@ const CHAPTER_4_DATA = [
         </ScenarioCard>
 
         <ScenarioCard icon="₿" title="Tình huống: BTC/USDT D1, tài khoản $5,000" badge="Volatility cao nhất" badgeColor="bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-700 dark:text-[#FCD535]">
-          <p className="text-[14px] text-gray-700 dark:text-[#9ca3b0] mb-4">Crypto cực kỳ volatile — BTC có thể giảm 20% trong 1 ngày. <strong>SL PHẢI rộng hơn</strong> (3-8% từ entry) hoặc sẽ bị quét liên tục. Position size nhỏ hơn để bù đắp SL rộng.</p>
+          <p className="text-[16.5px] text-gray-700 dark:text-[#9ca3b0] mb-4">Crypto cực kỳ volatile — BTC có thể giảm 20% trong 1 ngày. <strong>SL PHẢI rộng hơn</strong> (3-8% từ entry) hoặc sẽ bị quét liên tục. Position size nhỏ hơn để bù đắp SL rộng.</p>
           <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-xl p-4 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
             <div>// Crypto Position Sizing</div>
             <div>Entry: $60,000 | SL: $56,400 (6% xuống) | TP1: $67,200 (12%) | TP2: $72,000 (20%)</div>
@@ -847,7 +847,7 @@ const CHAPTER_4_DATA = [
         </ScenarioCard>
 
         <ScenarioCard icon="🥇" title="Tình huống: XAU/USD H4, tài khoản $5,000" badge="Phù hợp nhất với bạn" badgeColor="bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81]">
-          <p className="text-[14px] text-gray-700 dark:text-[#9ca3b0] mb-4">Vàng có volatility trung bình, chịu ảnh hưởng mạnh từ USD, lãi suất Fed, và địa chính trị. Bạn đã có kinh nghiệm với vàng → điểm xuất phát lý tưởng để áp dụng hệ thống NNN.</p>
+          <p className="text-[16.5px] text-gray-700 dark:text-[#9ca3b0] mb-4">Vàng có volatility trung bình, chịu ảnh hưởng mạnh từ USD, lãi suất Fed, và địa chính trị. Bạn đã có kinh nghiệm với vàng → điểm xuất phát lý tưởng để áp dụng hệ thống NNN.</p>
           <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-xl p-4 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
             <div>// XAU/USD Position Sizing</div>
             <div>Entry: $2,000/oz | SL: $1,975 (25 pip/điểm) | TP1: $2,050 (50 pip) | TP2: $2,080 (80 pip)</div>
@@ -869,7 +869,7 @@ const CHAPTER_4_DATA = [
         </ScenarioCard>
 
         <ScenarioCard icon="📈" title="Tình huống: Cổ phiếu FPT (HoSE), tài khoản 50,000,000 VNĐ" badge="Phức tạp nhất" badgeColor="bg-purple-100 dark:bg-[#9b59ff]/20 text-purple-700 dark:text-[#9b59ff]">
-          <p className="text-[14px] text-gray-700 dark:text-[#9ca3b0] mb-4">Cổ phiếu có rủi ro đặc thù: tin tức doanh nghiệp, earnings, gap qua đêm, thanh khoản thấp ở cổ phiếu nhỏ. <strong>Position size nhỏ hơn</strong> so với Forex/Vàng vì rủi ro overnight gap.</p>
+          <p className="text-[16.5px] text-gray-700 dark:text-[#9ca3b0] mb-4">Cổ phiếu có rủi ro đặc thù: tin tức doanh nghiệp, earnings, gap qua đêm, thanh khoản thấp ở cổ phiếu nhỏ. <strong>Position size nhỏ hơn</strong> so với Forex/Vàng vì rủi ro overnight gap.</p>
           <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-xl p-4 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
             <div>// Cổ phiếu VN Position Sizing</div>
             <div>Entry: 95,000 VNĐ/cp | SL: 90,250 (5% xuống) | TP: 107,000 (12.6% lên)</div>
@@ -899,7 +899,7 @@ const CHAPTER_4_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 7</div>
           <ul className="space-y-2">
             {['Forex: ổn định nhất, SL 20-50pip, risk 1-2%, leverage 1:10-1:20 an toàn.', 'Crypto: volatile nhất, SL 3-8% giá, risk 0.5-1%, leverage tối đa 1:5.', 'Vàng: trung bình, cần chú ý NFP/FOMC, risk 1-2% là hợp lý.', 'Cổ phiếu: overnight gap risk, T+3 với VN, không margin khi học.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -924,8 +924,8 @@ const CHAPTER_4_DATA = [
               <div className="text-3xl mb-3">{p.icon}</div>
               <div className={`font-bold text-lg mb-1 ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.name}</div>
               <div className={`text-sm font-mono mb-3 ${p.color === 'blue' ? 'text-blue-600 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-600 dark:text-[#0ECB81]' : 'text-red-600 dark:text-[#F6465D]'}`}>{p.risk}</div>
-              <p className="text-[13px] text-gray-600 dark:text-[#9ca3b0] mb-4">{p.desc}</p>
-              <div className="space-y-2 text-[12px] font-mono">
+              <p className="text-[15.5px] text-gray-600 dark:text-[#9ca3b0] mb-4">{p.desc}</p>
+              <div className="space-y-2 text-[14.5px] font-mono">
                 <div className="flex justify-between"><span className="text-gray-500 dark:text-[#848E9C]">Max DD chấp nhận</span><span className={`font-bold ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.dd}</span></div>
                 <div className="flex justify-between"><span className="text-gray-500 dark:text-[#848E9C]">Target lợi nhuận/năm</span><span className={`font-bold ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.target}</span></div>
                 <div className="flex justify-between"><span className="text-gray-500 dark:text-[#848E9C]">Phù hợp với</span><span className={`font-bold ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.suitable}</span></div>
@@ -952,7 +952,7 @@ const CHAPTER_4_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 8</div>
           <ul className="space-y-2">
             {['Conservative: 0.5-1%, DD 10%, phù hợp người mới và vốn không thể mất.', 'Moderate: 1-2%, DD 20%, chuẩn quốc tế sau 6+ tháng kinh nghiệm.', 'Aggressive: 2-3%, DD 30%, chỉ với vốn rủi ro và 2+ năm kinh nghiệm.', 'Profile phù hợp = trading thoải mái, không stress → quyết định tốt hơn → kết quả tốt hơn.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -992,4 +992,4 @@ const CHAPTER_4_DATA = [
   },
 ];
 
-export default CHAPTER_4_DATA;
+export default CHAPTER_4_DATA_VN;

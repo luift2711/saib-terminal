@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, ArrowRight, Skull, Flame, Edit2, Compass, Star, Shield, Activity, Flag, Award, Crosshair, Hammer, Zap, Wind, Eye, Sun, Moon } from 'lucide-react';
+import { Lock, ArrowRight, Skull, Flame, Edit2, Compass, Star, Shield, Activity, Flag, Award, Crosshair, Hammer, Zap, Wind, Eye, Sun, Moon, Bot } from 'lucide-react';
 
 
 const TradingJournal = ({ lang = 'vi' }) => {
@@ -63,9 +63,16 @@ const TradingJournal = ({ lang = 'vi' }) => {
   };
   const t = dict[lang];
 
-  // State của Huấn luyện viên AI
-  const [coachInput, setCoachInput] = useState('');
-  const [coachResponse, setCoachResponse] = useState(t.defaultCoach);
+  // State của Huấn luyện viên AI được xử lý bởi FloatingCoach
+  const triggerSAIBotAnalysis = () => {
+    const prompt = lang === 'vi' 
+      ? `SAIBot, hãy phân tích nhật ký giao dịch của tôi. Tổng số lệnh: ${logs.length}, Tỉ lệ thắng: ${logs.length > 0 ? ((logs.filter(l => l.pnl > 0).length / logs.length) * 100).toFixed(1) : 0}%. Tôi mắc ${logs.filter(l => l.tag === 'FOMO').length} lỗi FOMO và ${logs.filter(l => l.tag === 'REVENGE').length} lỗi Revenge trading. Chẩn đoán cho tôi đi!`
+      : `SAIBot, analyze my trading journal. Total trades: ${logs.length}, WinRate: ${logs.length > 0 ? ((logs.filter(l => l.pnl > 0).length / logs.length) * 100).toFixed(1) : 0}%. I made ${logs.filter(l => l.tag === 'FOMO').length} FOMO errors and ${logs.filter(l => l.tag === 'REVENGE').length} Revenge errors. Diagnose me!`;
+      
+    window.dispatchEvent(new CustomEvent('saibot-trigger', {
+      detail: { prompt }
+    }));
+  };
 
   useEffect(() => {
     // Tải dữ liệu từ LocalStorage ổ cứng
@@ -135,23 +142,6 @@ const TradingJournal = ({ lang = 'vi' }) => {
     setLogs(updatedLogs);
     localStorage.setItem('SAIB_trading_logs', JSON.stringify(updatedLogs));
     setNote('');
-    setCoachResponse(`[SAIBot Diagnosis]: ${coachDiagnosis}`);
-  };
-
-  // Trợ lý Coach Trả lời câu hỏi học thuật
-  const askCoach = (e) => {
-    e.preventDefault();
-    if (!coachInput.trim()) return;
-
-    let response = t.notFound;
-    if (coachInput.toLowerCase().includes('gồng lỗ') || coachInput.toLowerCase().includes('hold loss')) {
-      response = t.holdLoss;
-    } else if (coachInput.toLowerCase().includes('fomo')) {
-      response = t.cureFomo;
-    }
-
-    setCoachResponse(response);
-    setCoachInput('');
   };
 
   return (
@@ -238,25 +228,34 @@ const TradingJournal = ({ lang = 'vi' }) => {
           </form>
         </div>
 
-        {/* Giao diện Cyborg Coach Terminal */}
-        <div className="bg-[#faf9f6] dark:bg-[#0B0E11] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] p-5 rounded-3xl shadow-inner flex flex-col min-h-[300px]">
-           <div className="flex justify-between items-center border-b border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] pb-2 mb-4">
-              <span className="text-[9px] font-mono text-[#0ECB81]">SAIB_COACH_TERMINAL_V3.0</span>
-              <div className="w-2 h-2 rounded-full bg-[#0ECB81] animate-ping"></div>
+        {/* Giao diện Cyborg Coach (Nút gọi SAIBot) */}
+        <div className="bg-[#fff]/80 dark:bg-gradient-to-br dark:from-[#0B0E11] dark:to-[#181A20] border border-[#D4AF37]/50 dark:border-[#00d084]/30 p-6 rounded-3xl shadow-[0_4px_20px_rgba(212,175,55,0.15)] dark:shadow-lg flex flex-col justify-center items-center text-center space-y-4 backdrop-blur-xl">
+           <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8860B] dark:from-[#00d084] dark:to-[#0ECB81] flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.4)] dark:shadow-[0_0_20px_rgba(0,208,132,0.4)] mb-2 relative">
+              <Bot size={32} className="text-white dark:text-[#0B0E11]" />
+              <span className="absolute -top-1 -right-1 flex h-4 w-4">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0ECB81] dark:bg-white opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-4 w-4 bg-[#0ECB81] dark:bg-white border-2 border-white dark:border-[#0B0E11]"></span>
+              </span>
            </div>
            
-           <div className="flex-1 text-xs text-[#0ECB81] font-mono leading-relaxed space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
-              <p className="text-[#0f1117] dark:text-[#EAECEF]">{coachResponse}</p>
+           <div>
+             <h3 className="text-sm font-black text-[#1C2C44] dark:text-[#EAECEF] uppercase tracking-widest mb-2">
+               {lang === 'vi' ? 'Báo Cáo Phân Tích Tâm Lý' : 'Psychological Analysis Report'}
+             </h3>
+             <p className="text-xs text-[#1C2C44]/80 dark:text-[#EAECEF]/70 leading-relaxed max-w-[250px] mx-auto">
+               {lang === 'vi' 
+                 ? 'SAIBot sẽ tổng hợp nhật ký, đánh giá tỷ lệ Win-Rate, và bóc tách các sai lầm tâm lý sếp đang gặp phải.' 
+                 : 'SAIBot will summarize your journal, evaluate your Win-Rate, and dissect the psychological mistakes you are making.'}
+             </p>
            </div>
 
-           <form onSubmit={askCoach} className="mt-4 pt-3 border-t border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] flex gap-2">
-              <input 
-                type="text" value={coachInput} onChange={e => setCoachInput(e.target.value)}
-                placeholder={t.placeholderCoach} 
-                className="flex-1 bg-[#fff] dark:bg-[#111827] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] rounded-xl px-3 py-2 text-xs text-[#0f1117] dark:text-white focus:outline-none"
-              />
-              <button type="submit" className="bg-[#0ECB81] text-white dark:text-black px-4 rounded-xl font-bold text-xs">{t.askBtn}</button>
-           </form>
+           <button 
+             onClick={triggerSAIBotAnalysis}
+             className="mt-4 w-full bg-white dark:bg-gradient-to-r dark:from-[#00d084] dark:to-[#0ECB81] text-[#D4AF37] dark:text-[#0B0E11] border border-[#D4AF37]/50 dark:border-transparent hover:bg-yellow-50 hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] dark:hover:shadow-none dark:hover:opacity-90 py-3 rounded-xl text-xs font-black transition-all duration-500 uppercase tracking-widest flex items-center justify-center gap-2"
+           >
+              <Activity size={16} />
+              {lang === 'vi' ? 'Gọi SAIBot Chẩn Đoán' : 'Summon SAIBot For Diagnosis'}
+           </button>
         </div>
       </div>
     </div>

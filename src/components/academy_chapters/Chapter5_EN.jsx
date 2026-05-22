@@ -14,13 +14,13 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
     <div className="border border-gray-200 dark:border-[#2B3139] rounded-3xl overflow-hidden my-8 bg-gray-50 dark:bg-[#0B0E11] shadow-md dark:shadow-xl transition-colors">
       <div className="bg-white dark:bg-[#181A20] p-5 flex items-center gap-3 border-b border-gray-200 dark:border-[#2B3139] transition-colors">
         <span className="text-xs font-black tracking-widest uppercase text-yellow-600 dark:text-[#FCD535] bg-yellow-50 dark:bg-[#FCD535]/10 border border-yellow-200 dark:border-[#FCD535]/30 px-4 py-1.5 rounded-full shadow-sm">
-          <Zap size={14} className="inline mr-1" /> CÂU HỎI KIỂM TRA
+          <Zap size={14} className="inline mr-1" /> QUIZ QUESTION
         </span>
       </div>
       <div className="p-8">
         <div className="text-lg md:text-xl font-bold text-black dark:text-white mb-6 leading-relaxed transition-colors">
           {q}
-          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
+          {context && <span className="block text-[17.5px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
         </div>
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
@@ -35,14 +35,14 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
             return (
               <button key={i} disabled={selected !== null} onClick={() => setSelected(i)} className={`flex items-start gap-4 p-5 border-2 rounded-2xl text-left transition-all ${btnClass}`}>
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 transition-colors ${letterClass}`}>{String.fromCharCode(65 + i)}</div>
-                <span className="text-[16px] leading-[1.7] mt-1">{opt}</span>
+                <span className="text-[18.5px] leading-[1.7] mt-1">{opt}</span>
               </button>
             );
           })}
         </div>
         {selected !== null && (
-          <div className={`mt-6 p-6 rounded-2xl text-[16px] leading-relaxed ${selected === correctIdx ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]' : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'}`}>
-            <strong className="block text-lg mb-2">{selected === correctIdx ? '✅ Chính xác!' : '❌ Chưa đúng.'}</strong> {explanation}
+          <div className={`mt-6 p-6 rounded-2xl text-[18.5px] leading-relaxed ${selected === correctIdx ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]' : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'}`}>
+            <strong className="block text-lg mb-2">{selected === correctIdx ? '✅ Correct!' : '❌ Incorrect.'}</strong> {explanation}
           </div>
         )}
       </div>
@@ -75,35 +75,35 @@ const JournalSimulator = () => {
 
   const analyze = () => {
     if (!mkt && !dir && !res) {
-      setAnalysis({ type: 'warn', msg: '⚠️ Điền thêm thông tin để nhận phân tích chi tiết nhé!' });
+      setAnalysis({ type: 'warn', msg: '⚠️ Please fill in more information to receive a detailed analysis!' });
       return;
     }
-    const isWin = res === 'Thắng ✅';
-    const isLoss = res === 'Thua ❌';
-    const sysVio = sys === '⚠️ Sai 1-2 điều' || sys === '❌ Vi phạm hoàn toàn';
+    const isWin = res === 'Win ✅';
+    const isLoss = res === 'Loss ❌';
+    const sysVio = sys === '⚠️ Missed 1-2 rules' || sys === '❌ Complete violation';
     const hasDemon = demons.length > 0;
 
     let resHtml = [];
     if (sysVio && isWin) {
-      resHtml.push({ type: 'danger', icon: '⚠️', title: 'Cảnh báo quan trọng', text: 'Bạn vi phạm hệ thống nhưng vẫn thắng. Đây là nguy hiểm nhất có thể xảy ra — não bộ của bạn vừa nhận được reward cho hành vi XẤU. Vòng lặp sai lầm đang được củng cố. Lần sau sẽ vi phạm mạnh hơn.' });
+      resHtml.push({ type: 'danger', icon: '⚠️', title: 'Critical Warning', text: 'You violated the system but still won. This is the most dangerous thing that can happen — your brain just received a reward for BAD behavior. The cycle of mistakes is being reinforced. Next time you will violate it harder.' });
     }
     if (sysVio && isLoss) {
-      resHtml.push({ type: 'bad', icon: '🩸', title: 'Phân tích thất bại', text: 'Vi phạm hệ thống + thua = phải review kỹ. Câu hỏi: (1) Nếu đúng hệ thống, lệnh này có khả năng thắng không? (2) Con quỷ nào đã khiến bạn vi phạm? Đây là bài học quan trọng nhất.' });
+      resHtml.push({ type: 'bad', icon: '🩸', title: 'Failure Analysis', text: 'System violation + loss = requires deep review. Questions: (1) If you followed the system, would this trade likely win? (2) Which demon caused you to violate it? This is the most important lesson.' });
     }
     if (!sysVio && isLoss) {
-      resHtml.push({ type: 'ok', icon: '✅', title: 'Thua đúng cách', text: 'Đây là "chi phí kinh doanh" bình thường. Bạn đã tuân thủ hệ thống — lần thua này không phải thất bại, đó là khoản phí để thị trường hoạt động. Tiếp tục giữ kỷ luật.' });
+      resHtml.push({ type: 'ok', icon: '✅', title: 'Proper Loss', text: 'This is a normal "business expense". You followed the system — this loss is not a failure, it\'s the fee for the market to operate. Keep your discipline.' });
     }
     if (hasDemon) {
-      resHtml.push({ type: 'purple', icon: '👹', title: 'Con quỷ phát hiện', text: `${demons.join(', ')}. Rất tốt khi bạn tự nhận ra! Việc đặt tên con quỷ là bước đầu tiên để kiểm soát nó.` });
+      resHtml.push({ type: 'purple', icon: '👹', title: 'Demon Detected', text: `${demons.join(', ')}. Great job recognizing it! Naming the demon is the first step to controlling it.` });
     }
-    if (emos.includes('😌 Bình tĩnh') && !hasDemon) {
-      resHtml.push({ type: 'ok', icon: '🌟', title: 'Trạng thái lý tưởng', text: 'Bình tĩnh + không có con quỷ = điều kiện tâm lý tốt nhất để giao dịch. Lưu ý cảm giác này để nhận ra sự khác biệt khi con quỷ xuất hiện lần sau.' });
+    if (emos.includes('😌 Calm') && !hasDemon) {
+      resHtml.push({ type: 'ok', icon: '🌟', title: 'Ideal State', text: 'Calm + no demon = the best psychological state for trading. Note this feeling so you can recognize the difference when a demon appears next time.' });
     }
     if (lesson.length > 20) {
-      resHtml.push({ type: 'gold', icon: '✦', title: 'Bài học', text: 'Bài học bạn rút ra được ghi nhận. Đây là phần quan trọng nhất của Journal.' });
+      resHtml.push({ type: 'gold', icon: '✦', title: 'Lesson', text: 'The lesson you learned has been recorded. This is the most important part of the Journal.' });
     }
 
-    setAnalysis({ type: 'success', data: resHtml.length > 0 ? resHtml : [{ type: 'normal', text: 'Hãy điền thêm thông tin để nhận phân tích chi tiết hơn.' }] });
+    setAnalysis({ type: 'success', data: resHtml.length > 0 ? resHtml : [{ type: 'normal', text: 'Please fill in more information to receive a more detailed analysis.' }] });
   };
 
   return (
@@ -114,47 +114,47 @@ const JournalSimulator = () => {
         <span className="text-xs text-gray-500 dark:text-[#848E9C] font-mono">{new Date().toLocaleDateString('vi-VN')}</span>
       </div>
       <div className="p-8">
-        <div className="text-[11px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">Thông tin lệnh</div>
+        <div className="text-[13.5px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">Trade Information</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Thị trường</label>
-            <input type="text" value={mkt} onChange={e => setMkt(e.target.value)} placeholder="XAU/USD, BTC..." className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Market</label>
+            <input type="text" value={mkt} onChange={e => setMkt(e.target.value)} placeholder="XAU/USD, BTC..." className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Hướng</label>
-            <select value={dir} onChange={e => setDir(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
-              <option value="">Chọn...</option><option>BUY (Long)</option><option>SELL (Short)</option>
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Direction</label>
+            <select value={dir} onChange={e => setDir(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
+              <option value="">Select...</option><option>BUY (Long)</option><option>SELL (Short)</option>
             </select>
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Kết quả</label>
-            <select value={res} onChange={e => setRes(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
-              <option value="">Chọn...</option><option>Thắng ✅</option><option>Thua ❌</option><option>Break Even ➖</option>
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Result</label>
+            <select value={res} onChange={e => setRes(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
+              <option value="">Select...</option><option>Win ✅</option><option>Loss ❌</option><option>Break Even ➖</option>
             </select>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">R:R thực tế</label>
-            <input type="text" value={rr} onChange={e => setRr(e.target.value)} placeholder="1:2.5" className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Actual R:R</label>
+            <input type="text" value={rr} onChange={e => setRr(e.target.value)} placeholder="1:2.5" className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Có theo hệ thống?</label>
-            <select value={sys} onChange={e => setSys(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
-              <option value="">Chọn...</option><option>✅ Đúng 100% hệ thống</option><option>⚠️ Sai 1-2 điều</option><option>❌ Vi phạm hoàn toàn</option>
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Followed system?</label>
+            <select value={sys} onChange={e => setSys(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
+              <option value="">Select...</option><option>✅ 100% followed system</option><option>⚠️ Missed 1-2 rules</option><option>❌ Complete violation</option>
             </select>
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Điểm tự chấm (1-10)</label>
-            <input type="number" value={score} onChange={e => setScore(e.target.value)} min={1} max={10} placeholder="7" className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Self-rating (1-10)</label>
+            <input type="number" value={score} onChange={e => setScore(e.target.value)} min={1} max={10} placeholder="7" className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
 
         <div className="mb-8">
-          <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Cảm xúc khi vào lệnh</label>
+          <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Emotions at Entry</label>
           <div className="flex flex-wrap gap-2">
-            {['😤 Tự tin cao', '😰 Lo lắng', '😱 FOMO', '😠 Tức giận (sau thua)', '😌 Bình tĩnh', '🤔 Lưỡng lự', '🎯 Tập trung', '😵 Mất kiểm soát'].map(e => (
-              <button key={e} onClick={() => toggleEmo(e)} className={`px-4 py-2 rounded-xl text-[14px] transition-all border ${emos.includes(e) ? 'border-yellow-500 dark:border-[#FCD535] bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] font-bold' : 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-gray-700 dark:text-[#EAECEF] hover:border-gray-300 dark:hover:border-[#474D57]'}`}>
+            {['😤 Highly confident', '😰 Anxious', '😱 FOMO', '😠 Angry (after loss)', '😌 Calm', '🤔 Hesitant', '🎯 Focused', '😵 Out of control'].map(e => (
+              <button key={e} onClick={() => toggleEmo(e)} className={`px-4 py-2 rounded-xl text-[16.5px] transition-all border ${emos.includes(e) ? 'border-yellow-500 dark:border-[#FCD535] bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] font-bold' : 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-gray-700 dark:text-[#EAECEF] hover:border-gray-300 dark:hover:border-[#474D57]'}`}>
                 {e}
               </button>
             ))}
@@ -162,41 +162,41 @@ const JournalSimulator = () => {
         </div>
 
         <div className="mb-8">
-          <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Nhận diện Con Quỷ nào đã ảnh hưởng bạn?</label>
+          <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Identify which Demon influenced you?</label>
           <div className="flex flex-col gap-3">
-            {['👁 FOMO — Vào lệnh vì sợ bỏ lỡ', '🔥 Revenge — Vào để gỡ lệnh trước', '👑 Overconfidence — Quá tự tin, không kiểm tra lại', '🧊 Loss Aversion — Không cắt lỗ đúng hạn', '🪬 Confirmation Bias — Chỉ xem tín hiệu mình muốn thấy', '🐑 Herding — Theo đám đông/signal người khác', '🎰 Overtrading — Vào lệnh không đủ setup'].map(d => (
+            {['👁 FOMO — Entering out of fear of missing out', '🔥 Revenge — Entering to recover previous loss', '👑 Overconfidence — Too confident, no double-checking', '🧊 Loss Aversion — Failing to cut losses on time', '🪬 Confirmation Bias — Only seeing the signals you want to see', '🐑 Herding — Following the crowd/others\' signals', '🎰 Overtrading — Entering without proper setup'].map(d => (
               <label key={d} className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" checked={demons.includes(d)} onChange={() => toggleDemon(d)} className="w-5 h-5 rounded border-gray-300 dark:border-[#2B3139] text-yellow-500 dark:text-[#00d084] focus:ring-yellow-500 dark:focus:ring-[#00d084] bg-white dark:bg-[#181A20] cursor-pointer" />
-                <span className="text-[15px] text-gray-700 dark:text-[#EAECEF] group-hover:text-black dark:group-hover:text-white transition-colors">{d}</span>
+                <span className="text-[17.5px] text-gray-700 dark:text-[#EAECEF] group-hover:text-black dark:group-hover:text-white transition-colors">{d}</span>
               </label>
             ))}
           </div>
         </div>
 
         <div className="mb-8">
-          <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Bài học từ lệnh này</label>
-          <textarea value={lesson} onChange={e => setLesson(e.target.value)} rows="3" placeholder="Lần sau mình sẽ... / Mình nhận ra rằng..." className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+          <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Lesson from this trade</label>
+          <textarea value={lesson} onChange={e => setLesson(e.target.value)} rows="3" placeholder="Next time I will... / I realized that..." className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
         </div>
 
-        <button onClick={analyze} className="w-full py-4 rounded-xl font-black text-[16px] uppercase tracking-wider transition-all bg-yellow-500 dark:bg-[#00d084] hover:bg-yellow-400 dark:hover:bg-[#00e691] text-black shadow-[0_4px_14px_0_rgba(234,179,8,0.39)] dark:shadow-[0_4px_14px_0_rgba(0,208,132,0.39)]">
-          ✦ Phân tích Journal ✦
+        <button onClick={analyze} className="w-full py-4 rounded-xl font-black text-[18.5px] uppercase tracking-wider transition-all bg-yellow-500 dark:bg-[#00d084] hover:bg-yellow-400 dark:hover:bg-[#00e691] text-black shadow-[0_4px_14px_0_rgba(234,179,8,0.39)] dark:shadow-[0_4px_14px_0_rgba(0,208,132,0.39)]">
+          ✦ Analyze Journal ✦
         </button>
 
         {analysis && (
           <div className={`mt-6 p-6 rounded-2xl border transition-all ${analysis.type === 'warn' ? 'bg-yellow-50 dark:bg-[#FCD535]/10 border-yellow-200 dark:border-[#FCD535]/30 text-yellow-800 dark:text-[#FCD535]' : 'bg-gray-50 dark:bg-[#0B0E11] border-gray-200 dark:border-[#2B3139]'}`}>
             {analysis.type === 'warn' ? (
-              <div className="text-[14px] leading-relaxed">{analysis.msg}</div>
+              <div className="text-[16.5px] leading-relaxed">{analysis.msg}</div>
             ) : (
               <div>
-                <div className="text-[11px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">📊 Phân tích của bạn</div>
+                <div className="text-[13.5px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">📊 Your Analysis</div>
                 <div className="space-y-4">
                   {analysis.data.map((item, i) => (
                     item.type === 'normal' ? (
-                      <div key={i} className="text-[15px] text-gray-700 dark:text-[#9ca3b0]">{item.text}</div>
+                      <div key={i} className="text-[17.5px] text-gray-700 dark:text-[#9ca3b0]">{item.text}</div>
                     ) : (
                       <div key={i} className={`p-4 rounded-xl border ${item.type === 'danger' ? 'bg-red-50 dark:bg-[#F6465D]/10 border-red-200 dark:border-[#F6465D]/30 text-red-800 dark:text-[#F6465D]' : item.type === 'bad' ? 'bg-red-50 dark:bg-[#F6465D]/10 border-red-200 dark:border-[#F6465D]/30 text-red-800 dark:text-[#F6465D]' : item.type === 'ok' ? 'bg-green-50 dark:bg-[#0ECB81]/10 border-green-200 dark:border-[#0ECB81]/30 text-green-800 dark:text-[#0ECB81]' : item.type === 'purple' ? 'bg-purple-50 dark:bg-[#9b59ff]/10 border-purple-200 dark:border-[#9b59ff]/30 text-purple-800 dark:text-[#9b59ff]' : 'bg-yellow-50 dark:bg-[#FCD535]/10 border-yellow-200 dark:border-[#FCD535]/30 text-yellow-800 dark:text-[#FCD535]'}`}>
                         <div className="font-bold mb-1"><span className="mr-2">{item.icon}</span>{item.title}</div>
-                        <div className="text-[14px] leading-relaxed opacity-90">{item.text}</div>
+                        <div className="text-[16.5px] leading-relaxed opacity-90">{item.text}</div>
                       </div>
                     )
                   ))}
@@ -214,97 +214,97 @@ const JournalSimulator = () => {
 // ==========================================
 // CHAPTER 5 DATA
 // ==========================================
-const CHAPTER_5_DATA = [
+const CHAPTER_5_DATA_EN = [
   {
     chapter: "Chapter 5: Trading Psychology & The 7 Demons", title: "0. Neuroscience & 7 Demons",
     content: (
       <>
-        <SectionHead icon={<Brain size={16} />} title="Tại sao trader giỏi kỹ thuật vẫn thua lỗ?" desc="Kẻ thù không nằm trên chart. Kẻ thù nằm trong đầu bạn." />
-        <StoryBox label="📖 The Matrix của Trading" icon="🧠">
-          Năm 2002, Daniel Kahneman đoạt giải Nobel Kinh tế vì chứng minh: <strong>Con người không đưa ra quyết định tài chính dựa trên logic.</strong> Chúng ta ra quyết định dựa trên cảm xúc, bản năng tiến hóa, và thiên kiến (biases) — sau đó dùng logic để ngụy biện cho quyết định đó.<br /><br />
-          Thị trường tài chính là một cỗ máy được thiết kế hoàn hảo để kích hoạt mọi bản năng tồi tệ nhất của con người: tham lam, sợ hãi, bầy đàn. <em>Hệ thống giao dịch (NNN) là vũ khí của bạn. Nhưng tâm lý là người cầm vũ khí.</em>
+        <SectionHead icon={<Brain size={16} />} title="Why do technically skilled traders still lose?" desc="The enemy is not on the chart. The enemy is in your head." />
+        <StoryBox label="📖 The Matrix of Trading" icon="🧠">
+          In 2002, Daniel Kahneman won the Nobel Prize in Economics for proving: <strong>Humans do not make financial decisions based on logic.</strong> We make decisions based on emotions, evolutionary instincts, and biases — then use logic to rationalize those decisions.<br /><br />
+          Financial markets are perfectly designed machines that trigger all the worst human instincts: greed, fear, herding. <em>Your trading system (NNN) is your weapon. But psychology is the one wielding the weapon.</em>
         </StoryBox>
 
         <SectionHead icon={<Brain size={16} />} title="System 1 vs System 2" desc="Daniel Kahneman — Thinking, Fast and Slow" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 my-6">
           <div className="border border-red-200 dark:border-[#F6465D]/30 bg-red-50 dark:bg-[#F6465D]/5 rounded-2xl p-6">
             <div className="text-4xl text-red-500 dark:text-[#F6465D] font-black mb-2">1</div>
-            <div className="font-bold text-red-700 dark:text-[#F6465D] text-lg mb-4">System 1 — "Con Thú"</div>
+            <div className="font-bold text-red-700 dark:text-[#F6465D] text-lg mb-4">System 1 — "The Beast"</div>
             <ul className="space-y-2">
-              {['Tự động, vô thức, cực nhanh', 'Cảm xúc, bản năng, trực giác', 'Tiêu tốn ít năng lượng', 'Không thể tắt', 'Điều khiển 95% hành vi', 'Kẻ thù trong trading'].map((item, i) => (
-                <li key={i} className={`flex gap-2 text-[14px] ${i === 5 ? 'text-red-700 dark:text-[#F6465D] font-bold' : 'text-gray-700 dark:text-[#EAECEF]'}`}><span className="text-red-500 shrink-0">▸</span>{item}</li>
+              {['Automatic, unconscious, extremely fast', 'Emotion, instinct, intuition', 'Low energy consumption', 'Cannot be turned off', 'Controls 95% of behavior', 'The enemy in trading'].map((item, i) => (
+                <li key={i} className={`flex gap-2 text-[16.5px] ${i === 5 ? 'text-red-700 dark:text-[#F6465D] font-bold' : 'text-gray-700 dark:text-[#EAECEF]'}`}><span className="text-red-500 shrink-0">▸</span>{item}</li>
               ))}
             </ul>
           </div>
           <div className="border border-green-200 dark:border-[#0ECB81]/30 bg-green-50 dark:bg-[#0ECB81]/5 rounded-2xl p-6">
             <div className="text-4xl text-green-500 dark:text-[#0ECB81] font-black mb-2">2</div>
-            <div className="font-bold text-green-700 dark:text-[#0ECB81] text-lg mb-4">System 2 — "Nhà Triết Học"</div>
+            <div className="font-bold text-green-700 dark:text-[#0ECB81] text-lg mb-4">System 2 — "The Philosopher"</div>
             <ul className="space-y-2">
-              {['Chậm, có ý thức, cần nỗ lực', 'Logic, phân tích, lý trí', 'Tiêu tốn nhiều năng lượng', 'Dễ bị giao động bởi S1', 'Chỉ kích hoạt khi được yêu cầu', 'Người mình muốn làm chủ'].map((item, i) => (
-                <li key={i} className={`flex gap-2 text-[14px] ${i === 5 ? 'text-green-700 dark:text-[#0ECB81] font-bold' : 'text-gray-700 dark:text-[#EAECEF]'}`}><span className="text-green-500 shrink-0">▸</span>{item}</li>
+              {['Slow, conscious, effortful', 'Logic, analysis, rationality', 'High energy consumption', 'Easily swayed by S1', 'Only activates when called upon', 'Who we want in charge'].map((item, i) => (
+                <li key={i} className={`flex gap-2 text-[16.5px] ${i === 5 ? 'text-green-700 dark:text-[#0ECB81] font-bold' : 'text-gray-700 dark:text-[#EAECEF]'}`}><span className="text-green-500 shrink-0">▸</span>{item}</li>
               ))}
             </ul>
           </div>
         </div>
 
-        <StoryBox label="🧪 Thí nghiệm của Kahneman" icon="🧪" borderClass="border-red-300 dark:border-[#F6465D]/50" textClass="text-red-800 dark:text-[#F6465D]">
-          Bạn đang giữ lệnh Buy vàng. Giá đột ngột giảm $15 trong 5 phút. Tim bạn đập nhanh. Bàn tay bắt đầu run.<br /><br /><strong>System 1 thì thầm:</strong> "Chạy đi! Giá đang sụp đổ! Đóng lệnh ngay!"<br /><strong>System 2 im lặng vì System 1 chiếm hết oxygen.</strong><br /><br />Bạn đóng lệnh. Hai phút sau giá phục hồi và tăng $30. Stop loss của bạn vẫn còn rất xa và không bị quét.<br /><br />Kahneman gọi đây là <em>Cognitive Hijacking</em> — khi System 1 chiếm quyền kiểm soát hoàn toàn trước khi System 2 kịp phân tích.
+        <StoryBox label="🧪 Kahneman's Experiment" icon="🧪" borderClass="border-red-300 dark:border-[#F6465D]/50" textClass="text-red-800 dark:text-[#F6465D]">
+          You are holding a Buy on Gold. Price suddenly drops $15 in 5 minutes. Your heart races. Your hands start shaking.<br /><br /><strong>System 1 whispers:</strong> "Run! The price is collapsing! Close the trade now!"<br /><strong>System 2 is silent because System 1 is taking all the oxygen.</strong><br /><br />You close the trade. Two minutes later the price recovers and goes up $30. Your stop loss was still far away and wasn't swept.<br /><br />Kahneman calls this <em>Cognitive Hijacking</em> — when System 1 takes complete control before System 2 has time to analyze.
         </StoryBox>
 
-        <SectionHead icon={<RefreshCw size={16} />} title="Vòng lặp thói quen và Trading" desc="James Clear — Atomic Habits" />
+        <SectionHead icon={<RefreshCw size={16} />} title="The Habit Loop and Trading" desc="James Clear — Atomic Habits" />
         <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-2xl p-5 my-6 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
-          <div className="text-gray-400 text-xs mb-2">// Vòng lặp thói quen xấu trong Trading</div>
-          <div>CUE: Thấy giá đang tăng nhanh (tin tức tốt)</div>
-          <div>CRAVING: Não tiết dopamine → "Tôi phải mua ngay!"</div>
-          <div>RESPONSE: Vào lệnh vội vã, không theo hệ thống</div>
-          <div>REWARD: Đôi khi thắng (củng cố thói quen xấu)</div>
-          <div className="text-yellow-400 dark:text-[#FCD535]">→ Lần sau: Cue tương tự → Craving mạnh hơn → Response tự động hơn</div>
+          <div className="text-gray-400 text-xs mb-2">// Bad habit loop in Trading</div>
+          <div>CUE: Seeing price rising fast (good news)</div>
+          <div>CRAVING: Brain releases dopamine → "I must buy now!"</div>
+          <div>RESPONSE: Rushing into a trade, not following the system</div>
+          <div>REWARD: Winning sometimes (reinforcing the bad habit)</div>
+          <div className="text-yellow-400 dark:text-[#FCD535]">→ Next time: Similar cue → Stronger craving → More automatic response</div>
           <br />
-          <div className="text-gray-400 text-xs">// Để phá vòng lặp (theo Atomic Habits):</div>
-          <div>CUE: Nhận ra kích thích → PAUSE (tạm dừng có ý thức)</div>
-          <div>CRAVING: Thay reward "vào lệnh" bằng "kiểm tra checklist"</div>
-          <div>RESPONSE: Thực hiện đúng quy trình</div>
-          <div>REWARD: Tự khen mình đã tuân thủ hệ thống</div>
+          <div className="text-gray-400 text-xs">// To break the loop (per Atomic Habits):</div>
+          <div>CUE: Recognize the trigger → PAUSE (consciously)</div>
+          <div>CRAVING: Replace the reward of "entering trade" with "checking checklist"</div>
+          <div>RESPONSE: Follow the proper process</div>
+          <div>REWARD: Praise yourself for sticking to the system</div>
         </div>
 
-        <SectionHead icon={<Activity size={16} />} title="Tại sao thua lỗ đau hơn thắng vui?" desc="Prospect Theory — Kahneman & Tversky" />
-        <p className="text-[16px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
-          Kahneman và Tversky (1979) phát hiện ra điều này: <strong>Mất $100 gây ra nỗi đau tâm lý gấp 2-2.5 lần niềm vui khi kiếm được $100.</strong> Đây là lý do tại sao chúng ta khó cắt lỗ — vì cắt lỗ = hiện thực hóa nỗi đau, và não bộ không muốn đau.
+        <SectionHead icon={<Activity size={16} />} title="Why do losses hurt more than wins feel good?" desc="Prospect Theory — Kahneman & Tversky" />
+        <p className="text-[18.5px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
+          Kahneman and Tversky (1979) discovered this: <strong>Losing $100 causes psychological pain that is 2-2.5 times greater than the joy of making $100.</strong> This is why it's so hard to cut losses — because cutting a loss = actualizing pain, and the brain doesn't want pain.
         </p>
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-5 my-4">
-          <div className="text-[11px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-3">Prospect Theory — Minh họa trực quan</div>
-          <div className="flex items-center gap-2 text-[13px] font-mono mb-4">
-            <span className="text-red-600 dark:text-[#F6465D] font-bold">Mất $100</span>
+          <div className="text-[13.5px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-3">Prospect Theory — Visual Illustration</div>
+          <div className="flex items-center gap-2 text-[15.5px] font-mono mb-4">
+            <span className="text-red-600 dark:text-[#F6465D] font-bold">Loss of $100</span>
             <span className="text-gray-500">=</span>
-            <span className="text-yellow-600 dark:text-[#FCD535] font-bold">Cần thắng $200-250</span>
-            <span className="text-gray-500">để cảm thấy</span>
-            <span className="text-green-600 dark:text-[#0ECB81] font-bold">hòa về cảm xúc</span>
+            <span className="text-yellow-600 dark:text-[#FCD535] font-bold">Requires winning $200-250</span>
+            <span className="text-gray-500">to feel</span>
+            <span className="text-green-600 dark:text-[#0ECB81] font-bold">emotionally breakeven</span>
           </div>
           <div className="relative h-2 rounded-full bg-gradient-to-r from-red-500 via-gray-300 dark:via-gray-600 to-green-500 mt-8 mb-2">
-            <div className="absolute top-[-24px] left-[30%] text-[10px] font-mono font-bold text-red-600 dark:text-[#F6465D] -translate-x-1/2">Lỗ $100</div>
-            <div className="absolute top-[-24px] left-[50%] text-[10px] font-mono font-bold text-gray-500 -translate-x-1/2">0</div>
-            <div className="absolute top-[-24px] left-[90%] text-[10px] font-mono font-bold text-green-600 dark:text-[#0ECB81] -translate-x-1/2">Lời $200+</div>
+            <div className="absolute top-[-24px] left-[30%] text-[12.5px] font-mono font-bold text-red-600 dark:text-[#F6465D] -translate-x-1/2">Loss $100</div>
+            <div className="absolute top-[-24px] left-[50%] text-[12.5px] font-mono font-bold text-gray-500 -translate-x-1/2">0</div>
+            <div className="absolute top-[-24px] left-[90%] text-[12.5px] font-mono font-bold text-green-600 dark:text-[#0ECB81] -translate-x-1/2">Profit $200+</div>
           </div>
         </div>
 
         <SimpleQuiz
-          q="Bạn đang xem chart. Giá đột ngột tăng 3% trong 10 phút, Twitter đang sôi sùng sục. Bạn ngay lập tức cảm thấy muốn mua vào. Hệ thống nào đang điều khiển bạn?"
-          opts={['System 2 — bạn đang phân tích kỹ lưỡng', 'System 1 — cảm xúc và bản năng đang chiếm quyền trước khi bạn kịp suy nghĩ', 'Cả hai đang hoạt động song song', 'Không hệ thống nào — đây là quyết định thuần lý trí']}
+          q="You are watching the chart. Price suddenly goes up 3% in 10 minutes, Twitter is going crazy. You immediately feel the urge to buy. Which system is controlling you?"
+          opts={['System 2 — you are analyzing carefully', 'System 1 — emotions and instincts are hijacking before you can think', 'Both are working in parallel', 'Neither — this is a purely rational decision']}
           correctIdx={1}
-          explanation="System 1 chiếm quyền điều khiển ngay lập tức khi có kích thích cảm xúc mạnh. Bạn cảm thấy 'muốn' mua trước khi kịp phân tích — đó là dấu hiệu của Cognitive Hijacking."
+          explanation="System 1 takes control immediately when there's a strong emotional trigger. You feel you 'want' to buy before analyzing — that's a sign of Cognitive Hijacking."
         />
         <SimpleQuiz
-          q="Tại sao nhiều trader 'biết mình sai mà vẫn không cắt lỗ'?"
-          opts={['Vì họ thiếu kiến thức kỹ thuật', 'Prospect Theory: cắt lỗ = hiện thực hóa nỗi đau (System 1 né tránh); não bộ thà giữ hy vọng hơn là chấp nhận đau ngay lập tức', 'Vì họ lười biếng', 'Vì broker không cho đóng lệnh']}
+          q="Why do many traders 'know they are wrong but still won't cut losses'?"
+          opts={['Because they lack technical knowledge', 'Prospect Theory: cutting losses = actualizing pain (System 1 avoids); the brain would rather keep hope than accept immediate pain', 'Because they are lazy', 'Because the broker won\'t let them close the trade']}
           correctIdx={1}
-          explanation="Prospect Theory của Kahneman: cắt lỗ = hiện thực hóa đau đớn ngay lập tức. Não bộ (System 1) chọn 'hy vọng sẽ về' thay vì 'đau ngay bây giờ' — dù về lý trí là sai."
+          explanation="Kahneman's Prospect Theory: cutting a loss = actualizing pain immediately. The brain (System 1) chooses 'hope it comes back' over 'pain right now' — even if logically wrong."
         />
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 0</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 0 Summary</div>
           <ul className="space-y-2">
-            {['System 1 (cảm xúc, nhanh) điều khiển 95% quyết định. System 2 (lý trí, chậm) thường đến sau khi đã hành động.', 'Prospect Theory: thua $100 đau gấp 2-2.5 lần vui khi thắng $100 → não bộ né tránh cắt lỗ.', 'Thói quen xấu trong trading được ăn sâu vào não qua vòng lặp Cue-Craving-Response-Reward.', 'Giải pháp: tạo "khoảng dừng" (pause) giữa Cue và Response để System 2 có thời gian hoạt động.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['System 1 (emotional, fast) controls 95% of decisions. System 2 (rational, slow) usually arrives after the action is taken.', 'Prospect Theory: losing $100 hurts 2-2.5x more than winning $100 feels good → brain avoids cutting losses.', 'Bad trading habits are wired into the brain via the Cue-Craving-Response-Reward loop.', 'Solution: create a "pause" between Cue and Response to give System 2 time to activate.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -316,47 +316,47 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#2c0a0a] to-[#1a0505] p-8 rounded-3xl text-center mb-8 border border-[#c0392b]/30">
-          <div className="text-[12px] font-mono text-[#c0392b] uppercase tracking-[0.2em] mb-4">// Con Quỷ 1/7</div>
+          <div className="text-[14.5px] font-mono text-[#c0392b] uppercase tracking-[0.2em] mb-4">// Demon 1/7</div>
           <div className="text-6xl mb-4">👁</div>
           <h1 className="text-3xl font-black text-white mb-2">FOMO</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Avaritia — Tham Lam</p>
-          <p className="text-[14px] font-mono text-[#c0392b] bg-[#c0392b]/10 p-4 rounded-xl border border-[#c0392b]/20">"Nó thì thầm: Giá đang tăng và mày chưa vào. Ngốc à?"</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
-            <span>⚡</span> <strong>Khai thác nỗi sợ bỏ lỡ cơ hội</strong>
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Avaritia — Greed</p>
+          <p className="text-[16.5px] font-mono text-[#c0392b] bg-[#c0392b]/10 p-4 rounded-xl border border-[#c0392b]/20">"It whispers: Price is pumping and you're not in. Are you stupid?"</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
+            <span>⚡</span> <strong>Exploits the fear of missing out</strong>
           </div>
         </div>
 
-        <StoryBox label="📜 Câu chuyện truyền đời" icon="👁" borderClass="border-red-500/30" textClass="text-gray-300">
+        <StoryBox label="📜 The classic story" icon="👁" borderClass="border-red-500/30" textClass="text-gray-300">
           <div className="text-gray-800 dark:text-gray-300">
-            Năm 2021, Bitcoin tăng từ $10,000 lên $60,000 trong 1 năm. Hàng triệu người nhìn thấy bạn bè, người thân kiếm tiền và cảm thấy đau đớn vì đã không vào sớm hơn. Vào tháng 11/2021, khi BTC chạm $58,000, hàng triệu người cuối cùng cũng đầu hàng trước FOMO và mua vào.<br /><br />Ba tháng sau, BTC rơi xuống $32,000. <strong>Những người mua vì FOMO ở đỉnh đã mất 45% tài sản.</strong><br /><br />FOMO không quan tâm đến phân tích kỹ thuật của bạn. Nó chỉ nói: "Thời cơ đang qua đi. Mày sẽ hối hận."
+            In 2021, Bitcoin pumped from $10k to $60k in a year. Millions saw friends and family making money and felt the pain of not getting in earlier. In Nov 2021, as BTC hit $58k, millions finally surrendered to FOMO and bought in.<br /><br />Three months later, BTC crashed to $32k. <strong>Those who FOMO bought the top lost 45% of their net worth.</strong><br /><br />FOMO doesn't care about your technical analysis. It only says: "The opportunity is passing. You will regret it."
           </div>
         </StoryBox>
 
-        <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" desc="Kahneman · Sapiens · Atomic Habits" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
-          System 1 của Kahneman kết hợp với "Social Comparison" trong Sapiens: khi thấy người khác làm giàu, não tiết cortisol (stress hormone) và dopamine cùng lúc. Combo này khiến bạn hành động bốc đồng để giảm stress của việc "bị bỏ lại".
+        <SectionHead icon={<Brain size={16} />} title="The Science Behind It" desc="Kahneman · Sapiens · Atomic Habits" />
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+          Kahneman's System 1 meets "Social Comparison" from Sapiens: seeing others get rich makes the brain release cortisol (stress) and dopamine simultaneously. This combo forces impulsive actions to relieve the stress of "being left behind".
         </p>
 
-        <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" desc="Bạn có đang bị con quỷ này ám không?" />
+        <SectionHead icon={<AlertTriangle size={16} />} title="Symptoms to recognize" desc="Are you possessed by this demon?" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
-          {['Mua vào khi giá đã tăng rất mạnh và mọi người đang nói về nó', 'Vào lệnh không có setup rõ ràng, chỉ vì "sợ bỏ lỡ"', 'Tăng size lệnh khi thấy người khác kiếm nhiều hơn mình', 'Theo dõi chart liên tục, lo lắng khi không có lệnh'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+          {['Buying after price has already surged heavily and everyone is talking about it', 'Entering a trade without a clear setup, just out of "fear of missing out"', 'Increasing position size upon seeing others make more money than you', 'Constantly watching the chart, feeling anxious when not in a trade'].map((s, i) => (
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
-        <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
+        <SectionHead icon={<Shield size={16} />} title="Exorcism Ritual" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
-            <strong>Nghi thức trừ FOMO:</strong> Khi cảm thấy FOMO, viết ra 3 điều: (1) "Tôi muốn vào vì..." (2) "Setup kỹ thuật hiện tại là..." (3) "Nếu không vào, cơ hội tiếp theo sẽ đến khi..." Hành động viết ra kích hoạt System 2. Thêm: nhớ rằng "cơ hội tiếp theo luôn đến — thị trường không bao giờ ngừng."
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Countermeasure</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+            <strong>FOMO Exorcism:</strong> When feeling FOMO, write down 3 things: (1) "I want to enter because..." (2) "The current technical setup is..." (3) "If I don't enter, the next opportunity will come when..." The act of writing activates System 2. Bonus: remember that "the next opportunity always comes — the market never stops."
           </div>
         </div>
 
         <SimpleQuiz
-          q="Giá BTC đang tăng 15% trong ngày, Twitter đang sôi sùng sục. Bạn không có setup nào nhưng cảm thấy phải mua ngay. Con quỷ nào đang điều khiển bạn và bạn nên làm gì?"
-          opts={['Mua ngay vì momentum đang rất mạnh', 'FOMO — Dừng lại, viết ra "tại sao mình muốn vào", kiểm tra xem có setup kỹ thuật thật sự không. Nếu không có setup → không vào', 'SELL vì giá đã tăng quá nhiều', 'Chờ và mua khi giá pullback 5%']}
+          q="BTC price is up 15% today, Twitter is buzzing. You don't have any setup but feel you must buy right now. Which demon is controlling you and what should you do?"
+          opts={['Buy right now because momentum is very strong', 'FOMO — Stop, write down "why I want to enter", check if there is an actual technical setup. If no setup → do not enter', 'SELL because price has gone up too much', 'Wait and buy when price pulls back 5%']}
           correctIdx={1}
-          explanation="FOMO là con quỷ và 'pause + checklist' là cách trừ. Không có setup = không vào, dù giá đang bay."
+          explanation="FOMO is the demon and 'pause + checklist' is the exorcism. No setup = no entry, even if price is mooning."
         />
       </>
     )
@@ -366,47 +366,47 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#2c0e0e] to-[#1a0808] p-8 rounded-3xl text-center mb-8 border border-[#e74c3c]/30">
-          <div className="text-[12px] font-mono text-[#e74c3c] uppercase tracking-[0.2em] mb-4">// Con Quỷ 2/7</div>
+          <div className="text-[14.5px] font-mono text-[#e74c3c] uppercase tracking-[0.2em] mb-4">// Demon 2/7</div>
           <div className="text-6xl mb-4">🔥</div>
           <h1 className="text-3xl font-black text-white mb-2">REVENGE TRADING</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Ira — Phẫn Nộ</p>
-          <p className="text-[14px] font-mono text-[#e74c3c] bg-[#e74c3c]/10 p-4 rounded-xl border border-[#e74c3c]/20">"Nó gầm lên: Thị trường cướp tiền của mày. Lấy lại đi!"</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
-            <span>⚡</span> <strong>Biến cảm xúc tức giận thành tự sát tài chính</strong>
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Ira — Wrath</p>
+          <p className="text-[16.5px] font-mono text-[#e74c3c] bg-[#e74c3c]/10 p-4 rounded-xl border border-[#e74c3c]/20">"It roars: The market stole your money. Take it back!"</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
+            <span>⚡</span> <strong>Turns anger into financial suicide</strong>
           </div>
         </div>
 
-        <StoryBox label="📜 Câu chuyện của Marcus" icon="🔥" borderClass="border-red-500/30">
+        <StoryBox label="📜 Marcus's Story" icon="🔥" borderClass="border-red-500/30">
           <div className="text-gray-800 dark:text-gray-300">
-            Marcus là trader crypto 6 tháng kinh nghiệm. Tháng 10, anh thua 3 lệnh liên tiếp, mất $600. Anh cảm thấy thị trường "không công bằng" và "cướp tiền của anh".<br /><br />Anh tức giận. Anh tăng gấp đôi size lệnh tiếp theo để "lấy lại ngay". Lệnh thứ 4 thua. Anh tăng gấp 3 size. Thua nốt. Trong 2 giờ, Marcus đã mất $3,200 — gấp 5 lần số tiền đã mất ban đầu.<br /><br /><strong>"Thị trường không biết bạn là ai. Nó không cướp tiền của bạn. Nó chỉ phản ánh quyết định của bạn."</strong> — câu nói này đến quá muộn với Marcus.
+            Marcus was a crypto trader with 6 months of experience. In October, he lost 3 consecutive trades, losing $600. He felt the market was "unfair" and "robbed his money".<br /><br />He got angry. He doubled the size of his next trade to "make it back immediately". The 4th trade lost. He tripled the size. Lost again. In 2 hours, Marcus lost $3,200 — 5 times his initial loss.<br /><br /><strong>"The market doesn't know who you are. It doesn't steal your money. It only reflects your decisions."</strong> — this quote came too late for Marcus.
           </div>
         </StoryBox>
 
-        <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
-          "Amygdala Hijack" — thuật ngữ của Daniel Goleman: khi tức giận, amygdala (não cảm xúc) chiếm hoàn toàn prefrontal cortex (não lý trí). Bạn secara harfiah không thể suy nghĩ rõ ràng khi đang tức giận. Atomic Habits: khi cảm xúc cực độ, habit loop bị phá vỡ — chỉ còn reaction thuần túy.
+        <SectionHead icon={<Brain size={16} />} title="The Science Behind It" />
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+          "Amygdala Hijack" — a term by Daniel Goleman: when angry, the amygdala (emotional brain) completely hijacks the prefrontal cortex (rational brain). You literally cannot think clearly when angry. Atomic Habits: in extreme emotional states, the habit loop breaks down — leaving only pure reaction.
         </p>
 
-        <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
+        <SectionHead icon={<AlertTriangle size={16} />} title="Symptoms to recognize" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
-          {['Thua lệnh → vào lệnh mới ngay để "gỡ"', 'Tăng size sau khi thua (reverse martingale lệch lạc)', 'Cảm thấy thị trường "không công bằng" hoặc "cố tình quét SL của mình"', 'Giao dịch với cảm giác tức giận, bực bội'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+          {['Losing a trade → entering a new one immediately to "recover"', 'Increasing size after a loss (a skewed reverse martingale)', 'Feeling the market is "unfair" or "purposely hunting my SL"', 'Trading with anger and frustration'].map((s, i) => (
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
-        <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
+        <SectionHead icon={<Shield size={16} />} title="Exorcism Ritual" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
-            <strong>Quy tắc 24 giờ:</strong> Sau mỗi lệnh thua &gt;1.5× risk bình thường → dừng giao dịch ngay trong ngày đó. Đóng máy tính. Ra ngoài đi bộ. Điều này không phải yếu đuối — đây là kỷ luật chuyên nghiệp. Nhớ: "Thị trường sẽ ở đó vào ngày mai. Tài khoản bị blowup thì không."
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Countermeasure</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+            <strong>The 24-hour Rule:</strong> After any loss &gt;1.5× your normal risk → stop trading for the day. Close the computer. Go outside for a walk. This is not weakness — this is professional discipline. Remember: "The market will be there tomorrow. A blown up account will not."
           </div>
         </div>
 
         <SimpleQuiz
-          q="Bạn vừa thua 2 lệnh liên tiếp, mất $200. Cảm giác bực bội dâng lên và bạn muốn vào lệnh thứ 3 ngay lập tức để 'gỡ lại'. Con quỷ nào đây và bạn nên làm gì?"
-          opts={['Vào lệnh thứ 3 với size nhỏ hơn để an toàn hơn', 'Con quỷ Phẫn Nộ — Dừng lại. Đóng máy tính. Không trade thêm trong ngày hôm nay.', 'Phân tích kỹ càng 30 phút rồi mới vào', 'FOMO — cần mua ngay trước khi cơ hội qua đi']}
+          q="You just lost 2 trades in a row, losing $200. Frustration builds up and you want to enter a 3rd trade immediately to 'recover'. Which demon is this and what should you do?"
+          opts={['Enter the 3rd trade with a smaller size to be safer', 'The Demon of Wrath (Revenge) — Stop. Close the computer. No more trading today.', 'Analyze carefully for 30 mins then enter', 'FOMO — need to buy now before the chance is gone']}
           correctIdx={1}
-          explanation="Revenge Trading là con quỷ nguy hiểm nhất về tốc độ phá hủy. Dừng 100% là câu trả lời đúng duy nhất."
+          explanation="Revenge Trading is the most dangerous demon in terms of destruction speed. Stopping 100% is the only correct answer."
         />
       </>
     )
@@ -416,47 +416,47 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#1a1500] to-[#0f0f00] p-8 rounded-3xl text-center mb-8 border border-[#d4ac0d]/30">
-          <div className="text-[12px] font-mono text-[#d4ac0d] uppercase tracking-[0.2em] mb-4">// Con Quỷ 3/7</div>
+          <div className="text-[14.5px] font-mono text-[#d4ac0d] uppercase tracking-[0.2em] mb-4">// Demon 3/7</div>
           <div className="text-6xl mb-4">👑</div>
           <h1 className="text-3xl font-black text-white mb-2">OVERCONFIDENCE</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Superbia — Kiêu Ngạo</p>
-          <p className="text-[14px] font-mono text-[#d4ac0d] bg-[#d4ac0d]/10 p-4 rounded-xl border border-[#d4ac0d]/20">"Nó thì thầm: Mày đọc được thị trường rồi. Mày giỏi hơn những kẻ kia."</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
-            <span>⚡</span> <strong>Biến thành công thành mầm mống thất bại</strong>
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Superbia — Pride</p>
+          <p className="text-[16.5px] font-mono text-[#d4ac0d] bg-[#d4ac0d]/10 p-4 rounded-xl border border-[#d4ac0d]/20">"It whispers: You've figured out the market. You are better than the rest."</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
+            <span>⚡</span> <strong>Turns success into the seed of failure</strong>
           </div>
         </div>
 
-        <StoryBox label="📜 Câu chuyện về Icarus" icon="👑" borderClass="border-yellow-500/30">
+        <StoryBox label="📜 The Story of Icarus" icon="👑" borderClass="border-yellow-500/30">
           <div className="text-gray-800 dark:text-gray-300">
-            Có một trader, sau 5 lệnh thắng liên tiếp (tổng +35%), bắt đầu tin rằng anh đã "crack the code" của thị trường. Anh bắt đầu bỏ qua checklist, tăng size, và bước vào giao dịch với niềm tin tuyệt đối.<br /><br />Anh nhớ câu chuyện Icarus — cậu bé bay bằng cánh sáp, bay càng cao càng gần mặt trời, cuối cùng sáp tan chảy và rơi xuống biển.<br /><br /><strong>Thị trường không thưởng cho sự kiêu ngạo. Nó chờ đợi khoảnh khắc bạn tự tin nhất để dạy cho bạn bài học đắt nhất.</strong>
+            A trader, after 5 consecutive wins (total +35%), started believing he had "cracked the code" of the market. He started skipping checklists, increasing position size, and trading with absolute certainty.<br /><br />He forgot the story of Icarus — the boy who flew with wax wings, flying higher and closer to the sun until the wax melted and he fell into the sea.<br /><br /><strong>The market does not reward pride. It waits for the exact moment you are most confident to teach you the most expensive lesson.</strong>
           </div>
         </StoryBox>
 
-        <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
-          Sapiens: "Narrative Fallacy" — não người tạo ra câu chuyện liên kết để giải thích thế giới. Sau 5 lần thắng, não tự động tạo câu chuyện "tôi giỏi hơn thị trường" thay vì "tôi may mắn trong chuỗi ngắn". Kahneman gọi đây là "Illusion of Control" — ảo tưởng rằng mình kiểm soát được điều về bản chất là ngẫu nhiên.
+        <SectionHead icon={<Brain size={16} />} title="The Science Behind It" />
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+          Sapiens: "Narrative Fallacy" — the human brain creates connected stories to explain the world. After 5 wins, the brain auto-generates the story "I am better than the market" instead of "I was lucky in a short streak". Kahneman calls this the "Illusion of Control" — the delusion that we can control what is essentially random.
         </p>
 
-        <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
+        <SectionHead icon={<AlertTriangle size={16} />} title="Symptoms to recognize" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
-          {['Bỏ qua trading plan và checklist vì "mình biết nó sẽ đi đâu"', 'Tăng size sau chuỗi thắng mà không có lý do hệ thống', 'Coi thường rủi ro vì "lần này khác"', 'Không review lệnh sai vì "đó là ngoại lệ"'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+          {['Skipping trading plan and checklist because "I know where it will go"', 'Increasing size after a winning streak without a systemic reason', 'Ignoring risk because "this time is different"', 'Not reviewing losing trades because "that was an exception"'].map((s, i) => (
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
-        <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
+        <SectionHead icon={<Shield size={16} />} title="Exorcism Ritual" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
-            <strong>Bài kiểm tra Feynman:</strong> Sau mỗi chuỗi thắng, hỏi: "Tôi có thể giải thích chính xác tại sao lệnh này thắng không? Dựa trên nguyên tắc nào?" Nếu câu trả lời là "vì tôi cảm thấy thị trường sẽ đi lên" → đó là Overconfidence, không phải kỹ năng. Giữ size cố định bất kể chuỗi thắng hay thua.
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Countermeasure</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+            <strong>The Feynman Test:</strong> After any winning streak, ask: "Can I explain exactly why this trade won? Based on what principles?" If the answer is "because I felt the market would go up" → that is Overconfidence, not skill. Keep position size fixed regardless of winning or losing streaks.
           </div>
         </div>
 
         <SimpleQuiz
-          q="Bạn vừa thắng 6 lệnh liên tiếp, tổng +$1,200. Bạn cảm thấy 'đang vào guồng' và muốn tăng size lệnh tiếp theo lên gấp đôi. Đây có phải ý tưởng tốt?"
-          opts={['Tốt — đang thắng liên tiếp nên nên tận dụng momentum', 'Không — đây là Overconfidence. 6 lệnh không đủ để xác định kỹ năng vs may mắn. Giữ size cố định và tiếp tục hệ thống.', 'Tốt nhưng chỉ tăng 25% thôi', 'Nên giảm size vì chuỗi thắng sắp kết thúc']}
+          q="You just won 6 trades in a row, totaling +$1,200. You feel 'in the zone' and want to double your position size for the next trade. Is this a good idea?"
+          opts={['Good — you are on a winning streak so you should leverage the momentum', 'No — this is Overconfidence. 6 trades is not enough to determine skill vs luck. Keep size fixed and stick to the system.', 'Good but only increase by 25%', 'Should reduce size because the winning streak is ending']}
           correctIdx={1}
-          explanation="Overconfidence là con quỷ giỏi ngụy trang nhất. Giữ size cố định dù đang thắng hay thua là kỷ luật quan trọng nhất. 6 lệnh là mẫu quá nhỏ để kết luận."
+          explanation="Overconfidence is the best-camouflaged demon. Keeping size fixed whether winning or losing is the most vital discipline. 6 trades is too small a sample size to conclude anything."
         />
       </>
     )
@@ -466,47 +466,47 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#020d1a] to-[#010a14] p-8 rounded-3xl text-center mb-8 border border-[#2980b9]/30">
-          <div className="text-[12px] font-mono text-[#2980b9] uppercase tracking-[0.2em] mb-4">// Con Quỷ 4/7</div>
+          <div className="text-[14.5px] font-mono text-[#2980b9] uppercase tracking-[0.2em] mb-4">// Demon 4/7</div>
           <div className="text-6xl mb-4">🧊</div>
           <h1 className="text-3xl font-black text-white mb-2">LOSS AVERSION</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Acedia — Sợ Hãi</p>
-          <p className="text-[14px] font-mono text-[#2980b9] bg-[#2980b9]/10 p-4 rounded-xl border border-[#2980b9]/20">"Nó thì thầm: Đừng cắt lỗ. Biết đâu giá sẽ quay về..."</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
-            <span>⚡</span> <strong>Đóng băng khả năng ra quyết định đúng đắn</strong>
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Acedia — Fear</p>
+          <p className="text-[16.5px] font-mono text-[#2980b9] bg-[#2980b9]/10 p-4 rounded-xl border border-[#2980b9]/20">"It whispers: Don't cut the loss. Maybe the price will return..."</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
+            <span>⚡</span> <strong>Freezes the ability to make correct decisions</strong>
           </div>
         </div>
 
-        <StoryBox label="📜 Câu chuyện về Người Cầm Lửa" icon="🧊" borderClass="border-blue-500/30">
+        <StoryBox label="📜 The Story of the Fire Holder" icon="🧊" borderClass="border-blue-500/30">
           <div className="text-gray-800 dark:text-gray-300">
-            Một người cầm ngọn lửa trong tay. Lửa bắt đầu đốt cháy, gây đau. Nhưng anh ta không buông tay — vì anh sợ mất ngọn lửa.<br /><br />Mỗi giây trôi qua, vết thương sâu hơn. Cuối cùng anh mất không chỉ ngọn lửa mà còn cả bàn tay.<br /><br /><strong>Giữ lệnh thua vì "sợ thực hiện thua lỗ" giống hệt người cầm lửa đó.</strong> Stop Loss không phải thừa nhận thất bại — đó là quyết định sáng suốt nhất bạn có thể làm.
+            A man held a fire in his hand. The fire started burning, causing pain. But he wouldn't let go — because he was afraid of losing the fire.<br /><br />Every second passed, the wound got deeper. Finally, he lost not only the fire but also his hand.<br /><br /><strong>Holding a losing trade because you 'fear realizing a loss' is exactly like that fire holder.</strong> A Stop Loss is not admitting failure — it is the smartest decision you can make.
           </div>
         </StoryBox>
 
-        <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
-          Prospect Theory (Kahneman & Tversky 1979): mất $100 = đau tâm lý tương đương thắng $200-250. Vì vậy não bộ "đóng băng" trước quyết định cắt lỗ — nó ưu tiên duy trì "hy vọng" hơn là hiện thực hóa đau. Đây là bất đối xứng cảm xúc tự nhiên nhưng gây tổn thất tài chính.
+        <SectionHead icon={<Brain size={16} />} title="The Science Behind It" />
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+          Prospect Theory (Kahneman & Tversky 1979): losing $100 = psychological pain equivalent to winning $200-250. So the brain "freezes" before the decision to cut a loss — it prioritizes maintaining "hope" over actualizing pain. This is a natural emotional asymmetry but causes financial destruction.
         </p>
 
-        <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
+        <SectionHead icon={<AlertTriangle size={16} />} title="Symptoms to recognize" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
-          {['Không đặt Stop Loss hoặc dời SL ra xa hơn khi bị chạm', 'Giữ lệnh thua với suy nghĩ "biết đâu giá sẽ quay về"', 'Đóng lệnh thắng quá sớm vì "sợ mất lợi nhuận" nhưng giữ lệnh thua mãi', 'Cảm thấy nhẹ nhõm khi lệnh thua cuối cùng về BE thay vì phân tích tại sao không cắt sớm hơn'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+          {['Not placing a Stop Loss or moving the SL further away when hit', 'Holding losing trades thinking "maybe the price will return"', 'Closing winning trades too early out of "fear of losing profit" but holding losing trades forever', 'Feeling relieved when a losing trade finally returns to Breakeven instead of analyzing why you didn\'t cut earlier'].map((s, i) => (
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
-        <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
+        <SectionHead icon={<Shield size={16} />} title="Exorcism Ritual" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
-            <strong>Nghi thức Pre-mortem:</strong> Trước khi vào lệnh, hỏi: "Nếu lệnh này đến SL, đó có phải lỗi của tôi không hay là rủi ro hợp lý?" Nếu hợp lý → chấp nhận trước. Coi SL là "chi phí kinh doanh" như tiền thuê mặt bằng cho shop, không phải thất bại.
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Countermeasure</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+            <strong>Pre-mortem Ritual:</strong> Before entering a trade, ask: "If this trade hits SL, is it my fault or a reasonable risk?" If reasonable → accept it beforehand. Treat the SL as a "business expense" like shop rent, not a failure.
           </div>
         </div>
 
         <SimpleQuiz
-          q="Lệnh Buy vàng của bạn đang lỗ $80 (chạm SL). Nhưng bạn quyết định dời SL thêm $50 xuống nữa vì 'vàng hay đảo chiều từ vùng này'. Đây là con quỷ nào?"
-          opts={['Không có vấn đề — điều chỉnh SL linh hoạt là bình thường', 'Loss Aversion — dời SL để tránh hiện thực hóa đau là sai lầm nghiêm trọng nhất có thể làm', 'Overconfidence — quá tin vào phân tích của mình', 'FOMO — sợ bỏ lỡ cơ hội nếu giá quay lên']}
+          q="Your Buy Gold trade is down $80 (hitting SL). But you decide to move your SL down another $50 because 'gold often reverses from this zone'. Which demon is this?"
+          opts={['No problem — adjusting SL flexibly is normal', 'Loss Aversion — moving SL to avoid actualizing pain is the most serious mistake you can make', 'Overconfidence — too much trust in your own analysis', 'FOMO — fear of missing out if price goes back up']}
           correctIdx={1}
-          explanation="Dời SL ra xa khi bị chạm = hành động nguy hiểm nhất do Loss Aversion. Não bộ tránh hiện thực hóa đau, dẫn đến lỗ nhỏ thành lỗ lớn. SL đặt ra để tôn trọng, không phải để dời."
+          explanation="Moving SL away when hit = the most dangerous action caused by Loss Aversion. The brain avoids actualizing pain, leading a small loss to become a large one. SL is placed to be respected, not to be moved."
         />
       </>
     )
@@ -516,47 +516,47 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#100a1a] to-[#0a0510] p-8 rounded-3xl text-center mb-8 border border-[#8e44ad]/30">
-          <div className="text-[12px] font-mono text-[#8e44ad] uppercase tracking-[0.2em] mb-4">// Con Quỷ 5/7</div>
+          <div className="text-[14.5px] font-mono text-[#8e44ad] uppercase tracking-[0.2em] mb-4">// Demon 5/7</div>
           <div className="text-6xl mb-4">🪬</div>
           <h1 className="text-3xl font-black text-white mb-2">CONFIRMATION BIAS</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Invidia — Dối Trá</p>
-          <p className="text-[14px] font-mono text-[#8e44ad] bg-[#8e44ad]/10 p-4 rounded-xl border border-[#8e44ad]/20">"Nó thì thầm: Nhìn đây — tất cả tín hiệu đều xác nhận phân tích của mày."</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
-            <span>⚡</span> <strong>Làm mù mắt trước sự thật, chỉ thấy điều mình muốn thấy</strong>
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Invidia — Deceit</p>
+          <p className="text-[16.5px] font-mono text-[#8e44ad] bg-[#8e44ad]/10 p-4 rounded-xl border border-[#8e44ad]/20">"It whispers: Look here — all signals confirm your analysis."</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
+            <span>⚡</span> <strong>Blinds you to the truth, only seeing what you want to see</strong>
           </div>
         </div>
 
-        <StoryBox label="📜 Câu chuyện về Thợ Bói Chart" icon="🪬" borderClass="border-purple-500/30">
+        <StoryBox label="📜 The Story of the Chart Fortune Teller" icon="🪬" borderClass="border-purple-500/30">
           <div className="text-gray-800 dark:text-gray-300">
-            Có một trader quyết định BUY Bitcoin trước khi xem bất kỳ dữ liệu nào. Sau đó anh mở chart.<br /><br />Anh thấy EMA21 đang dốc lên — <em>"Ủng hộ Buy!"</em>. Anh nhìn qua RSI đang ở 68 — <em>"Vẫn chưa overbought, ủng hộ Buy!"</em>. Anh xem volume — thấp hơn trung bình — <em>"Chắc chuẩn bị tăng mạnh, ủng hộ Buy!"</em>. Anh nhìn thấy kháng cự lớn ở phía trên — anh không nhìn vào đó nữa.<br /><br /><strong>Anh đã không phân tích chart — anh đã thuyết phục bản thân.</strong>
+            A trader decided to BUY Bitcoin before looking at any data. Then he opened the chart.<br /><br />He saw EMA21 sloping up — <em>"Supports Buy!"</em>. He looked at RSI at 68 — <em>"Not overbought yet, supports Buy!"</em>. He checked volume — below average — <em>"Probably preparing for a strong pump, supports Buy!"</em>. He saw a major resistance level above — he didn't look at it again.<br /><br /><strong>He didn't analyze the chart — he convinced himself.</strong>
           </div>
         </StoryBox>
 
-        <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
-          Sapiens: "Cognitive Dissonance" — khi có sự mâu thuẫn giữa niềm tin và thực tế, não chọn bảo vệ niềm tin bằng cách bác bỏ thực tế. Trong trading: khi đã muốn vào lệnh, não tự động "lọc ra" các tín hiệu ngược chiều và "khuếch đại" các tín hiệu cùng chiều.
+        <SectionHead icon={<Brain size={16} />} title="The Science Behind It" />
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+          Sapiens: "Cognitive Dissonance" — when there is a conflict between belief and reality, the brain chooses to protect the belief by rejecting reality. In trading: when you already want to enter a trade, the brain automatically "filters out" opposing signals and "amplifies" confirming ones.
         </p>
 
-        <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
+        <SectionHead icon={<AlertTriangle size={16} />} title="Symptoms to recognize" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
-          {['Phân tích chart SAU KHI đã quyết định hướng lệnh', 'Bỏ qua hoặc giải thích khác đi khi thấy tín hiệu ngược chiều', 'Chỉ đọc tin tức/phân tích đồng tình với quan điểm của mình', 'Cảm thấy "chắc chắn" về một lệnh mà không có lý do rõ ràng'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+          {['Analyzing the chart AFTER deciding the trade direction', 'Ignoring or explaining away opposing signals', 'Only reading news/analysis that agrees with your view', 'Feeling "certain" about a trade without clear reasons'].map((s, i) => (
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
-        <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
+        <SectionHead icon={<Shield size={16} />} title="Exorcism Ritual" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
-            <strong>Devil's Advocate Protocol:</strong> Sau khi phân tích xong, dành 2 phút chơi "luật sư bào chữa cho phía ngược lại". Hỏi: "Nếu tôi SELL thay vì BUY, lý do tốt nhất là gì?" Nếu không tìm được ít nhất 2 lý do hợp lý → analysis chưa đủ khách quan.
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Countermeasure</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+            <strong>Devil's Advocate Protocol:</strong> After analyzing, spend 2 minutes playing 'devil's advocate'. Ask: "If I SELL instead of BUY, what is the best reason?" If you can't find at least 2 valid reasons → your analysis is not objective enough.
           </div>
         </div>
 
         <SimpleQuiz
-          q="Bạn đã quyết định BUY ETH. Khi xem chart, bạn chú ý nhiều hơn đến tín hiệu ủng hộ Buy và tự giải thích những tín hiệu bán như 'chỉ là nhiễu'. Đây là gì?"
-          opts={['Phân tích đa chiều — điều bình thường', 'Confirmation Bias — bạn đang tìm kiếm xác nhận thay vì sự thật. Hãy chủ động tìm lý do SELL trước khi quyết định cuối cùng', 'Overconfidence — quá tin vào kỹ năng phân tích', 'Loss Aversion — sợ lệnh này thua']}
+          q="You have decided to BUY ETH. When looking at the chart, you pay more attention to Buy signals and explain away Sell signals as 'just noise'. What is this?"
+          opts={['Multi-dimensional analysis — normal', 'Confirmation Bias — you are seeking confirmation instead of truth. Actively look for SELL reasons before making the final decision', 'Overconfidence — too much trust in analytical skills', 'Loss Aversion — fear of this trade losing']}
           correctIdx={1}
-          explanation="Confirmation Bias là con quỷ trí tuệ nhất — nó không bao giờ nói dối bạn trực tiếp, nó chỉ chọn lọc sự thật. Bằng cách tìm kiếm lý do ngược lại (SELL), bạn buộc System 2 hoạt động."
+          explanation="Confirmation Bias is the most intellectual demon — it never lies to you directly, it just cherry-picks the truth. By looking for opposing reasons (SELL), you force System 2 to activate."
         />
       </>
     )
@@ -566,47 +566,47 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#020f07] to-[#010a04] p-8 rounded-3xl text-center mb-8 border border-[#27ae60]/30">
-          <div className="text-[12px] font-mono text-[#27ae60] uppercase tracking-[0.2em] mb-4">// Con Quỷ 6/7</div>
+          <div className="text-[14.5px] font-mono text-[#27ae60] uppercase tracking-[0.2em] mb-4">// Demon 6/7</div>
           <div className="text-6xl mb-4">🐑</div>
           <h1 className="text-3xl font-black text-white mb-2">HERDING</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Luxuria — Ngu Muội Bầy Đàn</p>
-          <p className="text-[14px] font-mono text-[#27ae60] bg-[#27ae60]/10 p-4 rounded-xl border border-[#27ae60]/20">"Nó rủ rỉ: Tất cả mọi người đều đang mua. Mày muốn là người duy nhất không tham gia?"</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
-            <span>⚡</span> <strong>Sử dụng bản năng bầy đàn 200,000 năm tiến hóa chống lại bạn</strong>
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Luxuria — Herd Ignorance</p>
+          <p className="text-[16.5px] font-mono text-[#27ae60] bg-[#27ae60]/10 p-4 rounded-xl border border-[#27ae60]/20">"It whispers: Everyone is buying. Do you want to be the only one left out?"</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
+            <span>⚡</span> <strong>Uses 200,000 years of evolutionary herd instinct against you</strong>
           </div>
         </div>
 
-        <StoryBox label="📜 Câu chuyện của Yuval Harari (Sapiens)" icon="🐑" borderClass="border-green-500/30">
+        <StoryBox label="📜 Yuval Harari's Story (Sapiens)" icon="🐑" borderClass="border-green-500/30">
           <div className="text-gray-800 dark:text-gray-300">
-            200,000 năm trước, con người sống trong nhóm nhỏ 50-150 người. Ai đi khác bầy thường bị sư tử ăn. Ai theo bầy thường sống sót.<br /><br />"Khi thấy mọi người chạy, chạy đi — câu hỏi đặt ra sau" là một nguyên tắc sinh tồn tuyệt vời.<br /><br /><strong>Trong thị trường tài chính, nguyên tắc đó giết chết bạn.</strong><br /><br />Khi mọi người đang mua đồng loạt — đó thường là đỉnh. Khi mọi người bán tháo hoảng loạn — đó thường là đáy. Thị trường được thiết kế để lấy tiền từ đám đông và trao cho thiểu số dám đi ngược.
+            200,000 years ago, humans lived in small groups of 50-150. Those who deviated from the herd were eaten by lions. Those who followed the herd survived.<br /><br />"When you see everyone running, run — ask questions later" was a great survival principle.<br /><br /><strong>In financial markets, that principle kills you.</strong><br /><br />When everyone is buying simultaneously — that's usually the top. When everyone is panic selling — that's usually the bottom. The market is designed to take money from the crowd and give it to the minority who dare to go against it.
           </div>
         </StoryBox>
 
-        <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
-          Sapiens: "Collective Fiction" — con người sở hữu khả năng độc nhất: tin vào câu chuyện chung (collective illusions). Khi "tin tức cộng đồng" nói BTC sẽ về 0, đám đông tin và bán. Khi tin BTC đến 1 triệu, đám đông tin và mua. Giá cả cuối cùng là tổng hợp của những câu chuyện này, không phải thực tế.
+        <SectionHead icon={<Brain size={16} />} title="The Science Behind It" />
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+          Sapiens: "Collective Fiction" — humans possess a unique ability: to believe in collective illusions. When "community news" says BTC will go to 0, the crowd believes and sells. When news says BTC is going to 1 million, the crowd believes and buys. Price is ultimately a synthesis of these stories, not reality.
         </p>
 
-        <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
+        <SectionHead icon={<AlertTriangle size={16} />} title="Symptoms to recognize" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
-          {['Vào lệnh vì Telegram/Discord/Twitter đang ồn ào về cơ hội', 'Mua theo "tín hiệu" từ các group, KOL trader mà không tự phân tích', 'Cảm thấy an tâm hơn khi có nhiều người đồng tình', 'Thay đổi phân tích của mình sau khi đọc comment/post của người khác'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+          {['Entering a trade because Telegram/Discord/Twitter is buzzing about the opportunity', 'Buying based on "signals" from groups or KOL traders without self-analysis', 'Feeling safer when many people agree', 'Changing your own analysis after reading comments/posts of others'].map((s, i) => (
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
-        <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
+        <SectionHead icon={<Shield size={16} />} title="Exorcism Ritual" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
-            <strong>Quy tắc Im Lặng:</strong> Không đọc bất kỳ tin tức trading, Telegram hay Twitter trong 30 phút trước khi phân tích chart. Phân tích độc lập trước, đọc quan điểm người khác sau (nếu cần). "Khi bạn cần người khác xác nhận phân tích của mình — bạn chưa có phân tích, bạn chỉ có hy vọng."
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Countermeasure</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+            <strong>The Silence Rule:</strong> Do not read any trading news, Telegram, or Twitter for 30 minutes before analyzing the chart. Analyze independently first, read others' views later (if needed). "When you need others to confirm your analysis — you don't have an analysis, you only have hope."
           </div>
         </div>
 
         <SimpleQuiz
-          q="Một KOL trader nổi tiếng vừa đăng 'BUY BTC ngay bây giờ — mục tiêu $100k'. Mọi người trong group đang BUY ồ ạt. Bạn chưa kiểm tra chart. Bạn nên làm gì?"
-          opts={['Buy ngay — KOL có kinh nghiệm hơn mình', 'Herding — dừng lại, tắt group, tự mở chart phân tích độc lập. Nếu setup của BẠN đồng ý, mới xem xét vào. Không vì KOL nói.', 'Buy nhưng với size nhỏ hơn để giảm rủi ro', 'Chờ thêm 10 người nữa confirm rồi mới buy']}
+          q="A famous KOL trader just posted 'BUY BTC right now — target $100k'. Everyone in the group is buying aggressively. You haven't checked the chart. What should you do?"
+          opts={['Buy right now — the KOL has more experience than me', 'Herding — stop, close the group, open the chart and analyze independently. If YOUR setup agrees, then consider entering. Not because the KOL said so.', 'Buy but with a smaller size to reduce risk', 'Wait for 10 more people to confirm before buying']}
           correctIdx={1}
-          explanation="Herding là bản năng tiến hóa. Phân tích độc lập là vũ khí chống lại nó. KOL trading có lợi ích riêng và không chịu trách nhiệm cho tài khoản của bạn."
+          explanation="Herding is an evolutionary instinct. Independent analysis is the weapon against it. Trading KOLs have their own interests and are not responsible for your account."
         />
       </>
     )
@@ -616,47 +616,47 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#1a0a00] to-[#140700] p-8 rounded-3xl text-center mb-8 border border-[#e67e22]/30">
-          <div className="text-[12px] font-mono text-[#e67e22] uppercase tracking-[0.2em] mb-4">// Con Quỷ 7/7</div>
+          <div className="text-[14.5px] font-mono text-[#e67e22] uppercase tracking-[0.2em] mb-4">// Demon 7/7</div>
           <div className="text-6xl mb-4">🎰</div>
           <h1 className="text-3xl font-black text-white mb-2">OVERTRADING</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Gula — Bạo Thực</p>
-          <p className="text-[14px] font-mono text-[#e67e22] bg-[#e67e22]/10 p-4 rounded-xl border border-[#e67e22]/20">"Nó liên tục kêu: Nhàm chán lắm. Sao không vào lệnh đi? Đợi chi vậy?"</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
-            <span>⚡</span> <strong>Biến sự nhàm chán thành con đường dẫn đến phá sản từ từ</strong>
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Gula — Gluttony</p>
+          <p className="text-[16.5px] font-mono text-[#e67e22] bg-[#e67e22]/10 p-4 rounded-xl border border-[#e67e22]/20">"It constantly whines: So boring. Why not enter a trade? What are you waiting for?"</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
+            <span>⚡</span> <strong>Turns boredom into a path of slow bankruptcy</strong>
           </div>
         </div>
 
-        <StoryBox label="📜 Câu chuyện về Sòng Bạc" icon="🎰" borderClass="border-orange-500/30">
+        <StoryBox label="📜 The Casino Story" icon="🎰" borderClass="border-orange-500/30">
           <div className="text-gray-800 dark:text-gray-300">
-            Sòng bạc Las Vegas không kiếm tiền từ những người đặt cược lớn và thua. Họ kiếm tiền từ hàng triệu người đặt cược nhỏ liên tục trong nhiều giờ.<br /><br />Giống vậy, overtrading không phá hủy tài khoản bằng 1 lệnh lớn. Nó làm mòn tài khoản từ từ: spread + commission + những lệnh không đủ setup + những lệnh nhàm chán.<br /><br /><strong>"Không vào lệnh cũng là một quyết định. Và đôi khi đó là quyết định tốt nhất."</strong><br /><br />Trader giỏi nhất không phải người vào nhiều lệnh nhất. Họ là người biết chờ đợi setup tốt nhất và bỏ qua tất cả những thứ còn lại.
+            Las Vegas casinos don't make money from people making huge bets and losing. They make money from millions of people making small bets continuously for hours.<br /><br />Similarly, overtrading doesn't destroy your account with one big loss. It slowly grinds your account away: spread + commission + subpar setups + boredom trades.<br /><br /><strong>"Not entering a trade is also a position. And sometimes it's the best position."</strong><br /><br />The best traders are not the ones who take the most trades. They are the ones who know how to wait for the best setups and ignore everything else.
           </div>
         </StoryBox>
 
-        <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
-          Atomic Habits: dopamine không chỉ được tiết ra khi nhận reward — nó được tiết ra nhiều nhất khi đang ANTICIPATE reward. Nghĩa là: hành động trading (click chuột, chờ lệnh khớp) = dopamine hit. Não học: "trading = sướng". Kết quả: muốn trading liên tục bất kể điều kiện thị trường.
+        <SectionHead icon={<Brain size={16} />} title="The Science Behind It" />
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+          Atomic Habits: dopamine is not just released when receiving a reward — it spikes highest when ANTICIPATING a reward. Meaning: the act of trading (clicking the mouse, waiting for the fill) = a dopamine hit. The brain learns: "trading = pleasure". Result: wanting to trade constantly regardless of market conditions.
         </p>
 
-        <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
+        <SectionHead icon={<AlertTriangle size={16} />} title="Symptoms to recognize" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
-          {['Vào lệnh khi không có setup rõ ràng vì "cảm thấy" thị trường sẽ tăng/giảm', 'Thực hiện nhiều hơn 3-5 lệnh/ngày trong swing trading', 'Cảm thấy bồn chồn, khó chịu khi không có lệnh đang mở', 'Vào lệnh nhỏ "thử" khi chưa đủ setup'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+          {['Entering a trade without a clear setup because you "feel" the market will go up/down', 'Executing more than 3-5 trades/day in swing trading', 'Feeling restless and uncomfortable when not having an open position', 'Taking small "test" trades when the setup is not fully there'].map((s, i) => (
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
-        <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
+        <SectionHead icon={<Shield size={16} />} title="Exorcism Ritual" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
-            <strong>Quota ngược:</strong> Thay vì "tôi phải vào ít nhất X lệnh hôm nay", hãy đặt rule: "Tôi chỉ được vào tối đa Y lệnh/ngày" (với swing trade: Y = 2-3). Và quan trọng hơn: viết ra trong Journal mỗi lần KHÔNG vào lệnh vì không đủ setup. "Hôm nay tôi đã từ chối 3 cơ hội kém chất lượng" là thành tích đáng tự hào.
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Countermeasure</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+            <strong>Reverse Quota:</strong> Instead of "I must take at least X trades today", set a rule: "I am only allowed a maximum of Y trades/day" (for swing trading: Y = 2-3). And more importantly: write in your Journal every time you DO NOT take a trade due to a lack of setup. "Today I rejected 3 low-quality opportunities" is a proud achievement.
           </div>
         </div>
 
         <SimpleQuiz
-          q="Bạn đã xem chart 3 giờ nhưng không thấy setup tốt theo hệ thống NNN. Bạn cảm thấy bồn chồn, muốn 'thử' một lệnh nhỏ cho vui. Đây là gì và bạn nên làm gì?"
-          opts={['Vào lệnh nhỏ thôi — rủi ro không nhiều', 'Overtrading/dopamine loop — "không lệnh = kỷ luật thực sự". Đóng chart, làm việc khác. Ghi vào Journal: "Hôm nay đã từ chối lệnh vì không đủ setup."', 'Chờ thêm 1 tiếng, nếu vẫn không thấy thì thôi', 'Xem thêm chart khác để tìm cơ hội']}
+          q="You have watched the chart for 3 hours but found no good setups according to the NNN system. You feel restless and want to 'test' a small trade for fun. What is this and what should you do?"
+          opts={['Just take a small trade — risk is low', 'Overtrading/dopamine loop — "no trade = true discipline". Close the chart, do something else. Log in Journal: "Today I rejected a trade because of no setup."', 'Wait another hour, if still nothing then stop', 'Look at other charts to find opportunities']}
           correctIdx={1}
-          explanation="Overtrading được ăn sâu vào não qua dopamine. Vào lệnh 'thử' = cho phép con quỷ này lớn mạnh hơn. 'Không lệnh = kỷ luật' là tư duy của trader chuyên nghiệp."
+          explanation="Overtrading is wired into the brain via dopamine. Entering a 'test' trade = allowing this demon to grow stronger. 'No trade = discipline' is the mindset of a professional trader."
         />
       </>
     )
@@ -665,45 +665,45 @@ const CHAPTER_5_DATA = [
     chapter: "Chapter 5: Trading Psychology & The 7 Demons", title: "8. Trading Journal",
     content: (
       <>
-        <SectionHead icon={<Notebook size={16} />} title="Trading Journal — Gương soi linh hồn Trader" desc="Công cụ duy nhất cho phép bạn nhìn thấy 7 con quỷ đang hoạt động trong chính mình." />
-        <StoryBox label="📖 Tại sao Journal hoạt động?" icon="🧪" borderClass="border-purple-500/30">
+        <SectionHead icon={<Notebook size={16} />} title="Trading Journal — The Mirror of a Trader's Soul" desc="The only tool that allows you to see the 7 demons operating within yourself." />
+        <StoryBox label="📖 Why does a Journal work?" icon="🧪" borderClass="border-purple-500/30">
           <div className="font-bold text-purple-700 dark:text-[#9b59ff] mb-2">Atomic Habits — "The Two-Minute Rule" & Habit Tracking (James Clear)</div>
           <div className="text-gray-800 dark:text-gray-300">
-            Đo lường = Nhận thức. Một khi bạn bắt đầu ghi lại hành vi, não bộ tự động bắt đầu điều chỉnh. Không cần ý chí — chỉ cần ánh sáng của sự quan sát. "You do not rise to the level of your goals; you fall to the level of your systems."
+            Measurement = Awareness. Once you start recording behavior, the brain automatically starts adjusting. No willpower needed — just the light of observation. "You do not rise to the level of your goals; you fall to the level of your systems."
           </div>
         </StoryBox>
 
-        <p className="text-[16px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
-          Khi bạn ghi lại mỗi lệnh vào Journal, một điều kỳ diệu xảy ra: <strong>bạn bắt đầu thấy pattern</strong>. "Mình hay thua vào thứ Hai." "Mình ra quyết định tệ khi vừa thua 2 lệnh liên tiếp." "Con quỷ Kiêu Ngạo hay xuất hiện sau chuỗi thắng." <em>Không có Journal = không có dữ liệu = không biết mình đang bị con quỷ nào thao túng.</em>
+        <p className="text-[18.5px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
+          When you record every trade in a Journal, something magical happens: <strong>you start seeing patterns</strong>. "I often lose on Mondays." "I make bad decisions right after losing 2 trades." "The Demon of Pride often appears after a winning streak." <em>No Journal = no data = not knowing which demon is manipulating you.</em>
         </p>
 
-        <SectionHead icon={<Edit3 size={16} />} title="Thực hành: Điền Journal của bạn" desc="Một bản ghi mẫu — điền thật để nhận phân tích" />
-        
+        <SectionHead icon={<Edit3 size={16} />} title="Practice: Fill out your Journal" desc="A sample entry — fill it out realistically to get an analysis" />
+
         <JournalSimulator />
 
-        <SectionHead icon={<Target size={16} />} title="Cách dùng Journal để tiêu diệt con quỷ" />
+        <SectionHead icon={<Target size={16} />} title="How to use the Journal to kill the demons" />
         <div className="space-y-4 my-6">
           {[
-            { n: '1', text: <><strong>Ghi lại MỌI lệnh — không ngoại lệ.</strong> Kể cả lệnh bạn "quên" không theo hệ thống. Đặc biệt lệnh đó. "Ánh sáng diệt ký sinh trùng."</> },
-            { n: '2', text: <><strong>Review mỗi tuần — không phải xem có lời không.</strong> Câu hỏi quan trọng: "Tuần này con quỷ nào xuất hiện nhiều nhất? Trong tình huống nào?" Đây là dữ liệu vàng.</> },
-            { n: '3', text: <><strong>Tìm "trigger" cá nhân.</strong> Ví dụ: "Tôi hay bị FOMO vào thứ Hai đầu tuần." "Con quỷ Phẫn Nộ hay xuất hiện sau 2 lệnh thua liên tiếp." Khi biết trigger, bạn có thể phòng thủ trước.</> },
-            { n: '4', text: <><strong>Tạo "nếu-thì" rule từ Journal.</strong> Ví dụ: "Nếu tôi vừa thua 2 lệnh → Tôi sẽ không vào lệnh thứ 3 trong ngày hôm đó." (Atomic Habits: Implementation Intentions)</> },
-            { n: '5', text: <><strong>Đo điểm "tuân thủ hệ thống" — không phải P&L.</strong> Tháng 1 giao dịch 20 lệnh, 17 lệnh đúng hệ thống = 85% compliance. Đây là số liệu quan trọng hơn profit trong giai đoạn học.</> },
+            { n: '1', text: <><strong>Record EVERY trade — no exceptions.</strong> Even the trade you "forgot" to follow the system on. Especially that trade. "Light kills parasites."</> },
+            { n: '2', text: <><strong>Review weekly — not to see if you are profitable.</strong> The important question: "Which demon appeared the most this week? In what situations?" This is golden data.</> },
+            { n: '3', text: <><strong>Find personal "triggers".</strong> Example: "I often get FOMO early on Monday." "The Demon of Wrath often appears after 2 consecutive losses." Once you know the trigger, you can defend against it beforehand.</> },
+            { n: '4', text: <><strong>Create "if-then" rules from the Journal.</strong> Example: "If I just lost 2 trades → I will not enter a 3rd trade that day." (Atomic Habits: Implementation Intentions)</> },
+            { n: '5', text: <><strong>Measure "system compliance" score — not P&L.</strong> In January, 20 trades, 17 followed the system = 85% compliance. This metric is far more important than profit in the learning phase.</> },
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
 
-        <Callout type="ok"><strong>Sức mạnh của Journal theo Atomic Habits:</strong> Khi bạn viết tên con quỷ xuống giấy, não bộ bắt đầu "cảnh giác" với nó trong thực tế. Sau 30 ngày viết Journal, nhiều trader báo cáo họ tự nhiên bắt đầu <em>nhận ra ngay lập tức</em> khi một con quỷ đang xuất hiện — điều mà trước đây họ không thể làm.</Callout>
+        <Callout type="ok"><strong>The power of Journaling according to Atomic Habits:</strong> When you write the demon's name on paper, the brain starts becoming "alert" to it in reality. After 30 days of journaling, many traders report they naturally start <em>recognizing immediately</em> when a demon is appearing — something they couldn't do before.</Callout>
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 8</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 8 Summary</div>
           <ul className="space-y-2">
-            {['Journal = gương soi — ánh sáng nhận thức tự động cải thiện hành vi (Atomic Habits: habit tracking).', 'Ghi lại: lệnh, cảm xúc, con quỷ hiện diện, điểm tuân thủ hệ thống. Mỗi lệnh không ngoại lệ.', 'Review hàng tuần để tìm trigger cá nhân và tạo "nếu-thì" rule phòng thủ.', 'Đo "tuân thủ hệ thống" thay vì P&L trong 3 tháng đầu. Process trước, profit sau.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['Journal = a mirror — the light of awareness automatically improves behavior (Atomic Habits: habit tracking).', 'Record: trade, emotions, present demons, system compliance score. Every single trade, no exceptions.', 'Review weekly to find personal triggers and create defensive "if-then" rules.', 'Measure "system compliance" instead of P&L for the first 3 months. Process first, profit later.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -714,38 +714,38 @@ const CHAPTER_5_DATA = [
     chapter: "Chapter 5: Trading Psychology & The 7 Demons", title: "9. Final Quiz",
     content: (
       <>
-        <SectionHead icon="📝" title="Kiểm tra Tâm lý Giao dịch" desc="15 câu hỏi — nhận biết con quỷ, giải thích khoa học, và áp dụng Journal. Chương quan trọng nhất trong toàn bộ giáo trình." />
-        <Callout type="warn">Mục tiêu: Đạt ít nhất 11/15 câu để chứng minh bạn đã sẵn sàng đối mặt với chính mình trên thị trường.</Callout>
+        <SectionHead icon="📝" title="Trading Psychology Test" desc="15 questions — identifying demons, scientific explanations, and Journal application. The most important chapter in the entire curriculum." />
+        <Callout type="warn">Goal: Get at least 11/15 questions right to prove you are ready to face yourself in the market.</Callout>
 
         {[
-          { q: 'Con quỷ FOMO khai thác gì trong tâm lý con người?', opts: ['Sợ đau đớn', 'Nỗi sợ bỏ lỡ cơ hội — được khuếch đại bởi social comparison (Sapiens: bản năng bầy đàn tiến hóa)', 'Lòng tham về tiền bạc', 'Mong muốn được tôn trọng'], ci: 1, ex: 'Bản năng tiến hóa khiến chúng ta sợ bị bỏ lại so với bầy đàn (social comparison).' },
-          { q: 'Kahneman gọi gì là "Cognitive Hijacking"?', opts: ['Khi bị hack tài khoản trading', 'Khi System 1 chiếm quyền điều khiển hoàn toàn trước khi System 2 kịp phân tích', 'Khi quản lý rủi ro kém', 'Khi indicator cho tín hiệu sai'], ci: 1, ex: 'Cảm xúc mạnh (sợ hãi/tham lam) kích hoạt System 1, nó "cướp quyền" quyết định trước khi phần não lý trí (System 2) kịp hoạt động.' },
-          { q: 'Tại sao Revenge Trading nguy hiểm hơn bất kỳ con quỷ nào khác về tốc độ?', opts: ['Vì nó xảy ra vào ban đêm', 'Vì amygdala hijack vô hiệu hóa prefrontal cortex — bạn thực sự không thể suy nghĩ rõ ràng khi đang tức giận, và thường tăng size rất nhanh', 'Vì nó ảnh hưởng đến EMA21', 'Vì nó xảy ra sau tin tức lớn'], ci: 1, ex: 'Tức giận là cảm xúc nguyên thủy mạnh nhất, vô hiệu hóa hoàn toàn lý trí và khiến bạn mạo hiểm quá mức (tăng size) để "phục thù".' },
-          { q: 'Prospect Theory nói gì về thua lỗ và tâm lý?', opts: ['Mất $100 = vui khi thắng $100', 'Mất $100 gây đau tâm lý gấp 2-2.5 lần niềm vui khi thắng $100 — dẫn đến né tránh cắt lỗ', 'Mọi người đều sợ thua như nhau', 'Lợi nhuận quan trọng hơn thua lỗ'], ci: 1, ex: 'Nỗi đau mất tiền lớn hơn niềm vui được tiền, khiến trader không dám cắt lỗ (đối mặt nỗi đau) và gồng lỗ vô vọng.' },
-          { q: 'Vòng lặp nào từ Atomic Habits giải thích tại sao Overtrading rất khó bỏ?', opts: ['Habit Stacking', 'Cue-Craving-Response-Reward: hành động trading tự nó tiết dopamine — não học "trading = sướng" và muốn lặp lại', 'Two-Minute Rule', 'Identity-based habits'], ci: 1, ex: 'Chỉ riêng việc "chuẩn bị vào lệnh" đã kích hoạt dopamine, khiến bạn muốn giao dịch liên tục kể cả khi không có setup.' },
-          { q: 'Confirmation Bias trong trading nghĩa là?', opts: ['Kiểm tra nhiều lần trước khi vào lệnh', 'Chỉ chú ý đến thông tin xác nhận quyết định đã có sẵn, bỏ qua thông tin ngược chiều', 'Giao dịch theo cảm xúc', 'Overtrading trong khi có Setup'], ci: 1, ex: 'Nó khiến bạn "mù" trước các rủi ro hiển nhiên vì bạn chỉ muốn nhìn thấy những gì chứng minh bạn đang đúng.' },
-          { q: 'Theo Sapiens của Harari, tại sao Herding nguy hiểm trong trading?', opts: ['Vì đám đông luôn sai', 'Vì não tiến hóa 200,000 năm để "theo bầy = an toàn" — nhưng trong thị trường, đám đông mua đồng loạt thường là đỉnh và ngược lại', 'Vì đám đông không có kỹ năng phân tích', 'Vì giao dịch nhóm không hợp pháp'], ci: 1, ex: 'Thị trường tài chính là một trò chơi zero-sum, nơi số ít lấy tiền của số đông. Theo số đông = mất tiền.' },
-          { q: 'Bạn thấy mình hay thua vào thứ Hai đầu tuần. Bước tiếp theo đúng nhất là gì?', opts: ['Không giao dịch thứ Hai mãi mãi', 'Tạo rule: "Nếu là thứ Hai → chỉ xem chart, không vào lệnh trong buổi sáng" (Implementation Intention — Atomic Habits)', 'Giao dịch nhiều hơn thứ Hai để luyện tập', 'Đây chỉ là trùng hợp, không có pattern'], ci: 1, ex: 'Journal giúp tìm trigger, rule giúp chặn trigger trước khi nó thành hành động.' },
-          { q: 'Khi nào Journal có giá trị nhất?', opts: ['Chỉ khi lệnh thua', 'Chỉ khi lệnh thắng', 'Mọi lệnh — đặc biệt khi vi phạm hệ thống dù thắng, vì đó là lúc not lặp sai được củng cố nguy hiểm nhất', 'Chỉ khi có cảm xúc mạnh'], ci: 2, ex: 'Thắng khi làm sai là thuốc độc. Journal ghi lại điều này để bạn không ảo tưởng về kỹ năng của mình.' },
-          { q: '"Devil\'s Advocate Protocol" là nghi thức trừ con quỷ nào?', opts: ['FOMO', 'Revenge Trading', 'Confirmation Bias — chủ động tìm lý do ngược chiều để test tính khách quan của phân tích', 'Loss Aversion'], ci: 2, ex: 'Bắt System 2 hoạt động bằng cách đi tìm bằng chứng chống lại quyết định của chính mình.' },
-          { q: 'Loss Aversion khiến trader làm gì sai nhất?', opts: ['Vào quá nhiều lệnh', 'Dời Stop Loss ra xa hơn khi bị chạm để tránh hiện thực hóa thua lỗ — lỗ nhỏ thành lỗ lớn', 'Không dùng Take Profit', 'FOMO vào lệnh mới'], ci: 1, ex: 'Sợ hãi đối mặt với khoản lỗ nhỏ (SL bị hit) sẽ đẩy bạn vào một khoản lỗ lớn hơn không thể cứu vãn.' },
-          { q: 'Theo Atomic Habits, tại sao việc viết tên con quỷ trong Journal lại có tác dụng?', opts: ['Vì nó giúp nhớ tên các con quỷ', 'Habit Tracking: đo lường tạo ra nhận thức, nhận thức kích hoạt sự thay đổi hành vi tự động — "ánh sáng diệt ký sinh trùng"', 'Vì viết bằng tay tốt cho não', 'Không có tác dụng thực sự'], ci: 1, ex: 'Việc gọi tên hành vi xấu đưa nó từ vô thức (System 1) lên ý thức (System 2).' },
-          { q: 'Điểm chung của 3 cuốn sách Sapiens, Thinking Fast and Slow, Atomic Habits khi áp dụng vào trading là gì?', opts: ['Cả 3 đều khuyến nghị dùng EMA21', 'Cả 3 đều chỉ ra rằng hành vi con người được điều khiển bởi bản năng/hệ thống tiến hóa — không phải lý trí. Trading đòi hỏi vượt qua "phần con người" đó.', 'Cả 3 đều có chương về phân tích kỹ thuật', 'Cả 3 đều của tác giả người Mỹ'], ci: 1, ex: 'Thị trường trừng phạt những phản xạ tự nhiên của con người. Trading thành công là học cách chống lại bản năng.' },
-          { q: 'Overconfidence (Kiêu Ngạo) thường xuất hiện khi nào?', opts: ['Khi bị thua 3 lệnh liên tiếp', 'Sau chuỗi thắng — "Narrative Fallacy" (Sapiens): não tạo câu chuyện "tôi giỏi hơn thị trường" từ mẫu thống kê nhỏ', 'Khi thị trường đang sideway', 'Khi RSI ở vùng overbought'], ci: 1, ex: 'Chuỗi thắng ngắn hạn bơm phồng cái tôi, khiến trader nghĩ mình là thiên tài và bỏ qua kỷ luật.' },
-          { q: 'Nguyên tắc nào từ Atomic Habits hiệu quả nhất để chống TỔNG HỢP 7 con quỷ?', opts: ['The Two-Minute Rule', 'Implementation Intentions: viết ra cụ thể "Nếu [con quỷ X xuất hiện] → tôi sẽ [hành động Y cụ thể]". Não xử lý tình huống trước khi nó xảy ra', 'Identity-based habits', 'Temptation Bundling'], ci: 1, ex: 'Rule "nếu-thì" lập trình trước cách phản ứng, tước đi cơ hội để cảm xúc (System 1) can thiệp.' },
+          { q: 'What does the FOMO demon exploit in human psychology?', opts: ['Fear of pain', 'Fear of missing out — amplified by social comparison (Sapiens: evolutionary herd instinct)', 'Greed for money', 'Desire for respect'], ci: 1, ex: 'Evolutionary instinct makes us fear being left behind by the herd (social comparison).' },
+          { q: 'What does Kahneman call "Cognitive Hijacking"?', opts: ['When your trading account is hacked', 'When System 1 takes full control before System 2 can analyze', 'When risk management is poor', 'When an indicator gives a false signal'], ci: 1, ex: 'Strong emotions (fear/greed) activate System 1, which "hijacks" decision-making before the rational brain (System 2) can act.' },
+          { q: 'Why is Revenge Trading more dangerous than any other demon in terms of speed?', opts: ['Because it happens at night', 'Because amygdala hijack disables the prefrontal cortex — you literally cannot think clearly when angry, and often increase size very quickly', 'Because it affects EMA21', 'Because it happens after major news'], ci: 1, ex: 'Anger is the strongest primal emotion, completely disabling reason and causing you to take excessive risk (increasing size) for "revenge".' },
+          { q: 'What does Prospect Theory say about losses and psychology?', opts: ['Losing $100 = joy of winning $100', 'Losing $100 causes psychological pain 2-2.5 times greater than the joy of winning $100 — leading to avoiding cutting losses', 'Everyone fears losing equally', 'Profits are more important than losses'], ci: 1, ex: 'The pain of losing money is greater than the joy of gaining it, causing traders to not dare cut losses (facing the pain) and hopelessly hold onto them.' },
+          { q: 'Which loop from Atomic Habits explains why Overtrading is so hard to quit?', opts: ['Habit Stacking', 'Cue-Craving-Response-Reward: the act of trading itself releases dopamine — the brain learns "trading = pleasure" and wants to repeat it', 'Two-Minute Rule', 'Identity-based habits'], ci: 1, ex: 'Just the act of "preparing to enter a trade" triggers dopamine, making you want to trade constantly even without a setup.' },
+          { q: 'What does Confirmation Bias mean in trading?', opts: ['Checking multiple times before entering a trade', 'Only paying attention to information that confirms a pre-existing decision, ignoring opposing information', 'Trading emotionally', 'Overtrading while having a Setup'], ci: 1, ex: 'It makes you "blind" to obvious risks because you only want to see what proves you are right.' },
+          { q: 'According to Harari\'s Sapiens, why is Herding dangerous in trading?', opts: ['Because the crowd is always wrong', 'Because the brain evolved for 200,000 years to "follow the herd = safety" — but in the market, the crowd buying simultaneously is usually the top and vice versa', 'Because the crowd lacks analytical skills', 'Because group trading is illegal'], ci: 1, ex: 'Financial markets are a zero-sum game, where the minority takes money from the majority. Following the crowd = losing money.' },
+          { q: 'You notice you often lose on early Mondays. What is the most correct next step?', opts: ['Never trade on Mondays forever', 'Create a rule: "If it is Monday → only watch the chart, do not enter trades in the morning" (Implementation Intention — Atomic Habits)', 'Trade more on Mondays to practice', 'This is just a coincidence, there is no pattern'], ci: 1, ex: 'A Journal helps find triggers, a rule helps block the trigger before it becomes an action.' },
+          { q: 'When is a Journal most valuable?', opts: ['Only when losing trades', 'Only when winning trades', 'Every trade — especially when violating the system even if winning, because that is when a bad habit is most dangerously reinforced', 'Only when experiencing strong emotions'], ci: 2, ex: 'Winning while doing the wrong thing is poison. The Journal records this so you don\'t become delusional about your skills.' },
+          { q: 'What demon does the "Devil\'s Advocate Protocol" exorcise?', opts: ['FOMO', 'Revenge Trading', 'Confirmation Bias — actively looking for opposing reasons to test the objectivity of your analysis', 'Loss Aversion'], ci: 2, ex: 'Force System 2 to work by seeking evidence against your own decision.' },
+          { q: 'What is the worst mistake Loss Aversion causes a trader to make?', opts: ['Entering too many trades', 'Moving Stop Loss further away when hit to avoid actualizing a loss — turning a small loss into a large loss', 'Not using Take Profit', 'FOMO into new trades'], ci: 1, ex: 'Fear of facing a small loss (SL hit) will push you into an unsalvageable larger loss.' },
+          { q: 'According to Atomic Habits, why does writing the demon\'s name in a Journal work?', opts: ['Because it helps remember the demons\' names', 'Habit Tracking: measurement creates awareness, awareness triggers automatic behavioral change — "light kills parasites"', 'Because handwriting is good for the brain', 'It has no real effect'], ci: 1, ex: 'Naming a bad behavior brings it from the unconscious (System 1) to the conscious (System 2).' },
+          { q: 'What is the common thread of Sapiens, Thinking Fast and Slow, and Atomic Habits when applied to trading?', opts: ['All 3 recommend using EMA21', 'All 3 point out that human behavior is driven by instincts/evolutionary systems — not reason. Trading requires overcoming that "human part".', 'All 3 have chapters on technical analysis', 'All 3 are by American authors'], ci: 1, ex: 'The market punishes natural human reflexes. Successful trading is learning to fight against instinct.' },
+          { q: 'When does Overconfidence (Pride) usually appear?', opts: ['When losing 3 trades in a row', 'After a winning streak — "Narrative Fallacy" (Sapiens): the brain creates a story "I am better than the market" from a small statistical sample', 'When the market is sideways', 'When RSI is in the overbought zone'], ci: 1, ex: 'A short-term winning streak inflates the ego, making the trader think they are a genius and ignore discipline.' },
+          { q: 'Which principle from Atomic Habits is most effective for combating ALL 7 demons combined?', opts: ['The Two-Minute Rule', 'Implementation Intentions: write down specifically "If [demon X appears] → I will [specific action Y]". The brain processes the situation before it happens', 'Identity-based habits', 'Temptation Bundling'], ci: 1, ex: 'The "if-then" rule pre-programs the reaction, taking away the opportunity for emotions (System 1) to intervene.' },
         ].map((q, i) => (
-          <SimpleQuiz key={i} q={`Câu ${i + 1}: ${q.q}`} opts={q.opts} correctIdx={q.ci} explanation={q.ex} />
+          <SimpleQuiz key={i} q={`Question ${i + 1}: ${q.q}`} opts={q.opts} correctIdx={q.ci} explanation={q.ex} />
         ))}
 
-        <ExerciseBox title="🚀 Bước tiếp theo — Chương 6" desc="Trước khi học Chương 6, hãy làm những việc sau trong 7 ngày:" steps={[
-          { d: 'Bắt đầu Trading Journal ngay hôm nay. Ghi lại ít nhất 5 lệnh demo với đầy đủ thông tin cảm xúc và nhận diện con quỷ.' },
-          { d: 'Đọc lại câu chuyện của con quỷ bạn cảm thấy "quen thuộc nhất" (có thể là chính bạn). Đọc phần "Triệu chứng nhận biết" thật kỹ.' },
-          { d: 'Tạo một rule cụ thể: "Nếu [trigger con quỷ], thì tôi sẽ [hành động cụ thể]." Ví dụ: "Nếu tôi vừa thua 2 lệnh, thì tôi sẽ dừng giao dịch 24 giờ."' },
-          { d: 'Chia sẻ rule đó với một người bạn tin tưởng — điều này tăng xác suất tuân thủ lên 65% (theo nghiên cứu của Dominic Voge, Princeton).' },
+        <ExerciseBox title="🚀 Next Steps — Chapter 6" desc="Before studying Chapter 6, do the following for 7 days:" steps={[
+          { d: 'Start a Trading Journal today. Record at least 5 demo trades with full emotional information and demon identification.' },
+          { d: 'Reread the story of the demon you feel "most familiar with" (could be yourself). Read the "Symptoms to recognize" section carefully.' },
+          { d: 'Create a specific rule: "If [demon trigger], then I will [specific action]." Example: "If I just lost 2 trades, then I will stop trading for 24 hours."' },
+          { d: 'Share that rule with a trusted friend — this increases compliance probability to 65% (according to research by Dominic Voge, Princeton).' },
         ]} />
       </>
     )
   },
 ];
 
-export default CHAPTER_5_DATA;
+export default CHAPTER_5_DATA_EN;

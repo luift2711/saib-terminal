@@ -272,7 +272,7 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
 
       <div className="flex flex-wrap gap-2">
         {COINS.map(c => (
-          <button key={c.symbol} onClick={() => { if(!position && !pendingOrder) setActiveCoin(c); }} className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeCoin.symbol === c.symbol ? 'bg-[#2B3139] text-[#0f1117] dark:text-white border border-[#848E9C]' : 'bg-[#fff] dark:bg-[#111827] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] text-[#636878] dark:text-[#848E9C] hover:bg-[#2B3139]/50'}`}>{c.symbol}</button>
+          <button key={c.symbol} onClick={() => { if(!position && !pendingOrder) setActiveCoin(c); }} className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeCoin.symbol === c.symbol ? 'bg-gradient-to-br from-white to-[#FDFBF7] text-[#D4AF37] border border-[#D4AF37]/60 shadow-[0_0_15px_rgba(212,175,55,0.4)] dark:bg-[#2B3139] dark:from-[#2B3139] dark:to-[#2B3139] dark:text-white dark:border-[#848E9C] dark:shadow-md' : 'bg-[#fff] dark:bg-[#111827] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] text-[#636878] dark:text-[#848E9C] hover:border-[#D4AF37]/50 hover:text-[#D4AF37] dark:hover:bg-[#2B3139]/50'}`}>{c.symbol}</button>
         ))}
       </div>
 
@@ -294,8 +294,8 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
         {/* ORDER PANEL */}
         <div className="bg-[#fff] dark:bg-[#111827] p-6 rounded-2xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] flex flex-col shadow-lg">
            <div className="flex space-x-2 mb-6 bg-[#faf9f6] dark:bg-[#0B0E11] p-1.5 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
-              <button onClick={() => setOrderType('MANUAL')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'MANUAL' ? 'bg-[#2B3139] text-[#0f1117] dark:text-white shadow-sm' : 'text-[#636878] dark:text-[#848E9C]'}`}>{t.manualBtn}</button>
-              <button onClick={() => setOrderType('AUTO')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'AUTO' ? 'bg-[#2B3139] text-[#d97706] dark:text-[#00d084] shadow-sm' : 'text-[#636878] dark:text-[#848E9C]'}`}>{t.autoBtn}</button>
+              <button onClick={() => setOrderType('MANUAL')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'MANUAL' ? 'bg-gradient-to-br from-white to-[#FDFBF7] text-[#D4AF37] border border-[#D4AF37]/50 shadow-[0_0_12px_rgba(212,175,55,0.3)] dark:bg-[#2B3139] dark:from-[#2B3139] dark:to-[#2B3139] dark:text-[#00d084] dark:border-transparent dark:shadow-sm' : 'border border-transparent text-[#636878] dark:text-[#848E9C] hover:text-[#D4AF37] dark:hover:text-[#00d084]'}`}>{t.manualBtn}</button>
+              <button onClick={() => setOrderType('AUTO')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'AUTO' ? 'bg-gradient-to-br from-white to-[#FDFBF7] text-[#D4AF37] border border-[#D4AF37]/50 shadow-[0_0_12px_rgba(212,175,55,0.3)] dark:bg-[#2B3139] dark:from-[#2B3139] dark:to-[#2B3139] dark:text-[#00d084] dark:border-transparent dark:shadow-sm' : 'border border-transparent text-[#636878] dark:text-[#848E9C] hover:text-[#D4AF37] dark:hover:text-[#00d084]'}`}>{t.autoBtn}</button>
            </div>
            
            <div className="mb-6">
@@ -342,8 +342,8 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
                   </div>
                 </div>
                 <div className="flex gap-2 pt-3">
-                  <button onClick={() => placePendingOrder('LONG')} className="flex-1 bg-[#d97706] dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706] dark:border-[#00d084]/30 hover:border-[#d97706] dark:border-[#00d084]">BUY STOP</button>
-                  <button onClick={() => placePendingOrder('SHORT')} className="flex-1 bg-[#d97706] dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706] dark:border-[#00d084]/30 hover:border-[#d97706] dark:border-[#00d084]">SELL STOP</button>
+                  <button onClick={() => placePendingOrder('LONG')} className="flex-1 bg-[#d97706]/10 dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706]/30 dark:border-[#00d084]/30 hover:border-[#d97706] dark:hover:border-[#00d084]">BUY STOP</button>
+                  <button onClick={() => placePendingOrder('SHORT')} className="flex-1 bg-[#d97706]/10 dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706]/30 dark:border-[#00d084]/30 hover:border-[#d97706] dark:hover:border-[#00d084]">SELL STOP</button>
                 </div>
              </div>
            )}

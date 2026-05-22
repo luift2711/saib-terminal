@@ -20,7 +20,7 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
       <div className="p-8">
         <div className="text-lg md:text-xl font-bold text-black dark:text-white mb-6 leading-relaxed transition-colors">
           {q}
-          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
+          {context && <span className="block text-[17.5px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
         </div>
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
@@ -35,13 +35,13 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
             return (
               <button key={i} disabled={selected !== null} onClick={() => setSelected(i)} className={`flex items-start gap-4 p-5 border-2 rounded-2xl text-left transition-all ${btnClass}`}>
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 transition-colors ${letterClass}`}>{String.fromCharCode(65 + i)}</div>
-                <span className="text-[16px] leading-[1.7] mt-1">{opt}</span>
+                <span className="text-[18.5px] leading-[1.7] mt-1">{opt}</span>
               </button>
             );
           })}
         </div>
         {selected !== null && (
-          <div className={`mt-6 p-6 rounded-2xl text-[16px] leading-relaxed ${selected === correctIdx ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]' : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'}`}>
+          <div className={`mt-6 p-6 rounded-2xl text-[18.5px] leading-relaxed ${selected === correctIdx ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]' : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'}`}>
             <strong className="block text-lg mb-2">{selected === correctIdx ? '✅ Chính xác!' : '❌ Chưa đúng.'}</strong> {explanation}
           </div>
         )}
@@ -114,47 +114,47 @@ const JournalSimulator = () => {
         <span className="text-xs text-gray-500 dark:text-[#848E9C] font-mono">{new Date().toLocaleDateString('vi-VN')}</span>
       </div>
       <div className="p-8">
-        <div className="text-[11px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">Thông tin lệnh</div>
+        <div className="text-[13.5px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">Thông tin lệnh</div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Thị trường</label>
-            <input type="text" value={mkt} onChange={e => setMkt(e.target.value)} placeholder="XAU/USD, BTC..." className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Thị trường</label>
+            <input type="text" value={mkt} onChange={e => setMkt(e.target.value)} placeholder="XAU/USD, BTC..." className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Hướng</label>
-            <select value={dir} onChange={e => setDir(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Hướng</label>
+            <select value={dir} onChange={e => setDir(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
               <option value="">Chọn...</option><option>BUY (Long)</option><option>SELL (Short)</option>
             </select>
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Kết quả</label>
-            <select value={res} onChange={e => setRes(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Kết quả</label>
+            <select value={res} onChange={e => setRes(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
               <option value="">Chọn...</option><option>Thắng ✅</option><option>Thua ❌</option><option>Break Even ➖</option>
             </select>
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">R:R thực tế</label>
-            <input type="text" value={rr} onChange={e => setRr(e.target.value)} placeholder="1:2.5" className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">R:R thực tế</label>
+            <input type="text" value={rr} onChange={e => setRr(e.target.value)} placeholder="1:2.5" className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Có theo hệ thống?</label>
-            <select value={sys} onChange={e => setSys(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Có theo hệ thống?</label>
+            <select value={sys} onChange={e => setSys(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors">
               <option value="">Chọn...</option><option>✅ Đúng 100% hệ thống</option><option>⚠️ Sai 1-2 điều</option><option>❌ Vi phạm hoàn toàn</option>
             </select>
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Điểm tự chấm (1-10)</label>
-            <input type="number" value={score} onChange={e => setScore(e.target.value)} min={1} max={10} placeholder="7" className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Điểm tự chấm (1-10)</label>
+            <input type="number" value={score} onChange={e => setScore(e.target.value)} min={1} max={10} placeholder="7" className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-3 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
 
         <div className="mb-8">
-          <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Cảm xúc khi vào lệnh</label>
+          <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Cảm xúc khi vào lệnh</label>
           <div className="flex flex-wrap gap-2">
             {['😤 Tự tin cao', '😰 Lo lắng', '😱 FOMO', '😠 Tức giận (sau thua)', '😌 Bình tĩnh', '🤔 Lưỡng lự', '🎯 Tập trung', '😵 Mất kiểm soát'].map(e => (
-              <button key={e} onClick={() => toggleEmo(e)} className={`px-4 py-2 rounded-xl text-[14px] transition-all border ${emos.includes(e) ? 'border-yellow-500 dark:border-[#FCD535] bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] font-bold' : 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-gray-700 dark:text-[#EAECEF] hover:border-gray-300 dark:hover:border-[#474D57]'}`}>
+              <button key={e} onClick={() => toggleEmo(e)} className={`px-4 py-2 rounded-xl text-[16.5px] transition-all border ${emos.includes(e) ? 'border-yellow-500 dark:border-[#FCD535] bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] font-bold' : 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-gray-700 dark:text-[#EAECEF] hover:border-gray-300 dark:hover:border-[#474D57]'}`}>
                 {e}
               </button>
             ))}
@@ -162,41 +162,41 @@ const JournalSimulator = () => {
         </div>
 
         <div className="mb-8">
-          <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Nhận diện Con Quỷ nào đã ảnh hưởng bạn?</label>
+          <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Nhận diện Con Quỷ nào đã ảnh hưởng bạn?</label>
           <div className="flex flex-col gap-3">
             {['👁 FOMO — Vào lệnh vì sợ bỏ lỡ', '🔥 Revenge — Vào để gỡ lệnh trước', '👑 Overconfidence — Quá tự tin, không kiểm tra lại', '🧊 Loss Aversion — Không cắt lỗ đúng hạn', '🪬 Confirmation Bias — Chỉ xem tín hiệu mình muốn thấy', '🐑 Herding — Theo đám đông/signal người khác', '🎰 Overtrading — Vào lệnh không đủ setup'].map(d => (
               <label key={d} className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" checked={demons.includes(d)} onChange={() => toggleDemon(d)} className="w-5 h-5 rounded border-gray-300 dark:border-[#2B3139] text-yellow-500 dark:text-[#00d084] focus:ring-yellow-500 dark:focus:ring-[#00d084] bg-white dark:bg-[#181A20] cursor-pointer" />
-                <span className="text-[15px] text-gray-700 dark:text-[#EAECEF] group-hover:text-black dark:group-hover:text-white transition-colors">{d}</span>
+                <span className="text-[17.5px] text-gray-700 dark:text-[#EAECEF] group-hover:text-black dark:group-hover:text-white transition-colors">{d}</span>
               </label>
             ))}
           </div>
         </div>
 
         <div className="mb-8">
-          <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Bài học từ lệnh này</label>
-          <textarea value={lesson} onChange={e => setLesson(e.target.value)} rows="3" placeholder="Lần sau mình sẽ... / Mình nhận ra rằng..." className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[15px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+          <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Bài học từ lệnh này</label>
+          <textarea value={lesson} onChange={e => setLesson(e.target.value)} rows="3" placeholder="Lần sau mình sẽ... / Mình nhận ra rằng..." className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
         </div>
 
-        <button onClick={analyze} className="w-full py-4 rounded-xl font-black text-[16px] uppercase tracking-wider transition-all bg-yellow-500 dark:bg-[#00d084] hover:bg-yellow-400 dark:hover:bg-[#00e691] text-black shadow-[0_4px_14px_0_rgba(234,179,8,0.39)] dark:shadow-[0_4px_14px_0_rgba(0,208,132,0.39)]">
+        <button onClick={analyze} className="w-full py-4 rounded-xl font-black text-[18.5px] uppercase tracking-wider transition-all bg-yellow-500 dark:bg-[#00d084] hover:bg-yellow-400 dark:hover:bg-[#00e691] text-black shadow-[0_4px_14px_0_rgba(234,179,8,0.39)] dark:shadow-[0_4px_14px_0_rgba(0,208,132,0.39)]">
           ✦ Phân tích Journal ✦
         </button>
 
         {analysis && (
           <div className={`mt-6 p-6 rounded-2xl border transition-all ${analysis.type === 'warn' ? 'bg-yellow-50 dark:bg-[#FCD535]/10 border-yellow-200 dark:border-[#FCD535]/30 text-yellow-800 dark:text-[#FCD535]' : 'bg-gray-50 dark:bg-[#0B0E11] border-gray-200 dark:border-[#2B3139]'}`}>
             {analysis.type === 'warn' ? (
-              <div className="text-[14px] leading-relaxed">{analysis.msg}</div>
+              <div className="text-[16.5px] leading-relaxed">{analysis.msg}</div>
             ) : (
               <div>
-                <div className="text-[11px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">📊 Phân tích của bạn</div>
+                <div className="text-[13.5px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">📊 Phân tích của bạn</div>
                 <div className="space-y-4">
                   {analysis.data.map((item, i) => (
                     item.type === 'normal' ? (
-                      <div key={i} className="text-[15px] text-gray-700 dark:text-[#9ca3b0]">{item.text}</div>
+                      <div key={i} className="text-[17.5px] text-gray-700 dark:text-[#9ca3b0]">{item.text}</div>
                     ) : (
                       <div key={i} className={`p-4 rounded-xl border ${item.type === 'danger' ? 'bg-red-50 dark:bg-[#F6465D]/10 border-red-200 dark:border-[#F6465D]/30 text-red-800 dark:text-[#F6465D]' : item.type === 'bad' ? 'bg-red-50 dark:bg-[#F6465D]/10 border-red-200 dark:border-[#F6465D]/30 text-red-800 dark:text-[#F6465D]' : item.type === 'ok' ? 'bg-green-50 dark:bg-[#0ECB81]/10 border-green-200 dark:border-[#0ECB81]/30 text-green-800 dark:text-[#0ECB81]' : item.type === 'purple' ? 'bg-purple-50 dark:bg-[#9b59ff]/10 border-purple-200 dark:border-[#9b59ff]/30 text-purple-800 dark:text-[#9b59ff]' : 'bg-yellow-50 dark:bg-[#FCD535]/10 border-yellow-200 dark:border-[#FCD535]/30 text-yellow-800 dark:text-[#FCD535]'}`}>
                         <div className="font-bold mb-1"><span className="mr-2">{item.icon}</span>{item.title}</div>
-                        <div className="text-[14px] leading-relaxed opacity-90">{item.text}</div>
+                        <div className="text-[16.5px] leading-relaxed opacity-90">{item.text}</div>
                       </div>
                     )
                   ))}
@@ -214,7 +214,7 @@ const JournalSimulator = () => {
 // ==========================================
 // CHAPTER 5 DATA
 // ==========================================
-const CHAPTER_5_DATA = [
+const CHAPTER_5_DATA_VN = [
   {
     chapter: "Chương 5: Tâm lý giao dịch & 7 Con quỷ", title: "0. Khoa học Thần kinh & 7 Con quỷ",
     content: (
@@ -232,7 +232,7 @@ const CHAPTER_5_DATA = [
             <div className="font-bold text-red-700 dark:text-[#F6465D] text-lg mb-4">System 1 — "Con Thú"</div>
             <ul className="space-y-2">
               {['Tự động, vô thức, cực nhanh', 'Cảm xúc, bản năng, trực giác', 'Tiêu tốn ít năng lượng', 'Không thể tắt', 'Điều khiển 95% hành vi', 'Kẻ thù trong trading'].map((item, i) => (
-                <li key={i} className={`flex gap-2 text-[14px] ${i === 5 ? 'text-red-700 dark:text-[#F6465D] font-bold' : 'text-gray-700 dark:text-[#EAECEF]'}`}><span className="text-red-500 shrink-0">▸</span>{item}</li>
+                <li key={i} className={`flex gap-2 text-[16.5px] ${i === 5 ? 'text-red-700 dark:text-[#F6465D] font-bold' : 'text-gray-700 dark:text-[#EAECEF]'}`}><span className="text-red-500 shrink-0">▸</span>{item}</li>
               ))}
             </ul>
           </div>
@@ -241,7 +241,7 @@ const CHAPTER_5_DATA = [
             <div className="font-bold text-green-700 dark:text-[#0ECB81] text-lg mb-4">System 2 — "Nhà Triết Học"</div>
             <ul className="space-y-2">
               {['Chậm, có ý thức, cần nỗ lực', 'Logic, phân tích, lý trí', 'Tiêu tốn nhiều năng lượng', 'Dễ bị giao động bởi S1', 'Chỉ kích hoạt khi được yêu cầu', 'Người mình muốn làm chủ'].map((item, i) => (
-                <li key={i} className={`flex gap-2 text-[14px] ${i === 5 ? 'text-green-700 dark:text-[#0ECB81] font-bold' : 'text-gray-700 dark:text-[#EAECEF]'}`}><span className="text-green-500 shrink-0">▸</span>{item}</li>
+                <li key={i} className={`flex gap-2 text-[16.5px] ${i === 5 ? 'text-green-700 dark:text-[#0ECB81] font-bold' : 'text-gray-700 dark:text-[#EAECEF]'}`}><span className="text-green-500 shrink-0">▸</span>{item}</li>
               ))}
             </ul>
           </div>
@@ -268,12 +268,12 @@ const CHAPTER_5_DATA = [
         </div>
 
         <SectionHead icon={<Activity size={16} />} title="Tại sao thua lỗ đau hơn thắng vui?" desc="Prospect Theory — Kahneman & Tversky" />
-        <p className="text-[16px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
+        <p className="text-[18.5px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
           Kahneman và Tversky (1979) phát hiện ra điều này: <strong>Mất $100 gây ra nỗi đau tâm lý gấp 2-2.5 lần niềm vui khi kiếm được $100.</strong> Đây là lý do tại sao chúng ta khó cắt lỗ — vì cắt lỗ = hiện thực hóa nỗi đau, và não bộ không muốn đau.
         </p>
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-5 my-4">
-          <div className="text-[11px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-3">Prospect Theory — Minh họa trực quan</div>
-          <div className="flex items-center gap-2 text-[13px] font-mono mb-4">
+          <div className="text-[13.5px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-3">Prospect Theory — Minh họa trực quan</div>
+          <div className="flex items-center gap-2 text-[15.5px] font-mono mb-4">
             <span className="text-red-600 dark:text-[#F6465D] font-bold">Mất $100</span>
             <span className="text-gray-500">=</span>
             <span className="text-yellow-600 dark:text-[#FCD535] font-bold">Cần thắng $200-250</span>
@@ -281,9 +281,9 @@ const CHAPTER_5_DATA = [
             <span className="text-green-600 dark:text-[#0ECB81] font-bold">hòa về cảm xúc</span>
           </div>
           <div className="relative h-2 rounded-full bg-gradient-to-r from-red-500 via-gray-300 dark:via-gray-600 to-green-500 mt-8 mb-2">
-            <div className="absolute top-[-24px] left-[30%] text-[10px] font-mono font-bold text-red-600 dark:text-[#F6465D] -translate-x-1/2">Lỗ $100</div>
-            <div className="absolute top-[-24px] left-[50%] text-[10px] font-mono font-bold text-gray-500 -translate-x-1/2">0</div>
-            <div className="absolute top-[-24px] left-[90%] text-[10px] font-mono font-bold text-green-600 dark:text-[#0ECB81] -translate-x-1/2">Lời $200+</div>
+            <div className="absolute top-[-24px] left-[30%] text-[12.5px] font-mono font-bold text-red-600 dark:text-[#F6465D] -translate-x-1/2">Lỗ $100</div>
+            <div className="absolute top-[-24px] left-[50%] text-[12.5px] font-mono font-bold text-gray-500 -translate-x-1/2">0</div>
+            <div className="absolute top-[-24px] left-[90%] text-[12.5px] font-mono font-bold text-green-600 dark:text-[#0ECB81] -translate-x-1/2">Lời $200+</div>
           </div>
         </div>
 
@@ -304,7 +304,7 @@ const CHAPTER_5_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 0</div>
           <ul className="space-y-2">
             {['System 1 (cảm xúc, nhanh) điều khiển 95% quyết định. System 2 (lý trí, chậm) thường đến sau khi đã hành động.', 'Prospect Theory: thua $100 đau gấp 2-2.5 lần vui khi thắng $100 → não bộ né tránh cắt lỗ.', 'Thói quen xấu trong trading được ăn sâu vào não qua vòng lặp Cue-Craving-Response-Reward.', 'Giải pháp: tạo "khoảng dừng" (pause) giữa Cue và Response để System 2 có thời gian hoạt động.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -316,12 +316,12 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#2c0a0a] to-[#1a0505] p-8 rounded-3xl text-center mb-8 border border-[#c0392b]/30">
-          <div className="text-[12px] font-mono text-[#c0392b] uppercase tracking-[0.2em] mb-4">// Con Quỷ 1/7</div>
+          <div className="text-[14.5px] font-mono text-[#c0392b] uppercase tracking-[0.2em] mb-4">// Con Quỷ 1/7</div>
           <div className="text-6xl mb-4">👁</div>
           <h1 className="text-3xl font-black text-white mb-2">FOMO</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Avaritia — Tham Lam</p>
-          <p className="text-[14px] font-mono text-[#c0392b] bg-[#c0392b]/10 p-4 rounded-xl border border-[#c0392b]/20">"Nó thì thầm: Giá đang tăng và mày chưa vào. Ngốc à?"</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Avaritia — Tham Lam</p>
+          <p className="text-[16.5px] font-mono text-[#c0392b] bg-[#c0392b]/10 p-4 rounded-xl border border-[#c0392b]/20">"Nó thì thầm: Giá đang tăng và mày chưa vào. Ngốc à?"</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
             <span>⚡</span> <strong>Khai thác nỗi sợ bỏ lỡ cơ hội</strong>
           </div>
         </div>
@@ -333,21 +333,21 @@ const CHAPTER_5_DATA = [
         </StoryBox>
 
         <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" desc="Kahneman · Sapiens · Atomic Habits" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
           System 1 của Kahneman kết hợp với "Social Comparison" trong Sapiens: khi thấy người khác làm giàu, não tiết cortisol (stress hormone) và dopamine cùng lúc. Combo này khiến bạn hành động bốc đồng để giảm stress của việc "bị bỏ lại".
         </p>
 
         <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" desc="Bạn có đang bị con quỷ này ám không?" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
           {['Mua vào khi giá đã tăng rất mạnh và mọi người đang nói về nó', 'Vào lệnh không có setup rõ ràng, chỉ vì "sợ bỏ lỡ"', 'Tăng size lệnh khi thấy người khác kiếm nhiều hơn mình', 'Theo dõi chart liên tục, lo lắng khi không có lệnh'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
         <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
             <strong>Nghi thức trừ FOMO:</strong> Khi cảm thấy FOMO, viết ra 3 điều: (1) "Tôi muốn vào vì..." (2) "Setup kỹ thuật hiện tại là..." (3) "Nếu không vào, cơ hội tiếp theo sẽ đến khi..." Hành động viết ra kích hoạt System 2. Thêm: nhớ rằng "cơ hội tiếp theo luôn đến — thị trường không bao giờ ngừng."
           </div>
         </div>
@@ -366,12 +366,12 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#2c0e0e] to-[#1a0808] p-8 rounded-3xl text-center mb-8 border border-[#e74c3c]/30">
-          <div className="text-[12px] font-mono text-[#e74c3c] uppercase tracking-[0.2em] mb-4">// Con Quỷ 2/7</div>
+          <div className="text-[14.5px] font-mono text-[#e74c3c] uppercase tracking-[0.2em] mb-4">// Con Quỷ 2/7</div>
           <div className="text-6xl mb-4">🔥</div>
           <h1 className="text-3xl font-black text-white mb-2">REVENGE TRADING</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Ira — Phẫn Nộ</p>
-          <p className="text-[14px] font-mono text-[#e74c3c] bg-[#e74c3c]/10 p-4 rounded-xl border border-[#e74c3c]/20">"Nó gầm lên: Thị trường cướp tiền của mày. Lấy lại đi!"</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Ira — Phẫn Nộ</p>
+          <p className="text-[16.5px] font-mono text-[#e74c3c] bg-[#e74c3c]/10 p-4 rounded-xl border border-[#e74c3c]/20">"Nó gầm lên: Thị trường cướp tiền của mày. Lấy lại đi!"</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
             <span>⚡</span> <strong>Biến cảm xúc tức giận thành tự sát tài chính</strong>
           </div>
         </div>
@@ -383,21 +383,21 @@ const CHAPTER_5_DATA = [
         </StoryBox>
 
         <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
           "Amygdala Hijack" — thuật ngữ của Daniel Goleman: khi tức giận, amygdala (não cảm xúc) chiếm hoàn toàn prefrontal cortex (não lý trí). Bạn secara harfiah không thể suy nghĩ rõ ràng khi đang tức giận. Atomic Habits: khi cảm xúc cực độ, habit loop bị phá vỡ — chỉ còn reaction thuần túy.
         </p>
 
         <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
           {['Thua lệnh → vào lệnh mới ngay để "gỡ"', 'Tăng size sau khi thua (reverse martingale lệch lạc)', 'Cảm thấy thị trường "không công bằng" hoặc "cố tình quét SL của mình"', 'Giao dịch với cảm giác tức giận, bực bội'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
         <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
             <strong>Quy tắc 24 giờ:</strong> Sau mỗi lệnh thua &gt;1.5× risk bình thường → dừng giao dịch ngay trong ngày đó. Đóng máy tính. Ra ngoài đi bộ. Điều này không phải yếu đuối — đây là kỷ luật chuyên nghiệp. Nhớ: "Thị trường sẽ ở đó vào ngày mai. Tài khoản bị blowup thì không."
           </div>
         </div>
@@ -416,12 +416,12 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#1a1500] to-[#0f0f00] p-8 rounded-3xl text-center mb-8 border border-[#d4ac0d]/30">
-          <div className="text-[12px] font-mono text-[#d4ac0d] uppercase tracking-[0.2em] mb-4">// Con Quỷ 3/7</div>
+          <div className="text-[14.5px] font-mono text-[#d4ac0d] uppercase tracking-[0.2em] mb-4">// Con Quỷ 3/7</div>
           <div className="text-6xl mb-4">👑</div>
           <h1 className="text-3xl font-black text-white mb-2">OVERCONFIDENCE</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Superbia — Kiêu Ngạo</p>
-          <p className="text-[14px] font-mono text-[#d4ac0d] bg-[#d4ac0d]/10 p-4 rounded-xl border border-[#d4ac0d]/20">"Nó thì thầm: Mày đọc được thị trường rồi. Mày giỏi hơn những kẻ kia."</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Superbia — Kiêu Ngạo</p>
+          <p className="text-[16.5px] font-mono text-[#d4ac0d] bg-[#d4ac0d]/10 p-4 rounded-xl border border-[#d4ac0d]/20">"Nó thì thầm: Mày đọc được thị trường rồi. Mày giỏi hơn những kẻ kia."</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
             <span>⚡</span> <strong>Biến thành công thành mầm mống thất bại</strong>
           </div>
         </div>
@@ -433,21 +433,21 @@ const CHAPTER_5_DATA = [
         </StoryBox>
 
         <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
           Sapiens: "Narrative Fallacy" — não người tạo ra câu chuyện liên kết để giải thích thế giới. Sau 5 lần thắng, não tự động tạo câu chuyện "tôi giỏi hơn thị trường" thay vì "tôi may mắn trong chuỗi ngắn". Kahneman gọi đây là "Illusion of Control" — ảo tưởng rằng mình kiểm soát được điều về bản chất là ngẫu nhiên.
         </p>
 
         <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
           {['Bỏ qua trading plan và checklist vì "mình biết nó sẽ đi đâu"', 'Tăng size sau chuỗi thắng mà không có lý do hệ thống', 'Coi thường rủi ro vì "lần này khác"', 'Không review lệnh sai vì "đó là ngoại lệ"'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
         <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
             <strong>Bài kiểm tra Feynman:</strong> Sau mỗi chuỗi thắng, hỏi: "Tôi có thể giải thích chính xác tại sao lệnh này thắng không? Dựa trên nguyên tắc nào?" Nếu câu trả lời là "vì tôi cảm thấy thị trường sẽ đi lên" → đó là Overconfidence, không phải kỹ năng. Giữ size cố định bất kể chuỗi thắng hay thua.
           </div>
         </div>
@@ -466,12 +466,12 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#020d1a] to-[#010a14] p-8 rounded-3xl text-center mb-8 border border-[#2980b9]/30">
-          <div className="text-[12px] font-mono text-[#2980b9] uppercase tracking-[0.2em] mb-4">// Con Quỷ 4/7</div>
+          <div className="text-[14.5px] font-mono text-[#2980b9] uppercase tracking-[0.2em] mb-4">// Con Quỷ 4/7</div>
           <div className="text-6xl mb-4">🧊</div>
           <h1 className="text-3xl font-black text-white mb-2">LOSS AVERSION</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Acedia — Sợ Hãi</p>
-          <p className="text-[14px] font-mono text-[#2980b9] bg-[#2980b9]/10 p-4 rounded-xl border border-[#2980b9]/20">"Nó thì thầm: Đừng cắt lỗ. Biết đâu giá sẽ quay về..."</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Acedia — Sợ Hãi</p>
+          <p className="text-[16.5px] font-mono text-[#2980b9] bg-[#2980b9]/10 p-4 rounded-xl border border-[#2980b9]/20">"Nó thì thầm: Đừng cắt lỗ. Biết đâu giá sẽ quay về..."</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
             <span>⚡</span> <strong>Đóng băng khả năng ra quyết định đúng đắn</strong>
           </div>
         </div>
@@ -483,21 +483,21 @@ const CHAPTER_5_DATA = [
         </StoryBox>
 
         <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
           Prospect Theory (Kahneman & Tversky 1979): mất $100 = đau tâm lý tương đương thắng $200-250. Vì vậy não bộ "đóng băng" trước quyết định cắt lỗ — nó ưu tiên duy trì "hy vọng" hơn là hiện thực hóa đau. Đây là bất đối xứng cảm xúc tự nhiên nhưng gây tổn thất tài chính.
         </p>
 
         <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
           {['Không đặt Stop Loss hoặc dời SL ra xa hơn khi bị chạm', 'Giữ lệnh thua với suy nghĩ "biết đâu giá sẽ quay về"', 'Đóng lệnh thắng quá sớm vì "sợ mất lợi nhuận" nhưng giữ lệnh thua mãi', 'Cảm thấy nhẹ nhõm khi lệnh thua cuối cùng về BE thay vì phân tích tại sao không cắt sớm hơn'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
         <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
             <strong>Nghi thức Pre-mortem:</strong> Trước khi vào lệnh, hỏi: "Nếu lệnh này đến SL, đó có phải lỗi của tôi không hay là rủi ro hợp lý?" Nếu hợp lý → chấp nhận trước. Coi SL là "chi phí kinh doanh" như tiền thuê mặt bằng cho shop, không phải thất bại.
           </div>
         </div>
@@ -516,12 +516,12 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#100a1a] to-[#0a0510] p-8 rounded-3xl text-center mb-8 border border-[#8e44ad]/30">
-          <div className="text-[12px] font-mono text-[#8e44ad] uppercase tracking-[0.2em] mb-4">// Con Quỷ 5/7</div>
+          <div className="text-[14.5px] font-mono text-[#8e44ad] uppercase tracking-[0.2em] mb-4">// Con Quỷ 5/7</div>
           <div className="text-6xl mb-4">🪬</div>
           <h1 className="text-3xl font-black text-white mb-2">CONFIRMATION BIAS</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Invidia — Dối Trá</p>
-          <p className="text-[14px] font-mono text-[#8e44ad] bg-[#8e44ad]/10 p-4 rounded-xl border border-[#8e44ad]/20">"Nó thì thầm: Nhìn đây — tất cả tín hiệu đều xác nhận phân tích của mày."</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Invidia — Dối Trá</p>
+          <p className="text-[16.5px] font-mono text-[#8e44ad] bg-[#8e44ad]/10 p-4 rounded-xl border border-[#8e44ad]/20">"Nó thì thầm: Nhìn đây — tất cả tín hiệu đều xác nhận phân tích của mày."</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
             <span>⚡</span> <strong>Làm mù mắt trước sự thật, chỉ thấy điều mình muốn thấy</strong>
           </div>
         </div>
@@ -533,21 +533,21 @@ const CHAPTER_5_DATA = [
         </StoryBox>
 
         <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
           Sapiens: "Cognitive Dissonance" — khi có sự mâu thuẫn giữa niềm tin và thực tế, não chọn bảo vệ niềm tin bằng cách bác bỏ thực tế. Trong trading: khi đã muốn vào lệnh, não tự động "lọc ra" các tín hiệu ngược chiều và "khuếch đại" các tín hiệu cùng chiều.
         </p>
 
         <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
           {['Phân tích chart SAU KHI đã quyết định hướng lệnh', 'Bỏ qua hoặc giải thích khác đi khi thấy tín hiệu ngược chiều', 'Chỉ đọc tin tức/phân tích đồng tình với quan điểm của mình', 'Cảm thấy "chắc chắn" về một lệnh mà không có lý do rõ ràng'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
         <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
             <strong>Devil's Advocate Protocol:</strong> Sau khi phân tích xong, dành 2 phút chơi "luật sư bào chữa cho phía ngược lại". Hỏi: "Nếu tôi SELL thay vì BUY, lý do tốt nhất là gì?" Nếu không tìm được ít nhất 2 lý do hợp lý → analysis chưa đủ khách quan.
           </div>
         </div>
@@ -566,12 +566,12 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#020f07] to-[#010a04] p-8 rounded-3xl text-center mb-8 border border-[#27ae60]/30">
-          <div className="text-[12px] font-mono text-[#27ae60] uppercase tracking-[0.2em] mb-4">// Con Quỷ 6/7</div>
+          <div className="text-[14.5px] font-mono text-[#27ae60] uppercase tracking-[0.2em] mb-4">// Con Quỷ 6/7</div>
           <div className="text-6xl mb-4">🐑</div>
           <h1 className="text-3xl font-black text-white mb-2">HERDING</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Luxuria — Ngu Muội Bầy Đàn</p>
-          <p className="text-[14px] font-mono text-[#27ae60] bg-[#27ae60]/10 p-4 rounded-xl border border-[#27ae60]/20">"Nó rủ rỉ: Tất cả mọi người đều đang mua. Mày muốn là người duy nhất không tham gia?"</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Luxuria — Ngu Muội Bầy Đàn</p>
+          <p className="text-[16.5px] font-mono text-[#27ae60] bg-[#27ae60]/10 p-4 rounded-xl border border-[#27ae60]/20">"Nó rủ rỉ: Tất cả mọi người đều đang mua. Mày muốn là người duy nhất không tham gia?"</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
             <span>⚡</span> <strong>Sử dụng bản năng bầy đàn 200,000 năm tiến hóa chống lại bạn</strong>
           </div>
         </div>
@@ -583,21 +583,21 @@ const CHAPTER_5_DATA = [
         </StoryBox>
 
         <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
           Sapiens: "Collective Fiction" — con người sở hữu khả năng độc nhất: tin vào câu chuyện chung (collective illusions). Khi "tin tức cộng đồng" nói BTC sẽ về 0, đám đông tin và bán. Khi tin BTC đến 1 triệu, đám đông tin và mua. Giá cả cuối cùng là tổng hợp của những câu chuyện này, không phải thực tế.
         </p>
 
         <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
           {['Vào lệnh vì Telegram/Discord/Twitter đang ồn ào về cơ hội', 'Mua theo "tín hiệu" từ các group, KOL trader mà không tự phân tích', 'Cảm thấy an tâm hơn khi có nhiều người đồng tình', 'Thay đổi phân tích của mình sau khi đọc comment/post của người khác'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
         <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
             <strong>Quy tắc Im Lặng:</strong> Không đọc bất kỳ tin tức trading, Telegram hay Twitter trong 30 phút trước khi phân tích chart. Phân tích độc lập trước, đọc quan điểm người khác sau (nếu cần). "Khi bạn cần người khác xác nhận phân tích của mình — bạn chưa có phân tích, bạn chỉ có hy vọng."
           </div>
         </div>
@@ -616,12 +616,12 @@ const CHAPTER_5_DATA = [
     content: (
       <>
         <div className="bg-gradient-to-br from-[#1a0a00] to-[#140700] p-8 rounded-3xl text-center mb-8 border border-[#e67e22]/30">
-          <div className="text-[12px] font-mono text-[#e67e22] uppercase tracking-[0.2em] mb-4">// Con Quỷ 7/7</div>
+          <div className="text-[14.5px] font-mono text-[#e67e22] uppercase tracking-[0.2em] mb-4">// Con Quỷ 7/7</div>
           <div className="text-6xl mb-4">🎰</div>
           <h1 className="text-3xl font-black text-white mb-2">OVERTRADING</h1>
-          <p className="text-[14px] text-gray-400 italic mb-4">Gula — Bạo Thực</p>
-          <p className="text-[14px] font-mono text-[#e67e22] bg-[#e67e22]/10 p-4 rounded-xl border border-[#e67e22]/20">"Nó liên tục kêu: Nhàm chán lắm. Sao không vào lệnh đi? Đợi chi vậy?"</p>
-          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[13px]">
+          <p className="text-[16.5px] text-gray-400 italic mb-4">Gula — Bạo Thực</p>
+          <p className="text-[16.5px] font-mono text-[#e67e22] bg-[#e67e22]/10 p-4 rounded-xl border border-[#e67e22]/20">"Nó liên tục kêu: Nhàm chán lắm. Sao không vào lệnh đi? Đợi chi vậy?"</p>
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-black/30 rounded-full border border-white/10 text-white text-[15.5px]">
             <span>⚡</span> <strong>Biến sự nhàm chán thành con đường dẫn đến phá sản từ từ</strong>
           </div>
         </div>
@@ -633,21 +633,21 @@ const CHAPTER_5_DATA = [
         </StoryBox>
 
         <SectionHead icon={<Brain size={16} />} title="Khoa học đằng sau" />
-        <p className="text-[15px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
+        <p className="text-[17.5px] leading-relaxed text-gray-700 dark:text-[#9ca3b0] p-5 bg-gray-50 dark:bg-[#0B0E11] rounded-2xl border border-gray-200 dark:border-[#2B3139] my-4">
           Atomic Habits: dopamine không chỉ được tiết ra khi nhận reward — nó được tiết ra nhiều nhất khi đang ANTICIPATE reward. Nghĩa là: hành động trading (click chuột, chờ lệnh khớp) = dopamine hit. Não học: "trading = sướng". Kết quả: muốn trading liên tục bất kể điều kiện thị trường.
         </p>
 
         <SectionHead icon={<AlertTriangle size={16} />} title="Triệu chứng nhận biết" />
         <div className="bg-red-50 dark:bg-[#F6465D]/5 border border-red-200 dark:border-[#F6465D]/20 rounded-2xl p-5 my-4 space-y-3">
           {['Vào lệnh khi không có setup rõ ràng vì "cảm thấy" thị trường sẽ tăng/giảm', 'Thực hiện nhiều hơn 3-5 lệnh/ngày trong swing trading', 'Cảm thấy bồn chồn, khó chịu khi không có lệnh đang mở', 'Vào lệnh nhỏ "thử" khi chưa đủ setup'].map((s, i) => (
-            <div key={i} className="flex gap-3 text-[14px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
+            <div key={i} className="flex gap-3 text-[16.5px] text-gray-800 dark:text-[#EAECEF] border-b border-red-100 dark:border-[#F6465D]/10 pb-2 last:border-0"><span className="text-red-500">🩸</span> {s}</div>
           ))}
         </div>
 
         <SectionHead icon={<Shield size={16} />} title="Nghi thức trừ quỷ" />
         <div className="bg-green-50 dark:bg-[#0ECB81]/10 border border-green-200 dark:border-[#0ECB81]/30 rounded-2xl p-6 my-4">
-          <div className="text-[12px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
-          <div className="text-[15px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
+          <div className="text-[14.5px] font-bold text-green-700 dark:text-[#0ECB81] uppercase tracking-wider mb-2">✦ Phương thức đối trị</div>
+          <div className="text-[17.5px] leading-relaxed text-gray-800 dark:text-[#EAECEF]">
             <strong>Quota ngược:</strong> Thay vì "tôi phải vào ít nhất X lệnh hôm nay", hãy đặt rule: "Tôi chỉ được vào tối đa Y lệnh/ngày" (với swing trade: Y = 2-3). Và quan trọng hơn: viết ra trong Journal mỗi lần KHÔNG vào lệnh vì không đủ setup. "Hôm nay tôi đã từ chối 3 cơ hội kém chất lượng" là thành tích đáng tự hào.
           </div>
         </div>
@@ -673,12 +673,12 @@ const CHAPTER_5_DATA = [
           </div>
         </StoryBox>
 
-        <p className="text-[16px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
+        <p className="text-[18.5px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
           Khi bạn ghi lại mỗi lệnh vào Journal, một điều kỳ diệu xảy ra: <strong>bạn bắt đầu thấy pattern</strong>. "Mình hay thua vào thứ Hai." "Mình ra quyết định tệ khi vừa thua 2 lệnh liên tiếp." "Con quỷ Kiêu Ngạo hay xuất hiện sau chuỗi thắng." <em>Không có Journal = không có dữ liệu = không biết mình đang bị con quỷ nào thao túng.</em>
         </p>
 
         <SectionHead icon={<Edit3 size={16} />} title="Thực hành: Điền Journal của bạn" desc="Một bản ghi mẫu — điền thật để nhận phân tích" />
-        
+
         <JournalSimulator />
 
         <SectionHead icon={<Target size={16} />} title="Cách dùng Journal để tiêu diệt con quỷ" />
@@ -692,7 +692,7 @@ const CHAPTER_5_DATA = [
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
@@ -703,7 +703,7 @@ const CHAPTER_5_DATA = [
           <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 8</div>
           <ul className="space-y-2">
             {['Journal = gương soi — ánh sáng nhận thức tự động cải thiện hành vi (Atomic Habits: habit tracking).', 'Ghi lại: lệnh, cảm xúc, con quỷ hiện diện, điểm tuân thủ hệ thống. Mỗi lệnh không ngoại lệ.', 'Review hàng tuần để tìm trigger cá nhân và tạo "nếu-thì" rule phòng thủ.', 'Đo "tuân thủ hệ thống" thay vì P&L trong 3 tháng đầu. Process trước, profit sau.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -748,4 +748,4 @@ const CHAPTER_5_DATA = [
   },
 ];
 
-export default CHAPTER_5_DATA;
+export default CHAPTER_5_DATA_VN;

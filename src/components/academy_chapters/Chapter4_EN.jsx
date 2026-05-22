@@ -17,13 +17,13 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
     <div className="border border-gray-200 dark:border-[#2B3139] rounded-3xl overflow-hidden my-8 bg-gray-50 dark:bg-[#0B0E11] shadow-md dark:shadow-xl transition-colors">
       <div className="bg-white dark:bg-[#181A20] p-5 flex items-center gap-3 border-b border-gray-200 dark:border-[#2B3139] transition-colors">
         <span className="text-xs font-black tracking-widest uppercase text-yellow-600 dark:text-[#FCD535] bg-yellow-50 dark:bg-[#FCD535]/10 border border-yellow-200 dark:border-[#FCD535]/30 px-4 py-1.5 rounded-full shadow-sm">
-          <Zap size={14} className="inline mr-1" /> CÂU HỎI KIỂM TRA
+          <Zap size={14} className="inline mr-1" /> QUIZ QUESTION
         </span>
       </div>
       <div className="p-8">
         <div className="text-lg md:text-xl font-bold text-black dark:text-white mb-6 leading-relaxed transition-colors">
           {q}
-          {context && <span className="block text-[15px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
+          {context && <span className="block text-[17.5px] text-gray-500 dark:text-[#848E9C] font-medium mt-3 italic transition-colors">{context}</span>}
         </div>
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
@@ -38,14 +38,14 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
             return (
               <button key={i} disabled={selected !== null} onClick={() => setSelected(i)} className={`flex items-start gap-4 p-5 border-2 rounded-2xl text-left transition-all ${btnClass}`}>
                 <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 transition-colors ${letterClass}`}>{String.fromCharCode(65 + i)}</div>
-                <span className="text-[16px] leading-[1.7] mt-1">{opt}</span>
+                <span className="text-[18.5px] leading-[1.7] mt-1">{opt}</span>
               </button>
             );
           })}
         </div>
         {selected !== null && (
-          <div className={`mt-6 p-6 rounded-2xl text-[16px] leading-relaxed ${selected === correctIdx ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]' : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'}`}>
-            <strong className="block text-lg mb-2">{selected === correctIdx ? '✅ Chính xác!' : '❌ Chưa đúng.'}</strong> {explanation}
+          <div className={`mt-6 p-6 rounded-2xl text-[18.5px] leading-relaxed ${selected === correctIdx ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]' : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'}`}>
+            <strong className="block text-lg mb-2">{selected === correctIdx ? '✅ Correct!' : '❌ Incorrect.'}</strong> {explanation}
           </div>
         )}
       </div>
@@ -80,54 +80,54 @@ const LossStreakSim = () => {
     <div className="border border-gray-200 dark:border-[#2B3139] rounded-3xl overflow-hidden my-8 bg-gray-50 dark:bg-[#0B0E11] shadow-md dark:shadow-xl transition-colors">
       <div className="bg-white dark:bg-[#181A20] p-6 flex items-center gap-4 border-b border-gray-200 dark:border-[#2B3139] transition-colors">
         <BarChart2 size={24} className="text-[#d97706] dark:text-[#00d084] shrink-0" />
-        <h3 className="font-bold text-black dark:text-white text-lg flex-1">Simulator: Chuỗi thua liên tiếp</h3>
+        <h3 className="font-bold text-black dark:text-white text-lg flex-1">Simulator: Consecutive Loss Streak</h3>
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-4 py-1.5 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Vốn ban đầu ($)</label>
-            <input type="number" value={acc} onChange={e => setAcc(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Initial Capital ($)</label>
+            <input type="number" value={acc} onChange={e => setAcc(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk mỗi lệnh (%)</label>
-            <input type="number" value={risk} step={0.5} onChange={e => setRisk(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk per trade (%)</label>
+            <input type="number" value={risk} step={0.5} onChange={e => setRisk(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Số lệnh thua liên tiếp</label>
-            <input type="number" value={n} min={1} max={20} onChange={e => setN(Number(e.target.value) || 1)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Consecutive Losses</label>
+            <input type="number" value={n} min={1} max={20} onChange={e => setN(Number(e.target.value) || 1)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
         <div className="flex items-end gap-1 h-20 mb-4 bg-gray-100 dark:bg-[#181A20] rounded-xl px-4 py-3">
           {bars.map((b, i) => (
-            <div key={i} className={`flex-1 rounded-t-sm opacity-90 transition-all ${barColor(b.pct)}`} style={{ height: `${Math.max(8, b.pct * 100)}%` }} title={`Lệnh ${i}: $${b.val}`} />
+            <div key={i} className={`flex-1 rounded-t-sm opacity-90 transition-all ${barColor(b.pct)}`} style={{ height: `${Math.max(8, b.pct * 100)}%` }} title={`Trade ${i}: $${b.val}`} />
           ))}
         </div>
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
-            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Còn lại</div>
+            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Remaining</div>
             <div className={`text-2xl font-black font-mono ${parseFloat(lostPct) > 30 ? 'text-red-600 dark:text-[#F6465D]' : parseFloat(lostPct) > 15 ? 'text-yellow-600 dark:text-[#FCD535]' : 'text-green-600 dark:text-[#0ECB81]'}`}>${finalVal.toFixed(0)}</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
-            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Đã mất</div>
+            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Lost</div>
             <div className="text-2xl font-black font-mono text-red-600 dark:text-[#F6465D]">-{lostPct}%</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
-            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Cần gỡ lại</div>
+            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">To Recover</div>
             <div className="text-2xl font-black font-mono text-yellow-600 dark:text-[#FCD535]">+{recovery}%</div>
           </div>
         </div>
         {parseFloat(lostPct) > 50 ? (
-          <div className="mt-4 p-4 rounded-2xl bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] text-[14px] leading-relaxed border border-red-200 dark:border-[#F6465D]/30">
-            💀 {n} lệnh thua với risk {risk}% = mất {lostPct}% tài khoản. Cần tăng +{recovery}% để về vốn — có thể mất nhiều năm.
+          <div className="mt-4 p-4 rounded-2xl bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] text-[16.5px] leading-relaxed border border-red-200 dark:border-[#F6465D]/30">
+            💀 {n} losses with risk {risk}% = lost {lostPct}% of account. Need +{recovery}% just to breakeven — might take years.
           </div>
         ) : parseFloat(lostPct) > 20 ? (
-          <div className="mt-4 p-4 rounded-2xl bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] text-[14px] leading-relaxed border border-yellow-200 dark:border-[#FCD535]/30">
-            ⚠️ Mất {lostPct}% là đáng kể. Với risk {risk}%, chỉ cần {n} lệnh thua liên tiếp là DD đáng lo. Cân nhắc giảm risk xuống 1-2%.
+          <div className="mt-4 p-4 rounded-2xl bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] text-[16.5px] leading-relaxed border border-yellow-200 dark:border-[#FCD535]/30">
+            ⚠️ Losing {lostPct}% is significant. With {risk}% risk, it only takes {n} consecutive losses to reach a concerning drawdown. Consider reducing risk to 1-2%.
           </div>
         ) : (
-          <div className="mt-4 p-4 rounded-2xl bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] text-[14px] leading-relaxed border border-green-200 dark:border-[#0ECB81]/30">
-            ✅ {n} lệnh thua với risk {risk}% chỉ mất {lostPct}%. Có thể phục hồi bình thường. Đây là lý do dùng risk nhỏ.
+          <div className="mt-4 p-4 rounded-2xl bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] text-[16.5px] leading-relaxed border border-green-200 dark:border-[#0ECB81]/30">
+            ✅ {n} losses with risk {risk}% only lost {lostPct}%. Can recover normally. This is why small risk is used.
           </div>
         )}
       </div>
@@ -153,33 +153,33 @@ const PositionSizeCalc = () => {
         <span className="text-xs bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-800 dark:text-[#FCD535] px-4 py-1.5 rounded-full uppercase font-bold tracking-widest">Interactive</span>
       </div>
       <div className="p-8">
-        <Callout type="warn">Công thức: Risk Amount ($) = Account × Risk% / 100. Position Size = Risk Amount / (SL pip × Pip Value)</Callout>
+        <Callout type="warn">Formula: Risk Amount ($) = Account × Risk% / 100. Position Size = Risk Amount / (SL pips × Pip Value)</Callout>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 mt-6">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Tài khoản ($)</label>
-            <input type="number" value={accBal} onChange={e => setAccBal(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Account Balance ($)</label>
+            <input type="number" value={accBal} onChange={e => setAccBal(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk % mỗi lệnh</label>
-            <input type="number" value={riskPct} step={0.1} min={0.1} max={10} onChange={e => setRiskPct(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk % per trade</label>
+            <input type="number" value={riskPct} step={0.1} min={0.1} max={10} onChange={e => setRiskPct(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Stop Loss (pip/điểm)</label>
-            <input type="number" value={sl} onChange={e => setSl(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Stop Loss (pips/points)</label>
+            <input type="number" value={sl} onChange={e => setSl(Number(e.target.value) || 0)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Pip Value ($)</label>
-            <select value={pipVal} onChange={e => setPipVal(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white outline-none transition-colors">
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Pip Value ($)</label>
+            <select value={pipVal} onChange={e => setPipVal(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white outline-none transition-colors">
               <option value={1}>$1 — Mini lot (EUR/USD, GBP/USD)</option>
               <option value={0.1}>$0.1 — Micro lot</option>
               <option value={10}>$10 — Standard lot</option>
-              <option value={0.01}>$0.01 — Cent lot (học mới)</option>
+              <option value={0.01}>$0.01 — Cent lot (for beginners)</option>
             </select>
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
-            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Tiền rủi ro</div>
+            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Risk Amount</div>
             <div className="text-2xl font-black font-mono text-yellow-600 dark:text-[#FCD535]">${riskAmt.toFixed(2)}</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
@@ -187,13 +187,13 @@ const PositionSizeCalc = () => {
             <div className="text-2xl font-black font-mono text-green-600 dark:text-[#0ECB81]">{size.toFixed(2)} lot</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
-            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">% Tài khoản</div>
+            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">% Account</div>
             <div className="text-2xl font-black font-mono text-black dark:text-white">{riskPct}%</div>
           </div>
         </div>
-        {riskPct > 3 && <div className="mt-4 p-4 rounded-2xl bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] text-[14px] border border-red-200 dark:border-[#F6465D]/30">⚠️ Risk {riskPct}% là quá cao cho người mới. Khuyến nghị 1-2%.</div>}
-        {riskPct >= 1 && riskPct <= 3 && <div className="mt-4 p-4 rounded-2xl bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] text-[14px] border border-green-200 dark:border-[#0ECB81]/30">✅ Risk {riskPct}% là phù hợp. Size {size.toFixed(2)} lot, risk ${riskAmt.toFixed(2)}.</div>}
-        {riskPct < 1 && <div className="mt-4 p-4 rounded-2xl bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] text-[14px] border border-blue-200 dark:border-[#378ADD]/30">🛡️ Risk {riskPct}% rất an toàn — phù hợp giai đoạn mới học.</div>}
+        {riskPct > 3 && <div className="mt-4 p-4 rounded-2xl bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D] text-[16.5px] border border-red-200 dark:border-[#F6465D]/30">⚠️ Risk {riskPct}% is too high for beginners. Recommended 1-2%.</div>}
+        {riskPct >= 1 && riskPct <= 3 && <div className="mt-4 p-4 rounded-2xl bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81] text-[16.5px] border border-green-200 dark:border-[#0ECB81]/30">✅ Risk {riskPct}% is reasonable. Size {size.toFixed(2)} lot, risk ${riskAmt.toFixed(2)}.</div>}
+        {riskPct < 1 && <div className="mt-4 p-4 rounded-2xl bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] text-[16.5px] border border-blue-200 dark:border-[#378ADD]/30">🛡️ Risk {riskPct}% is very safe — perfect for learning phase.</div>}
       </div>
     </div>
   );
@@ -222,16 +222,16 @@ const ExpectancyCalc = () => {
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Win Rate (%)</label>
-            <input type="number" value={winRate} min={1} max={99} onChange={e => setWinRate(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Win Rate (%)</label>
+            <input type="number" value={winRate} min={1} max={99} onChange={e => setWinRate(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Lời TB mỗi lệnh ($)</label>
-            <input type="number" value={avgWin} onChange={e => setAvgWin(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Win per trade ($)</label>
+            <input type="number" value={avgWin} onChange={e => setAvgWin(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Lỗ TB mỗi lệnh ($)</label>
-            <input type="number" value={avgLoss} onChange={e => setAvgLoss(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Loss per trade ($)</label>
+            <input type="number" value={avgLoss} onChange={e => setAvgLoss(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4">
@@ -240,16 +240,16 @@ const ExpectancyCalc = () => {
             <div className="text-2xl font-black font-mono text-green-600 dark:text-[#0ECB81]">1:{rr.toFixed(1)}</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
-            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Kỳ vọng/lệnh</div>
+            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Expectancy/trade</div>
             <div className={`text-2xl font-black font-mono ${expectancy >= 0 ? 'text-green-600 dark:text-[#0ECB81]' : 'text-red-600 dark:text-[#F6465D]'}`}>{expectancy >= 0 ? '+' : ''}{expectancy.toFixed(1)}$</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
-            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">100 lệnh = ?</div>
+            <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">After 100 trades = ?</div>
             <div className={`text-2xl font-black font-mono ${per100 >= 0 ? 'text-green-600 dark:text-[#0ECB81]' : 'text-red-600 dark:text-[#F6465D]'}`}>{per100 >= 0 ? '+' : ''}{per100.toFixed(0)}$</div>
           </div>
         </div>
-        <div className="mt-4 p-4 rounded-2xl bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] text-[14px] border border-blue-200 dark:border-[#378ADD]/30">
-          📊 Với R:R 1:{rr.toFixed(1)}, bạn chỉ cần win rate tối thiểu <strong>{breakeven}%</strong> để hòa vốn.
+        <div className="mt-4 p-4 rounded-2xl bg-blue-50 dark:bg-[#378ADD]/10 text-blue-800 dark:text-[#378ADD] text-[16.5px] border border-blue-200 dark:border-[#378ADD]/30">
+          📊 With an R:R of 1:{rr.toFixed(1)}, you only need a minimum win rate of <strong>{breakeven}%</strong> to breakeven.
         </div>
       </div>
     </div>
@@ -280,41 +280,41 @@ const KellyCalc = () => {
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Win Rate (%)</label>
-            <input type="number" value={wr} onChange={e => setWr(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Win Rate (%)</label>
+            <input type="number" value={wr} onChange={e => setWr(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Thắng ($)</label>
-            <input type="number" value={avgW} onChange={e => setAvgW(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Win ($)</label>
+            <input type="number" value={avgW} onChange={e => setAvgW(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Thua ($)</label>
-            <input type="number" value={avgL} onChange={e => setAvgL(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Avg Loss ($)</label>
+            <input type="number" value={avgL} onChange={e => setAvgL(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
         <div className="grid grid-cols-3 gap-4 mb-6">
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-1">Full Kelly</div>
             <div className="text-2xl font-black font-mono text-red-600 dark:text-[#F6465D]">{fullKelly.toFixed(1)}%</div>
-            <div className="text-[10px] text-red-500 mt-1">⚠️ Quá rủi ro</div>
+            <div className="text-[12.5px] text-red-500 mt-1">⚠️ Too Risky</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-1">Half Kelly</div>
             <div className="text-2xl font-black font-mono text-yellow-600 dark:text-[#FCD535]">{halfKelly.toFixed(1)}%</div>
-            <div className="text-[10px] text-yellow-600 dark:text-[#FCD535] mt-1">Chuyên nghiệp</div>
+            <div className="text-[12.5px] text-yellow-600 dark:text-[#FCD535] mt-1">Professional</div>
           </div>
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-1">Quarter Kelly</div>
             <div className="text-2xl font-black font-mono text-green-600 dark:text-[#0ECB81]">{quarterKelly.toFixed(1)}%</div>
-            <div className="text-[10px] text-green-600 dark:text-[#0ECB81] mt-1">Khuyến nghị</div>
+            <div className="text-[12.5px] text-green-600 dark:text-[#0ECB81] mt-1">Recommended</div>
           </div>
         </div>
-        <div className="mb-2 text-xs font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest">Vùng an toàn</div>
+        <div className="mb-2 text-xs font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest">Safe Zone</div>
         <div className="h-4 rounded-full bg-gradient-to-r from-green-500 via-yellow-400 to-red-500 relative mb-2">
           <div className="absolute top-1/2 -translate-y-1/2 w-1 h-6 bg-white dark:bg-white rounded-full shadow-lg" style={{ left: `${Math.min(kellyLeft * 4, 100)}%` }} />
         </div>
-        <div className="flex justify-between text-[10px] font-mono text-gray-500 dark:text-[#848E9C]">
-          <span>0% Quá thận trọng</span><span>Vùng tối ưu</span><span>100% Tự sát tài chính</span>
+        <div className="flex justify-between text-[12.5px] font-mono text-gray-500 dark:text-[#848E9C]">
+          <span>0% Too Cautious</span><span>Optimal Zone</span><span>100% Financial Suicide</span>
         </div>
       </div>
     </div>
@@ -328,7 +328,7 @@ const ScenarioCard = ({ icon, title, badge, badgeColor, children }) => {
     <div className={`border rounded-2xl overflow-hidden mb-4 transition-all ${open ? 'border-yellow-400 dark:border-[#FCD535]' : 'border-gray-200 dark:border-[#2B3139]'} bg-white dark:bg-[#181A20]`}>
       <button onClick={() => setOpen(!open)} className="w-full flex items-center gap-3 p-5 text-left">
         <span className="text-2xl">{icon}</span>
-        <span className="font-bold text-[16px] text-black dark:text-white flex-1">{title}</span>
+        <span className="font-bold text-[18.5px] text-black dark:text-white flex-1">{title}</span>
         <span className={`text-xs font-bold px-3 py-1 rounded-full font-mono ${badgeColor}`}>{badge}</span>
         {open ? <ChevronUp size={16} className="text-gray-500 shrink-0" /> : <ChevronDown size={16} className="text-gray-500 shrink-0" />}
       </button>
@@ -341,7 +341,7 @@ const ScenarioCard = ({ icon, title, badge, badgeColor, children }) => {
 const AntiMartingaleSim = () => {
   const [base, setBase] = useState(1);
   const [inc, setInc] = useState(0.5);
-  const sequence = ['W','W','L','W','W','W','L','L','W','W'];
+  const sequence = ['W', 'W', 'L', 'W', 'W', 'W', 'L', 'L', 'W', 'W'];
   let risk = base;
   let bal = 10000;
   const rows = sequence.map((r, i) => {
@@ -364,28 +364,28 @@ const AntiMartingaleSim = () => {
       <div className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Risk cơ bản (%)</label>
-            <input type="number" value={base} step={0.5} onChange={e => setBase(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Base Risk (%)</label>
+            <input type="number" value={base} step={0.5} onChange={e => setBase(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Tăng sau thắng (%)</label>
-            <select value={inc} onChange={e => setInc(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white outline-none transition-colors">
-              <option value={0.25}>+0.25% mỗi chuỗi thắng</option>
-              <option value={0.5}>+0.5% mỗi chuỗi thắng</option>
-              <option value={1}>+1% mỗi chuỗi thắng</option>
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Increase after win (%)</label>
+            <select value={inc} onChange={e => setInc(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white outline-none transition-colors">
+              <option value={0.25}>+0.25% per winning streak</option>
+              <option value={0.5}>+0.5% per winning streak</option>
+              <option value={1}>+1% per winning streak</option>
             </select>
           </div>
         </div>
         <div className="overflow-x-auto border border-gray-200 dark:border-[#2B3139] rounded-2xl">
           <table className="w-full text-left min-w-[400px]">
             <thead><tr className="bg-gray-100 dark:bg-[#181A20] text-gray-500 dark:text-[#848E9C] text-xs uppercase tracking-widest border-b border-gray-200 dark:border-[#2B3139]">
-              <th className="p-3 font-black">Lệnh</th><th className="p-3 font-black">Kết quả</th><th className="p-3 font-black">Risk %</th><th className="p-3 font-black">Thay đổi ($)</th><th className="p-3 font-black">Số dư ($)</th>
+              <th className="p-3 font-black">Trade</th><th className="p-3 font-black">Result</th><th className="p-3 font-black">Risk %</th><th className="p-3 font-black">Change ($)</th><th className="p-3 font-black">Balance ($)</th>
             </tr></thead>
-            <tbody className="text-[14px]">
+            <tbody className="text-[16.5px]">
               {rows.map(row => (
                 <tr key={row.i} className="border-b border-gray-100 dark:border-[#2B3139]/50 last:border-0">
                   <td className="p-3 font-mono font-bold text-gray-700 dark:text-[#848E9C]">#{row.i + 1}</td>
-                  <td className="p-3"><span className={`px-2 py-1 rounded-lg text-xs font-black ${row.r === 'W' ? 'bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81]' : 'bg-red-100 dark:bg-[#F6465D]/20 text-red-700 dark:text-[#F6465D]'}`}>{row.r === 'W' ? '✅ Thắng' : '❌ Thua'}</span></td>
+                  <td className="p-3"><span className={`px-2 py-1 rounded-lg text-xs font-black ${row.r === 'W' ? 'bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81]' : 'bg-red-100 dark:bg-[#F6465D]/20 text-red-700 dark:text-[#F6465D]'}`}>{row.r === 'W' ? '✅ Win' : '❌ Loss'}</span></td>
                   <td className="p-3 font-mono text-black dark:text-white">{row.risk}%</td>
                   <td className={`p-3 font-mono font-bold ${Number(row.change) >= 0 ? 'text-green-600 dark:text-[#0ECB81]' : 'text-red-600 dark:text-[#F6465D]'}`}>{Number(row.change) >= 0 ? '+' : ''}{row.change}</td>
                   <td className="p-3 font-mono font-bold text-black dark:text-white">${row.bal}</td>
@@ -402,62 +402,62 @@ const AntiMartingaleSim = () => {
 // ==========================================
 // CHAPTER 4 DATA
 // ==========================================
-const CHAPTER_4_DATA = [
+const CHAPTER_4_DATA_EN = [
   {
     chapter: "Chapter 4: Risk Management", title: "0. Why Risk Management is #1?",
     content: (
       <>
-        <SectionHead icon={<DollarSign size={16} />} title="Tại sao Quản lý vốn quan trọng hơn kỹ thuật?" desc="80% trader thua lỗ không phải vì không biết phân tích — mà vì không kiểm soát được số tiền họ đặt cược." />
-        <StoryBox label="🎯 Câu đố tư duy" icon="🎯">
-          Bạn có 2 trader:<br /><br />
-          <strong>Trader A:</strong> Win rate 70% (thắng 7/10 lệnh). Nhưng mỗi lệnh thắng +$100, mỗi lệnh thua −$500. Sau 10 lệnh: thắng 7 × $100 = $700. Thua 3 × $500 = $1,500. <strong>Kết quả: −$800.</strong><br /><br />
-          <strong>Trader B:</strong> Win rate 40% (thắng 4/10 lệnh). Nhưng mỗi lệnh thắng +$300, mỗi lệnh thua −$100. Sau 10 lệnh: thắng 4 × $300 = $1,200. Thua 6 × $100 = $600. <strong>Kết quả: +$600.</strong><br /><br />
-          Ai thắng? Trader B — dù thắng ít hơn 30% số lệnh. <em>Win rate không phải tất cả. Kỷ luật quản lý vốn mới quyết định.</em>
+        <SectionHead icon={<DollarSign size={16} />} title="Why is Risk Management more important than technical analysis?" desc="80% of losing traders don't fail because of poor analysis — they fail because they can't control their bet size." />
+        <StoryBox label="🎯 Thinking Puzzle" icon="🎯">
+          You have 2 traders:<br /><br />
+          <strong>Trader A:</strong> Win rate 70% (wins 7/10 trades). But each win is +$100, each loss is −$500. After 10 trades: 7 × $100 = $700. 3 losses × $500 = $1,500. <strong>Result: −$800.</strong><br /><br />
+          <strong>Trader B:</strong> Win rate 40% (wins 4/10 trades). But each win is +$300, each loss is −$100. After 10 trades: 4 × $300 = $1,200. 6 losses × $100 = $600. <strong>Result: +$600.</strong><br /><br />
+          Who wins? Trader B — despite winning 30% less often. <em>Win rate isn't everything. Risk management discipline is what matters.</em>
         </StoryBox>
 
-        <SectionHead icon={<BarChart2 size={16} />} title="Số học của sự sụp đổ" desc="Một khi đã mất nhiều, rất khó gỡ lại" />
+        <SectionHead icon={<BarChart2 size={16} />} title="The Math of Ruin" desc="Once you lose a lot, it's very hard to recover" />
         <CyberTable
-          headers={["Mất bao nhiêu", "Cần gỡ bao nhiêu"]}
+          headers={["Amount Lost", "Amount to Recover"]}
           rows={[
-            ["Mất 10% tài khoản", "Cần +11% để về bằng vốn"],
-            ["Mất 25% tài khoản", "Cần +33% để về bằng vốn"],
-            ["Mất 50% tài khoản", "<span class='text-red-600 dark:text-[#F6465D] font-bold'>Cần +100% để về bằng vốn!</span>"],
+            ["Lost 10% of account", "Need +11% to breakeven"],
+            ["Lost 25% of account", "Need +33% to breakeven"],
+            ["Lost 50% of account", "<span class='text-red-600 dark:text-[#F6465D] font-bold'>Need +100% to breakeven!</span>"],
           ]}
         />
 
         <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-2xl p-5 my-6 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
-          <div className="text-gray-400 text-xs mb-2">// Để về bằng vốn sau drawdown:</div>
+          <div className="text-gray-400 text-xs mb-2">// To breakeven after drawdown:</div>
           <div>Recovery % = (1 / (1 - Drawdown%)) - 1</div>
           <br />
-          <div className="text-gray-400 text-xs">// Ví dụ: Mất 50% → $10,000 còn $5,000</div>
-          <div className="text-gray-400 text-xs">// Cần tăng 100% từ $5,000 để về lại $10,000</div>
-          <div className="text-gray-400 text-xs">// Nhưng thị trường trung bình tăng 10-30%/năm...</div>
-          <div className="text-gray-400 text-xs">// → Mất 50% = mất 2-5 năm để gỡ lại (nếu may mắn)</div>
+          <div className="text-gray-400 text-xs">// Example: Lost 50% → $10,000 becomes $5,000</div>
+          <div className="text-gray-400 text-xs">// Need 100% gain from $5,000 to get back to $10,000</div>
+          <div className="text-gray-400 text-xs">// But the market averages 10-30% growth per year...</div>
+          <div className="text-gray-400 text-xs">// → Losing 50% = takes 2-5 years to recover (if lucky)</div>
         </div>
 
-        <SectionHead icon="💀" title="3 cách phổ biến nhất blowup account" />
+        <SectionHead icon="💀" title="3 most common ways to blow up an account" />
         <div className="space-y-4 my-6">
           {[
-            { n: '1', text: <><strong>Risk quá lớn mỗi lệnh (10-30% tài khoản):</strong> 3-5 lệnh thua liên tiếp = hết tài khoản. Không thể tránh chuỗi thua — thị trường luôn có giai đoạn bất lợi.</> },
-            { n: '2', text: <><strong>Không đặt Stop Loss:</strong> "Lần này giá sẽ quay lại..." — lỗ nhỏ thành lỗ lớn thành không còn vốn để giao dịch tiếp.</> },
-            { n: '3', text: <><strong>Revenge trading sau thua lỗ:</strong> Thua $200 → vào lệnh $500 để gỡ → thua $500 → vào $1,000... Vòng xoáy tử thần của cảm xúc.</> },
+            { n: '1', text: <><strong>Risking too much per trade (10-30% of account):</strong> 3-5 consecutive losses = account wiped out. You cannot avoid losing streaks — the market always has unfavorable periods.</> },
+            { n: '2', text: <><strong>Trading without a Stop Loss:</strong> "It will come back this time..." — small losses turn into big losses until no capital is left to trade.</> },
+            { n: '3', text: <><strong>Revenge trading after a loss:</strong> Lose $200 → enter a $500 trade to recover → lose $500 → enter $1,000... The emotional death spiral.</> },
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-[#F6465D]/20 text-red-600 dark:text-[#F6465D] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
 
         <LossStreakSim />
 
-        <Callout type="ok" title="Kết luận:">Quản lý vốn không phải để kiếm nhiều hơn — mà để <em>tồn tại đủ lâu</em> để kỹ thuật và kinh nghiệm phát huy tác dụng. Trader sống sót lâu nhất mới thắng.</Callout>
+        <Callout type="ok" title="Conclusion:">Risk management isn't about making more money — it's about <em>surviving long enough</em> for your technical skills and experience to work. The trader who survives the longest wins.</Callout>
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 0</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 0 Summary</div>
           <ul className="space-y-2">
-            {['Win rate cao không đảm bảo có lời — R:R và kỷ luật quản lý vốn mới quyết định.', 'Mất 50% tài khoản cần +100% để hoàn vốn — toán học bất đối xứng cực kỳ nguy hiểm.', '3 cách blowup: risk quá lớn, không SL, revenge trading. Tránh được 3 điều này = đã hơn 80% trader.', 'Mục tiêu quản lý vốn: tồn tại đủ lâu, không phải làm giàu nhanh.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['A high win rate doesn\'t guarantee profits — R:R and risk management discipline are what matters.', 'Losing 50% of your account requires a +100% gain to breakeven — asymmetrical math is extremely dangerous.', '3 ways to blow up: risking too much, no SL, revenge trading. Avoiding these 3 things = already better than 80% of traders.', 'Goal of risk management: survive long enough, not get rich quick.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -468,21 +468,21 @@ const CHAPTER_4_DATA = [
     chapter: "Chapter 4: Risk Management", title: "1. 1-2% Rule & Position Sizing",
     content: (
       <>
-        <SectionHead icon={<Shield size={16} />} title="Quy tắc 1-2% — Giải thích cho trẻ lớp 1" desc="Đây là quy tắc đơn giản nhất nhưng bị vi phạm nhiều nhất." />
-        <StoryBox label="🍬 Ví dụ kẹo" icon="🍬">
-          Bạn có <strong>100 viên kẹo</strong>. Mỗi ngày bạn chơi 1 trò chơi may rủi. Nếu dùng quy tắc <strong>1%</strong>: mỗi lần chỉ cược tối đa <strong>1 viên kẹo</strong>.<br /><br />
-          Dù thua 10 lần liên tiếp, bạn vẫn còn ~90 viên. Bạn có thể tiếp tục chơi và gỡ lại.<br /><br />
-          Nếu cược 10 viên mỗi lần và thua 10 lần liên tiếp → <strong>mất hết kẹo, trò chơi kết thúc.</strong><br /><br />
-          Trading hoạt động y hệt vậy. 1-2% = 1-2 viên kẹo mỗi lần chơi.
+        <SectionHead icon={<Shield size={16} />} title="The 1-2% Rule — Explained for a 1st Grader" desc="This is the simplest rule but the most violated." />
+        <StoryBox label="🍬 The Candy Example" icon="🍬">
+          You have <strong>100 candies</strong>. Every day you play a game of chance. If you use the <strong>1% rule</strong>: you only bet a maximum of <strong>1 candy</strong> each time.<br /><br />
+          Even if you lose 10 times in a row, you still have ~90 candies. You can continue playing and recover.<br /><br />
+          If you bet 10 candies each time and lose 10 times in a row → <strong>you lose all your candies, game over.</strong><br /><br />
+          Trading works exactly the same. 1-2% = 1-2 candies per play.
         </StoryBox>
 
         <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-2xl p-5 my-6 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
-          <div className="text-gray-400 text-xs mb-2">// Công thức Position Size</div>
+          <div className="text-gray-400 text-xs mb-2">// Position Size Formula</div>
           <div>Risk Amount ($) = Account Balance × Risk% / 100</div>
           <div>Position Size = Risk Amount / (Stop Loss pips × Pip Value)</div>
           <br />
-          <div className="text-gray-400 text-xs">// Ví dụ thực tế:</div>
-          <div className="text-gray-400 text-xs">// Tài khoản: $5,000 | Risk: 1% | SL: 40 pip | EUR/USD mini lot (pip = $1)</div>
+          <div className="text-gray-400 text-xs">// Practical Example:</div>
+          <div className="text-gray-400 text-xs">// Account: $5,000 | Risk: 1% | SL: 40 pips | EUR/USD mini lot (pip = $1)</div>
           <div>Risk Amount = $5,000 × 1% = $50</div>
           <div>Position Size = $50 / (40 × $1) = 1.25 mini lots</div>
         </div>
@@ -490,24 +490,24 @@ const CHAPTER_4_DATA = [
         <PositionSizeCalc />
 
         <SimpleQuiz
-          q="Câu 1: Tài khoản $3,000. Bạn muốn vào BUY EUR/USD, SL = 50 pip, pip value = $1 (mini lot). Áp dụng risk 2%, position size là bao nhiêu?"
-          opts={['3 mini lot', '1.2 mini lot ($3,000×2%=$60; $60÷50pip=$1.2)', '0.6 mini lot', '2 mini lot']}
+          q="Question 1: Account $3,000. You want to BUY EUR/USD, SL = 50 pips, pip value = $1 (mini lot). Applying 2% risk, what is the position size?"
+          opts={['3 mini lots', '1.2 mini lots ($3,000×2%=$60; $60÷50pips=$1.2)', '0.6 mini lots', '2 mini lots']}
           correctIdx={1}
-          explanation="Công thức: Risk$=Acc×Risk%. Size=Risk$/(SL×PipVal) = $60/(50×1)=1.2 lot."
+          explanation="Formula: Risk$=Acc×Risk%. Size=Risk$/(SL×PipVal) = $60/(50×1)=1.2 lots."
         />
 
         <SimpleQuiz
-          q="Câu 2: Trader A dùng risk 5%/lệnh. Trader B dùng 1%/lệnh. Cả 2 thua 8 lệnh liên tiếp. Tài khoản $10,000 ban đầu — tài khoản còn lại của mỗi người là bao nhiêu?"
-          opts={['Trader A: $6,000 | Trader B: $9,200', 'Trader A: ~$6,634 | Trader B: ~$9,227 — A mất 33%, B chỉ mất 7.7%', 'Cả 2 mất giống nhau vì cùng số lệnh thua', 'Trader A: $5,000 | Trader B: $9,000']}
+          q="Question 2: Trader A risks 5%/trade. Trader B risks 1%/trade. Both lose 8 consecutive trades. Starting with $10,000 — how much is left in each account?"
+          opts={['Trader A: $6,000 | Trader B: $9,200', 'Trader A: ~$6,634 | Trader B: ~$9,227 — A lost 33%, B only lost 7.7%', 'Both lost the same because of same number of losing trades', 'Trader A: $5,000 | Trader B: $9,000']}
           correctIdx={1}
-          explanation="Compound effect: A: $10k×(0.95)^8≈$6,634. B: $10k×(0.99)^8≈$9,227. Fixed fractional compound theo mỗi lệnh."
+          explanation="Compound effect: A: $10k×(0.95)^8≈$6,634. B: $10k×(0.99)^8≈$9,227. Fixed fractional compounds per trade."
         />
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 1</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 1 Summary</div>
           <ul className="space-y-2">
-            {['Risk 1-2% mỗi lệnh = quy tắc vàng. Người mới nên bắt đầu với 0.5-1%.', 'Position Size = (Tài khoản × Risk%) ÷ (SL pip × Pip Value). Tính trước khi vào lệnh, không đoán.', 'Risk % ảnh hưởng phi tuyến tính: 5% risk × 8 thua = mất 33% tài khoản. 1% risk × 8 thua = chỉ mất 7.7%.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['Risking 1-2% per trade = golden rule. Beginners should start with 0.5-1%.', 'Position Size = (Account × Risk%) ÷ (SL pips × Pip Value). Calculate before entering, don\'t guess.', 'Risk % has non-linear effects: 5% risk × 8 losses = lost 33% of account. 1% risk × 8 losses = only lost 7.7%.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -518,46 +518,46 @@ const CHAPTER_4_DATA = [
     chapter: "Chapter 4: Risk Management", title: "2. Real-world Risk:Reward",
     content: (
       <>
-        <SectionHead icon={<Scale size={16} />} title="R:R — Toán học của lợi nhuận" desc="R:R quyết định bạn cần win rate bao nhiêu để có lời." />
-        <StoryBox label="🎲 Trò chơi đồng xu" icon="🎲">
-          Tung đồng xu: mặt ngửa thắng $30, mặt sấp thua $10. R:R = 1:3.<br /><br />
-          Xác suất mặt ngửa/sấp đều là 50%. Kỳ vọng mỗi lần chơi = (50% × $30) − (50% × $10) = $15 − $5 = <strong>+$10 mỗi lần chơi.</strong><br /><br />
-          Bạn có thể thua 4 lần liên tiếp và vẫn kiếm tiền sau 10 lần nếu R:R đủ tốt. <em>Trading hoạt động y hệt vậy.</em>
+        <SectionHead icon={<Scale size={16} />} title="R:R — The Math of Profit" desc="R:R determines the win rate you need to be profitable." />
+        <StoryBox label="🎲 The Coin Toss Game" icon="🎲">
+          Coin toss: heads wins $30, tails loses $10. R:R = 1:3.<br /><br />
+          Probability of heads/tails is 50%. Expectancy per toss = (50% × $30) − (50% × $10) = $15 − $5 = <strong>+$10 per toss.</strong><br /><br />
+          You can lose 4 times in a row and still make money after 10 tosses if your R:R is good enough. <em>Trading works exactly the same.</em>
         </StoryBox>
 
         <ExpectancyCalc />
 
-        <SectionHead icon="🎯" title="Các kỹ thuật Exit thông minh" />
+        <SectionHead icon="🎯" title="Smart Exit Techniques" />
         <CyberTable
-          headers={['Kỹ thuật', 'Mô tả', 'Ưu điểm', 'Dùng khi nào']}
+          headers={['Technique', 'Description', 'Pros', 'When to use']}
           rows={[
-            ['Hard TP/SL', 'Đặt cố định TP và SL ngay khi vào lệnh', 'Kỷ luật, không cần theo dõi', 'Swing trade, người mới'],
-            ['Partial Exit', 'Chốt 50% tại TP1, để 50% chạy đến TP2', 'Bảo đảm lợi nhuận + tận dụng momentum', 'Setup NNN Fibonacci'],
-            ['Move to BE', 'Khi lời 1R, dời SL về entry', 'Lệnh không thể thua, stress-free', 'Sau khi đạt 1:1'],
-            ['Trailing Stop', 'SL tự động theo sau giá', 'Tận dụng xu hướng dài', 'Trending market mạnh'],
-            ['Time-based Exit', 'Đóng lệnh sau X giờ/ngày nếu chưa về TP', 'Giải phóng vốn, tránh lệnh "kẹt"', 'Intraday, news trading'],
+            ['Hard TP/SL', 'Set fixed TP and SL upon entry', 'Disciplined, no monitoring needed', 'Swing trade, beginners'],
+            ['Partial Exit', 'Take 50% at TP1, let 50% run to TP2', 'Secures profit + rides momentum', 'NNN Fibonacci setups'],
+            ['Move to BE', 'When up 1R, move SL to entry', 'Risk-free trade, stress-free', 'After reaching 1:1'],
+            ['Trailing Stop', 'SL automatically follows price', 'Rides long trends', 'Strong trending markets'],
+            ['Time-based Exit', 'Close trade after X hours/days if TP not hit', 'Frees capital, avoids stuck trades', 'Intraday, news trading'],
           ]}
         />
 
         <SimpleQuiz
-          q="Câu 1: Hệ thống có win rate 35%, R:R = 1:3 (thua $50, thắng $150). Kỳ vọng mỗi lệnh là bao nhiêu?"
-          opts={['Âm — vì win rate thấp hơn 50%', '+$20/lệnh — (35%×$150)−(65%×$50) = $52.5−$32.5 = +$20', '−$15/lệnh', '$0 — hòa vốn']}
+          q="Question 1: System has 35% win rate, R:R = 1:3 (lose $50, win $150). What is the expectancy per trade?"
+          opts={['Negative — because win rate is below 50%', '+$20/trade — (35%×$150)−(65%×$50) = $52.5−$32.5 = +$20', '−$15/trade', '$0 — breakeven']}
           correctIdx={1}
-          explanation="Kỳ vọng=(WR×avgWin)−((1-WR)×avgLoss)=(0.35×150)−(0.65×50)=52.5−32.5=+$20. Win rate 35% VẪN có lời khi R:R đủ tốt!"
+          explanation="Expectancy=(WR×avgWin)−((1-WR)×avgLoss)=(0.35×150)−(0.65×50)=52.5−32.5=+$20. A 35% win rate can STILL be profitable with good R:R!"
         />
 
         <SimpleQuiz
-          q="Câu 2: Bạn đang giữ lệnh BUY vàng, đã lời 1R (giá đi đúng hướng bằng mức SL). Bước tiếp theo tốt nhất theo nguyên tắc quản lý lệnh là gì?"
-          opts={['Đóng toàn bộ ngay để chắc ăn', 'Dời SL về điểm entry (Break Even) — lệnh không thể thua nữa, để giá chạy đến TP2', 'Mở thêm lệnh Buy vì giá đang tăng', 'Không làm gì, chờ đến TP2']}
+          q="Question 2: You are holding a BUY Gold trade, up 1R (price moved your way by the SL amount). What is the best next step for trade management?"
+          opts={['Close everything immediately to be safe', 'Move SL to entry (Break Even) — trade becomes risk-free, let it run to TP2', 'Open another Buy since price is rising', 'Do nothing, wait for TP2']}
           correctIdx={1}
-          explanation="Move to BE sau 1R là bước quan trọng nhất để bảo vệ lợi nhuận và giữ lệnh không stress."
+          explanation="Moving to BE after 1R is the most important step to protect profits and keep the trade stress-free."
         />
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 2</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 2 Summary</div>
           <ul className="space-y-2">
-            {['R:R = Lợi nhuận kỳ vọng / Rủi ro. R:R 1:2 = chỉ cần thắng 34% để có lời.', 'Kỳ vọng = (Win%×TB thắng) − (Loss%×TB thua). Phải dương mới chơi.', 'Kỹ thuật tốt nhất: Partial Exit (50% TP1) + Move to BE + để 50% chạy đến TP2.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['R:R = Expected Profit / Risk. R:R 1:2 = only need a 34% win rate to be profitable.', 'Expectancy = (Win%×AvgWin) − (Loss%×AvgLoss). Must be positive to trade.', 'Best technique: Partial Exit (50% at TP1) + Move to BE + let 50% run to TP2.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -568,55 +568,55 @@ const CHAPTER_4_DATA = [
     chapter: "Chapter 4: Risk Management", title: "3. When to increase risk?",
     content: (
       <>
-        <SectionHead icon="🚦" title="4 điều kiện để tăng risk" desc="Phải thỏa MẤT CẢ — không phải chỉ 1-2" />
+        <SectionHead icon="🚦" title="4 Conditions to Increase Risk" desc="Must meet ALL of them — not just 1 or 2" />
         <div className="space-y-4 my-6">
           {[
-            { n: '1', text: <><strong>Thời gian tối thiểu:</strong> Đã giao dịch ít nhất <em>3 tháng liên tục</em> với kết quả ổn định (không phải 1 tháng thắng lớn rồi tăng ngay).</> },
-            { n: '2', text: <><strong>Mẫu đủ lớn:</strong> Ít nhất <em>50 lệnh</em> đã hoàn thành với dữ liệu rõ ràng trong trading journal. Win rate và R:R thực tế đã tính toán.</> },
-            { n: '3', text: <><strong>Hệ thống dương nhất quán:</strong> Kỳ vọng (Expectancy) dương sau 50+ lệnh. <em>Không phải nhờ may mắn 1-2 lệnh lớn</em> — phải ổn định.</> },
-            { n: '4', text: <><strong>Max Drawdown nằm trong dự báo:</strong> Drawdown tối đa thực tế không vượt quá drawdown tối đa cho phép bạn đã tự định trước.</> },
+            { n: '1', text: <><strong>Minimum time:</strong> Traded at least <em>3 consecutive months</em> with stable results (not just 1 big winning month and immediately increasing).</> },
+            { n: '2', text: <><strong>Sufficient sample size:</strong> At least <em>50 completed trades</em> with clear data in the trading journal. Actual Win rate and R:R calculated.</> },
+            { n: '3', text: <><strong>Consistent positive expectancy:</strong> Positive Expectancy after 50+ trades. <em>Not due to luck from 1-2 big trades</em> — must be stable.</> },
+            { n: '4', text: <><strong>Max Drawdown within forecast:</strong> Actual maximum drawdown does not exceed your pre-defined allowable max drawdown.</> },
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
 
-        <SectionHead icon="📐" title="Anti-Martingale — Tăng risk khi thắng, giảm khi thua" />
+        <SectionHead icon="📐" title="Anti-Martingale — Increase risk when winning, decrease when losing" />
         <StoryBox label="⚠️ Martingale vs Anti-Martingale" icon="⚖️">
-          <strong>Martingale (SAI):</strong> Thua → tăng gấp đôi lần sau để "gỡ". Đây là con đường tử thần — 1 chuỗi thua dài là đủ để blowup account.<br /><br />
-          <strong>Anti-Martingale (ĐÚNG):</strong> Thắng → tăng size nhẹ. Thua → giảm size. Nguyên tắc: <em>"chơi lớn khi đang thắng, chơi nhỏ khi đang thua."</em> Bảo vệ vốn khi thị trường bất lợi, tận dụng khi thị trường ủng hộ.
+          <strong>Martingale (WRONG):</strong> Lose → double the size next time to "recover". This is the path of death — one long losing streak is enough to blow up the account.<br /><br />
+          <strong>Anti-Martingale (CORRECT):</strong> Win → slightly increase size. Lose → decrease size. Principle: <em>"play bigger when winning, play smaller when losing."</em> Protect capital during unfavorable markets, capitalize during favorable ones.
         </StoryBox>
 
         <AntiMartingaleSim />
 
-        <SectionHead icon="📊" title="Lộ trình tăng risk theo từng giai đoạn" />
+        <SectionHead icon="📊" title="Roadmap to Increase Risk by Stages" />
         <CyberTable
-          headers={['Giai đoạn', 'Kinh nghiệm', 'Risk/lệnh', 'Max DD cho phép', 'Điều kiện lên giai đoạn tiếp']}
+          headers={['Stage', 'Experience', 'Risk/trade', 'Allowable Max DD', 'Condition to level up']}
           rows={[
-            ["<span class='text-blue-600 dark:text-[#378ADD] font-bold'>NEWBIE</span>", '0–3 tháng', '0.5–1%', '10%', 'profit factor >1.2'],
-            ["<span class='text-green-600 dark:text-[#0ECB81] font-bold'>BEGINNER</span>", '3–12 tháng', '1–1.5%', '15%', '3 tháng live consecutive profit + DD <15%'],
-            ["<span class='text-yellow-600 dark:text-[#FCD535] font-bold'>INTERMEDIATE</span>", '1–3 năm', '1.5–2%', '20%', '1 năm consistent + Sharpe ratio >1'],
-            ["<span class='text-purple-600 dark:text-[#9b59ff] font-bold'>ADVANCED</span>", '3+ năm', '2–3%', '25%', 'Hệ thống được kiểm chứng qua nhiều chu kỳ thị trường'],
-            ["<span class='text-red-600 dark:text-[#F6465D] font-bold'>NEVER</span>", 'Bất kỳ', '>5%', '—', 'Không bao giờ — trừ khi bạn là quỹ đầu tư chuyên nghiệp với hệ thống hedging'],
+            ["<span class='text-blue-600 dark:text-[#378ADD] font-bold'>NEWBIE</span>", '0–3 months', '0.5–1%', '10%', 'profit factor >1.2'],
+            ["<span class='text-green-600 dark:text-[#0ECB81] font-bold'>BEGINNER</span>", '3–12 months', '1–1.5%', '15%', '3 months live consecutive profit + DD <15%'],
+            ["<span class='text-yellow-600 dark:text-[#FCD535] font-bold'>INTERMEDIATE</span>", '1–3 years', '1.5–2%', '20%', '1 year consistent + Sharpe ratio >1'],
+            ["<span class='text-purple-600 dark:text-[#9b59ff] font-bold'>ADVANCED</span>", '3+ years', '2–3%', '25%', 'System verified across multiple market cycles'],
+            ["<span class='text-red-600 dark:text-[#F6465D] font-bold'>NEVER</span>", 'Any', '>5%', '—', 'Never — unless you are a professional hedge fund with a hedging system'],
           ]}
         />
 
-        <Callout type="bad" title="Cạm bẫy phổ biến nhất:">Thắng 3-5 lệnh liên tiếp → cảm giác "mình đang hot" → tăng size gấp đôi → lệnh tiếp theo thua → mất toàn bộ profit của 5 lệnh trước. Đây là "Trader's Ruin" — phá hủy tài khoản không phải do thua lỗ mà do quản lý position size sai.</Callout>
+        <Callout type="bad" title="Most common trap:">Winning 3-5 trades in a row → feeling "hot" → doubling size → next trade loses → losing all profit from previous 5 trades. This is "Trader's Ruin" — destroying account not by losing trades but by wrong position sizing.</Callout>
 
         <SimpleQuiz
-          q="Bạn đang giao dịch được 2 tháng, vừa thắng 5 lệnh liên tiếp, tài khoản tăng 15%. Bạn muốn tăng risk từ 1% lên 3% vì 'đang vào guồng'. Quyết định này có đúng không?"
-          opts={['Đúng — đang thắng thì nên tận dụng momentum', 'Không — chưa đủ 3 tháng và 50 lệnh để có dữ liệu đáng tin cậy. 5 lệnh thắng có thể là may mắn ngẫu nhiên. Tăng nhẹ lên 1.5% nếu muốn, nhưng không nhảy lên 3%', 'Đúng — 5 lệnh thắng là bằng chứng hệ thống đang tốt', 'Nên giảm risk xuống 0.5% vì sẽ sớm có chuỗi thua']}
+          q="You've been trading for 2 months, just won 5 consecutive trades, account up 15%. You want to increase risk from 1% to 3% because 'you're on a roll'. Is this the right decision?"
+          opts={['Yes — should capitalize on momentum while winning', 'No — not enough 3 months and 50 trades for reliable data. 5 wins could be random luck. Increase slightly to 1.5% if desired, but don\'t jump to 3%', 'Yes — 5 wins prove the system is good', 'Should reduce risk to 0.5% as a losing streak is coming']}
           correctIdx={1}
-          explanation="5 lệnh = thống kê không đáng tin. Cần ít nhất 50 lệnh để có dữ liệu có ý nghĩa thống kê."
+          explanation="5 trades = unreliable statistics. Need at least 50 trades for statistically significant data."
         />
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 3</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 3 Summary</div>
           <ul className="space-y-2">
-            {['Tăng risk chỉ khi: 3+ tháng, 50+ lệnh, kỳ vọng dương nhất quán, DD trong dự báo.', 'Anti-Martingale: tăng size khi chuỗi thắng, giảm khi chuỗi thua. Ngược Martingale.', 'Lộ trình: 0.5-1% (newbie) → 1-2% (intermediate) → 2-3% (advanced). Không bao giờ >5%.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['Increase risk only when: 3+ months, 50+ trades, consistent positive expectancy, DD within forecast.', 'Anti-Martingale: increase size during winning streaks, decrease during losing streaks. Opposite of Martingale.', 'Roadmap: 0.5-1% (newbie) → 1-2% (intermediate) → 2-3% (advanced). Never >5%.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -627,51 +627,51 @@ const CHAPTER_4_DATA = [
     chapter: "Chapter 4: Risk Management", title: "4. Fixed Fractional & Kelly",
     content: (
       <>
-        <SectionHead icon="🔒" title="Fixed Fractional — Phương pháp an toàn nhất" />
-        <p className="text-[16px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
-          Đây chính xác là quy tắc 1-2% bạn đã học, nhưng được hệ thống hóa thành phương pháp đầy đủ. <strong className="text-black dark:text-white">Fixed Fractional</strong> = luôn risk một tỷ lệ cố định của tài khoản HIỆN TẠI (không phải tài khoản ban đầu).
+        <SectionHead icon="🔒" title="Fixed Fractional — The Safest Method" />
+        <p className="text-[18.5px] text-gray-700 dark:text-[#9ca3b0] leading-[1.8] mb-6">
+          This is exactly the 1-2% rule you learned, but systematized into a complete method. <strong className="text-black dark:text-white">Fixed Fractional</strong> = always risk a fixed percentage of your CURRENT account balance (not the initial balance).
         </p>
 
         <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-2xl p-5 my-6 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
           <div className="text-gray-400 text-xs mb-2">// Fixed Fractional</div>
-          <div>Risk per trade = Account Balance (hiện tại) × Fixed %</div>
+          <div>Risk per trade = Account Balance (current) × Fixed %</div>
           <br />
-          <div className="text-gray-400 text-xs">// Ví dụ diễn biến:</div>
-          <div>Tháng 1: Acc=$10,000 → Risk 1% = $100/lệnh</div>
-          <div>Tháng 3: Acc=$12,000 → Risk 1% = $120/lệnh (tự động tăng theo vốn)</div>
-          <div>Tháng 6: Acc=$9,000 → Risk 1% = $90/lệnh (tự động giảm khi thua)</div>
+          <div className="text-gray-400 text-xs">// Progress example:</div>
+          <div>Month 1: Acc=$10,000 → Risk 1% = $100/trade</div>
+          <div>Month 3: Acc=$12,000 → Risk 1% = $120/trade (auto-increases with capital)</div>
+          <div>Month 6: Acc=$9,000 → Risk 1% = $90/trade (auto-decreases when losing)</div>
           <br />
-          <div className="text-gray-400 text-xs">// LỢI THẾ: Không bao giờ blowup về 0 về lý thuyết</div>
-          <div className="text-gray-400 text-xs">// Khi tài khoản giảm → size tự động giảm → bảo vệ vốn tự động</div>
+          <div className="text-gray-400 text-xs">// ADVANTAGE: Theoretically impossible to blow up to 0</div>
+          <div className="text-gray-400 text-xs">// When account drops → size auto-drops → automatic capital protection</div>
         </div>
 
-        <SectionHead icon="📐" title="Kelly Criterion — Tối ưu hóa tăng trưởng" />
-        <StoryBox label="📡 Được phát triển bởi John L. Kelly Jr. (Bell Labs, 1956)" icon="📡">
-          Công thức Kelly tính ra <strong>tỷ lệ tối ưu để đặt cược</strong> sao cho tài khoản tăng trưởng nhanh nhất về dài hạn. Được dùng bởi các quỹ hedge fund lớn nhất thế giới.
+        <SectionHead icon="📐" title="Kelly Criterion — Optimizing Growth" />
+        <StoryBox label="📡 Developed by John L. Kelly Jr. (Bell Labs, 1956)" icon="📡">
+          The Kelly Formula calculates the <strong>optimal betting fraction</strong> for the fastest long-term account growth. Used by the world's largest hedge funds.
         </StoryBox>
 
         <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-2xl p-5 my-6 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
           <div className="text-gray-400 text-xs mb-2">// Kelly Formula</div>
           <div>K% = (Win Rate × (1 + RR) - 1) / RR</div>
           <br />
-          <div className="text-gray-400 text-xs">// Đơn giản hơn: K% = (Win% × Avg_Win - Loss% × Avg_Loss) / Avg_Win</div>
+          <div className="text-gray-400 text-xs">// Simpler: K% = (Win% × Avg_Win - Loss% × Avg_Loss) / Avg_Win</div>
           <br />
-          <div className="text-gray-400 text-xs">// Ví dụ: Win rate 45%, R:R = 1:2 (thua $50, thắng $100)</div>
+          <div className="text-gray-400 text-xs">// Example: Win rate 45%, R:R = 1:2 (lose $50, win $100)</div>
           <div>K% = (0.45 × 2 - 0.55) / 2 = (0.9 - 0.55) / 2 = 17.5%</div>
           <br />
-          <div className="text-gray-400 text-xs">// Nhưng ĐỪNG BAO GIỜ dùng Full Kelly!</div>
-          <div className="text-gray-400 text-xs">// Half Kelly (8.75%) hoặc Quarter Kelly (4.4%) an toàn hơn nhiều</div>
+          <div className="text-gray-400 text-xs">// But NEVER use Full Kelly!</div>
+          <div className="text-gray-400 text-xs">// Half Kelly (8.75%) or Quarter Kelly (4.4%) is much safer</div>
         </div>
 
         <KellyCalc />
 
-        <Callout type="warn" title="Tại sao không dùng Full Kelly?">Full Kelly tối ưu hóa tăng trưởng nhưng tạo ra biến động tài khoản cực kỳ lớn (drawdown 50-70% là bình thường). Hầu hết người không chịu được tâm lý khi nhìn tài khoản giảm 50%. Half hoặc Quarter Kelly cho kết quả gần bằng nhưng biến động nhỏ hơn nhiều.</Callout>
+        <Callout type="warn" title="Why not use Full Kelly?">Full Kelly optimizes growth but creates extreme account volatility (50-70% drawdown is normal). Most people cannot psychologically handle a 50% drop. Half or Quarter Kelly gives near-optimal results with much less volatility.</Callout>
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 4</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 4 Summary</div>
           <ul className="space-y-2">
-            {['Fixed Fractional: risk % cố định của tài khoản hiện tại — đơn giản, bền vững, tự động bảo vệ.', 'Kelly Criterion: công thức tính size tối ưu dựa trên win rate và R:R thực tế.', 'Dùng Quarter Kelly (25% Kelly) = an toàn nhất. Full Kelly = quá rủi ro về tâm lý.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['Fixed Fractional: fixed risk % of current account — simple, sustainable, auto-protects.', 'Kelly Criterion: calculates optimal size based on actual win rate and R:R.', 'Use Quarter Kelly (25% of Kelly) = safest. Full Kelly = too risky psychologically.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -682,48 +682,48 @@ const CHAPTER_4_DATA = [
     chapter: "Chapter 4: Risk Management", title: "5. Pyramiding & Scaling",
     content: (
       <>
-        <SectionHead icon="🔺" title="Pyramiding — Thêm vào lệnh đang thắng" desc="Khi làm đúng, nó biến một lệnh tốt thành lợi nhuận xuất sắc." />
-        <StoryBox label="🎰 Kim tự tháp ngược vs Kim tự tháp thuận" icon="🔺">
-          <strong>Pyramiding SAI (nguy hiểm):</strong> Thêm lệnh lớn hơn sau mỗi lệnh — như kim tự tháp ngược. Lệnh đầu 1 lot, lệnh 2 là 2 lot, lệnh 3 là 4 lot... Khi giá đảo chiều, lệnh lớn nhất ở đỉnh sẽ hủy toàn bộ lợi nhuận.<br /><br />
-          <strong>Pyramiding ĐÚNG (kim tự tháp thuận):</strong> Mỗi lệnh thêm vào nhỏ hơn lệnh trước — như kim tự tháp bình thường. Đáy to (lệnh đầu), ngọn nhỏ (lệnh sau). Tổng rủi ro không tăng.
+        <SectionHead icon="🔺" title="Pyramiding — Adding to a winning trade" desc="When done right, it turns a good trade into an outstanding profit." />
+        <StoryBox label="🎰 Inverted Pyramid vs Standard Pyramid" icon="🔺">
+          <strong>WRONG Pyramiding (dangerous):</strong> Adding larger sizes after each trade — like an inverted pyramid. 1st trade 1 lot, 2nd is 2 lots, 3rd is 4 lots... When price reverses, the largest trade at the top wipes out all profits.<br /><br />
+          <strong>CORRECT Pyramiding (standard pyramid):</strong> Each added trade is smaller than the previous one — like a normal pyramid. Big base (1st trade), small top (later trades). Total risk does not increase.
         </StoryBox>
 
         <div className="my-6">
-          <div className="text-xs font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">Kim tự tháp ĐÚNG (safe pyramiding)</div>
+          <div className="text-xs font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-4">CORRECT Pyramid (safe pyramiding)</div>
           <div className="flex flex-col items-center gap-1">
-            <div className="flex items-center justify-center rounded-lg text-white text-sm font-bold py-2 bg-green-500 dark:bg-[#0ECB81]" style={{width:'80%'}}>Lệnh 1: 1.0 lot (Entry gốc)</div>
-            <div className="flex items-center justify-center rounded-lg text-white text-sm font-bold py-2 bg-green-400 dark:bg-[#0ECB81]/70" style={{width:'55%'}}>Lệnh 2: 0.5 lot (Breakout xác nhận)</div>
-            <div className="flex items-center justify-center rounded-lg text-white text-xs font-bold py-2 bg-green-300 dark:bg-[#0ECB81]/45" style={{width:'35%'}}>Lệnh 3: 0.25 lot (Tiếp diễn)</div>
+            <div className="flex items-center justify-center rounded-lg text-white text-sm font-bold py-2 bg-green-500 dark:bg-[#0ECB81]" style={{ width: '80%' }}>Trade 1: 1.0 lot (Original Entry)</div>
+            <div className="flex items-center justify-center rounded-lg text-white text-sm font-bold py-2 bg-green-400 dark:bg-[#0ECB81]/70" style={{ width: '55%' }}>Trade 2: 0.5 lot (Breakout confirmed)</div>
+            <div className="flex items-center justify-center rounded-lg text-white text-xs font-bold py-2 bg-green-300 dark:bg-[#0ECB81]/45" style={{ width: '35%' }}>Trade 3: 0.25 lot (Continuation)</div>
           </div>
         </div>
 
-        <SectionHead icon="📋" title="Quy tắc Pyramiding an toàn" />
+        <SectionHead icon="📋" title="Safe Pyramiding Rules" />
         <div className="space-y-4 my-6">
           {[
-            { n: '1', text: <><strong>Chỉ thêm khi lệnh đầu đã Move to Break Even.</strong> Lệnh gốc không còn rủi ro → thêm lệnh mới chỉ ảnh hưởng đến lợi nhuận tiềm năng, không ảnh hưởng đến vốn gốc.</> },
-            { n: '2', text: <><strong>Mỗi lệnh sau nhỏ hơn 50% lệnh trước.</strong> Lệnh 1 = 1 lot → Lệnh 2 = 0.5 lot → Lệnh 3 = 0.25 lot. Giữ tổng risk trong giới hạn 2-3% tài khoản.</> },
-            { n: '3', text: <><strong>Chỉ thêm tại điểm kỹ thuật hợp lý.</strong> Tại breakout S/R mới, tại pullback về EMA21 trong xu hướng tiếp diễn — không thêm "vì giá đang tăng".</> },
-            { n: '4', text: <><strong>Trailing Stop cho toàn bộ vị thế.</strong> Khi đã có 2-3 lệnh, dùng trailing stop để khóa lợi nhuận tổng thể. Không để "pyramid đẹp" biến thành thua lỗ.</> },
+            { n: '1', text: <><strong>Only add when the first trade has Moved to Break Even.</strong> Original trade is risk-free → adding a new trade only affects potential profit, not original capital.</> },
+            { n: '2', text: <><strong>Each subsequent trade is &lt;50% of the previous one.</strong> Trade 1 = 1 lot → Trade 2 = 0.5 lot → Trade 3 = 0.25 lot. Keep total risk within 2-3% of account.</> },
+            { n: '3', text: <><strong>Only add at logical technical points.</strong> At new S/R breakouts, at pullbacks to EMA21 in a continuing trend — don't add just "because price is rising".</> },
+            { n: '4', text: <><strong>Trailing Stop for the entire position.</strong> Once you have 2-3 trades, use a trailing stop to lock in overall profit. Don't let a "beautiful pyramid" turn into a loss.</> },
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
 
         <SimpleQuiz
-          q="Bạn vào BUY vàng 1 lot ở $2,000. Giá tăng lên $2,030, bạn Move to BE. Tiếp tục tăng lên $2,060 với breakout kháng cự. Bạn muốn pyramid thêm. Kích thước lệnh thứ 2 hợp lý là?"
-          opts={['2 lot — vì giá đang mạnh, nên tăng kép', '0.5 lot — bằng 50% lệnh đầu, an toàn và vẫn tận dụng được xu hướng', '1 lot — bằng lệnh đầu', 'Không thêm gì — pyramiding quá rủi ro']}
+          q="You BUY Gold 1 lot at $2,000. Price rises to $2,030, you Move to BE. It continues to $2,060 breaking resistance. You want to pyramid. What is a reasonable size for the 2nd trade?"
+          opts={['2 lots — price is strong, double it', '0.5 lot — 50% of the first trade, safe and still rides the trend', '1 lot — same as first trade', 'Don\'t add anything — pyramiding is too risky']}
           correctIdx={1}
-          explanation="Kim tự tháp thuận: mỗi lệnh thêm nhỏ hơn lệnh trước ≤50%. 0.5 lot là chuẩn."
+          explanation="Standard pyramid: each added trade is smaller than the previous by ≤50%. 0.5 lot is standard."
         />
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 5</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 5 Summary</div>
           <ul className="space-y-2">
-            {['Pyramid thuận (kim tự tháp bình thường): lệnh đầu lớn nhất, thêm dần nhỏ hơn.', 'Chỉ pyramid sau khi đã Move to BE lệnh gốc. Mỗi lệnh thêm ≤50% lệnh trước.', 'Dùng trailing stop cho toàn bộ vị thế pyramid.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['Standard pyramid: first trade is largest, adding progressively smaller trades.', 'Only pyramid after moving original trade to BE. Each added trade ≤50% of previous.', 'Use trailing stop for the entire pyramided position.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -734,51 +734,51 @@ const CHAPTER_4_DATA = [
     chapter: "Chapter 4: Risk Management", title: "6. Drawdown Management",
     content: (
       <>
-        <SectionHead icon={<TrendingDown size={16} />} title="Drawdown — Quản lý giai đoạn thua lỗ" desc="Không có trader nào không trải qua drawdown." />
+        <SectionHead icon={<TrendingDown size={16} />} title="Drawdown — Managing Losing Streaks" desc="No trader escapes drawdowns." />
         <CyberTable
-          headers={['Loại', 'Định nghĩa', 'Ngưỡng nguy hiểm', 'Hành động']}
+          headers={['Type', 'Definition', 'Danger Threshold', 'Action']}
           rows={[
-            ['Current DD', '% giảm từ đỉnh tài khoản gần nhất đến giá trị hiện tại', '>15%', 'Giảm size xuống 50%'],
-            ['Max DD', '% giảm lớn nhất từ đỉnh đến đáy trong toàn bộ lịch sử giao dịch', '>25%', 'Dừng giao dịch, review hệ thống'],
-            ['Daily DD', '% mất trong 1 ngày giao dịch', '>5%', 'Dừng ngay hôm đó, không trade thêm'],
+            ['Current DD', '% drop from recent peak account value to current', '>15%', 'Reduce size by 50%'],
+            ['Max DD', 'Largest % drop from peak to trough in trading history', '>25%', 'Stop trading, review system'],
+            ['Daily DD', '% lost in 1 trading day', '>5%', 'Stop for the day, no more trades'],
           ]}
         />
 
-        <SectionHead icon="🚦" title="Quy tắc Circuit Breaker — Khi nào dừng lại" />
+        <SectionHead icon="🚦" title="Circuit Breaker Rules — When to Stop" />
         <div className="space-y-4 my-6">
           {[
-            { icon: '⚠️', color: 'yellow', text: <><strong>Daily Loss Limit (−3-5%):</strong> Thua 3-5% trong 1 ngày → <em>dừng giao dịch ngay</em>. Đóng máy. Ra ngoài. Không "gỡ" trong ngày đó. Không thương lượng.</> },
-            { icon: '⚠️', color: 'yellow', text: <><strong>Weekly Loss Limit (−7-10%):</strong> Thua 7-10% trong 1 tuần → Giảm size xuống 50% tuần tiếp theo. Review toàn bộ lệnh đã thực hiện.</> },
-            { icon: '🛑', color: 'red', text: <><strong>Monthly Loss Limit (−15-20%):</strong> Thua &gt;15% trong 1 tháng → <em>Dừng giao dịch hoàn toàn 2 tuần</em>. Review hệ thống, không phải chỉ từng lệnh. Điều gì đó trong market condition đã thay đổi.</> },
-            { icon: '🚨', color: 'red', text: <><strong>Maximum Drawdown (−25-30%):</strong> Ngừng toàn bộ. 1 tháng không giao dịch. Đọc lại toàn bộ Trading Journal. Tìm coach hoặc mentor. Hệ thống hoặc bản thân có vấn đề nghiêm trọng.</> },
+            { icon: '⚠️', color: 'yellow', text: <><strong>Daily Loss Limit (−3-5%):</strong> Lose 3-5% in 1 day → <em>stop trading immediately</em>. Close computer. Go outside. No "recovering" that day. Non-negotiable.</> },
+            { icon: '⚠️', color: 'yellow', text: <><strong>Weekly Loss Limit (−7-10%):</strong> Lose 7-10% in 1 week → Reduce size by 50% next week. Review all executed trades.</> },
+            { icon: '🛑', color: 'red', text: <><strong>Monthly Loss Limit (−15-20%):</strong> Lose &gt;15% in 1 month → <em>Stop trading completely for 2 weeks</em>. Review the system, not just individual trades. Market condition has changed.</> },
+            { icon: '🚨', color: 'red', text: <><strong>Maximum Drawdown (−25-30%):</strong> Stop everything. Do not trade for 1 month. Re-read entire Trading Journal. Find a coach or mentor. Severe issue with system or psychology.</> },
           ].map((s, i) => (
             <div key={i} className={`flex gap-4 items-start p-4 rounded-xl ${s.color === 'red' ? 'bg-red-50 dark:bg-[#F6465D]/10 border border-red-200 dark:border-[#F6465D]/30' : 'bg-yellow-50 dark:bg-[#FCD535]/10 border border-yellow-200 dark:border-[#FCD535]/30'}`}>
               <span className="text-2xl shrink-0">{s.icon}</span>
-              <div className={`text-[15px] leading-[1.8] ${s.color === 'red' ? 'text-red-800 dark:text-[#F6465D]' : 'text-yellow-800 dark:text-[#FCD535]'}`}>{s.text}</div>
+              <div className={`text-[17.5px] leading-[1.8] ${s.color === 'red' ? 'text-red-800 dark:text-[#F6465D]' : 'text-yellow-800 dark:text-[#FCD535]'}`}>{s.text}</div>
             </div>
           ))}
         </div>
 
-        <SectionHead icon={<RefreshCw size={16} />} title="Quy trình phục hồi sau drawdown" />
+        <SectionHead icon={<RefreshCw size={16} />} title="Recovery Process After Drawdown" />
         <div className="space-y-4 my-6">
           {[
-            { n: '1', text: <><strong>Nghỉ ngơi bắt buộc:</strong> DD 5-10% → nghỉ 24h. DD 10-20% → nghỉ 1 tuần. DD &gt;20% → nghỉ 2-4 tuần. Não bộ cần reset trước khi có thể quyết định tốt.</> },
-            { n: '2', text: <><strong>Review Journal không cảm xúc:</strong> Xem lại từng lệnh thua. Phân loại: (A) Thua đúng hệ thống (market điều kiện xấu — chấp nhận được), (B) Thua vì vi phạm quy tắc (cần khắc phục). Chỉ lo lắng về loại B.</> },
-            { n: '3', text: <><strong>Quay lại với size nhỏ hơn:</strong> Sau DD &gt;15%, bắt đầu lại với 50% size bình thường. Tăng dần lên 100% sau khi đạt lại đỉnh tài khoản hoặc giao dịch ổn định 20 lệnh tiếp theo.</> },
-            { n: '4', text: <><strong>Focus vào process, không phải profit:</strong> Trong giai đoạn phục hồi, đánh giá thành công bằng "tôi có tuân thủ hệ thống không?" chứ không phải "tôi có lời không?"</> },
+            { n: '1', text: <><strong>Mandatory rest:</strong> DD 5-10% → rest 24h. DD 10-20% → rest 1 week. DD &gt;20% → rest 2-4 weeks. Brain needs a reset to make good decisions.</> },
+            { n: '2', text: <><strong>Emotionless Journal Review:</strong> Review every losing trade. Categorize: (A) Lost following system (bad market conditions — acceptable), (B) Lost due to rule violation (needs fixing). Only worry about B.</> },
+            { n: '3', text: <><strong>Return with smaller size:</strong> After DD &gt;15%, start with 50% of normal size. Increase gradually to 100% after recovering peak account value or 20 stable trades.</> },
+            { n: '4', text: <><strong>Focus on process, not profit:</strong> During recovery, judge success by "did I follow the system?" rather than "did I make a profit?"</> },
           ].map((s, i) => (
             <div key={i} className="flex gap-4 items-start">
               <div className="w-8 h-8 rounded-lg bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81] font-black flex items-center justify-center shrink-0 mt-1 text-sm">{s.n}</div>
-              <div className="text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
+              <div className="text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8]">{s.text}</div>
             </div>
           ))}
         </div>
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 6</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 6 Summary</div>
           <ul className="space-y-2">
-            {['3 loại DD: Current, Max, Daily. Circuit Breaker: Daily >5% → dừng ngày; Monthly >20% → dừng 1 tháng.', 'Phục hồi đúng: nghỉ ngơi → review không cảm xúc → quay lại size 50% → tăng dần.', 'Thua đúng hệ thống ≠ thua vì vi phạm quy tắc. Chỉ sửa loại 2.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['3 DD types: Current, Max, Daily. Circuit Breaker: Daily >5% → stop for day; Monthly >20% → stop for 1 month.', 'Correct recovery: rest → emotionless review → return at 50% size → increase gradually.', 'Losing following system ≠ losing breaking rules. Only fix the latter.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -789,117 +789,117 @@ const CHAPTER_4_DATA = [
     chapter: "Chapter 4: Risk Management", title: "7. Forex / Gold / Crypto / Stocks",
     content: (
       <>
-        <SectionHead icon={<Globe size={16} />} title="Quản lý vốn theo từng thị trường" desc="Forex, Crypto, Vàng và Cổ phiếu có đặc thù rủi ro hoàn toàn khác nhau." />
-        <Callout type="warn">Áp dụng cùng một quy tắc cho tất cả thị trường = sai lầm nghiêm trọng. Mỗi thị trường có volatility, thanh khoản và rủi ro đặc thù hoàn toàn khác nhau.</Callout>
+        <SectionHead icon={<Globe size={16} />} title="Risk Management by Market" desc="Forex, Crypto, Gold, and Stocks have completely different risk profiles." />
+        <Callout type="warn">Applying the same rules to all markets = fatal mistake. Each market has totally different volatility, liquidity, and specific risks.</Callout>
 
         <CyberTable
-          headers={['Đặc điểm', '💱 Forex', '₿ Crypto', '🥇 Vàng (XAU)', '📈 Cổ phiếu']}
+          headers={['Characteristic', '💱 Forex', '₿ Crypto', '🥇 Gold (XAU)', '📈 Stocks']}
           rows={[
-            ['Volatility (ngày)', '0.5–1%', '3–10%+', '0.5–1.5%', '1–3% (riêng lẻ)'],
-            ['Risk/lệnh khuyến nghị', '1–2%', '0.5–1%', '1–2%', '0.5–1%'],
-            ['SL tối thiểu', '20–50 pip', '2–5% giá', '$10–30', '2–5% giá CP'],
-            ['Leverage an toàn', '1:5–1:20', '1:2–1:5', '1:10–1:20', '1:1–1:3'],
-            ['Thanh khoản', 'Cực cao', 'Cao (top coins)', 'Rất cao', 'Thay đổi nhiều'],
-            ['Giờ giao dịch', '24/5', '24/7', '24/5', 'Cố định'],
-            ['Gap rủi ro', 'Cuối tuần', 'Tin tức đột ngột', 'Cuối tuần', 'Overnight earnings'],
+            ['Daily Volatility', '0.5–1%', '3–10%+', '0.5–1.5%', '1–3% (individual)'],
+            ['Recommended Risk/trade', '1–2%', '0.5–1%', '1–2%', '0.5–1%'],
+            ['Minimum SL', '20–50 pips', '2–5% of price', '$10–30', '2–5% of stock price'],
+            ['Safe Leverage', '1:5–1:20', '1:2–1:5', '1:10–1:20', '1:1–1:3'],
+            ['Liquidity', 'Extremely high', 'High (top coins)', 'Very high', 'Highly variable'],
+            ['Trading Hours', '24/5', '24/7', '24/5', 'Fixed'],
+            ['Gap Risk', 'Weekends', 'Sudden news', 'Weekends', 'Overnight earnings'],
           ]}
         />
 
-        <ScenarioCard icon="💱" title="Tình huống: EUR/USD H4, tài khoản $5,000" badge="Ổn định nhất" badgeColor="bg-blue-100 dark:bg-[#378ADD]/20 text-blue-700 dark:text-[#378ADD]">
-          <p className="text-[14px] text-gray-700 dark:text-[#9ca3b0] mb-4">Forex có volatility thấp nhất trong 4 thị trường, spread thấp, thanh khoản cao → phù hợp nhất cho người mới. SL cần đặt đủ rộng để tránh bị "stop hunted" (SM quét SL rồi giá đi đúng hướng).</p>
+        <ScenarioCard icon="💱" title="Scenario: EUR/USD H4, $5,000 account" badge="Most Stable" badgeColor="bg-blue-100 dark:bg-[#378ADD]/20 text-blue-700 dark:text-[#378ADD]">
+          <p className="text-[16.5px] text-gray-700 dark:text-[#9ca3b0] mb-4">Forex has the lowest volatility of the 4 markets, low spread, high liquidity → best for beginners. SL must be wide enough to avoid "stop hunts" (SM sweeps SL then price goes your way).</p>
           <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-xl p-4 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
-            <div>// Tính Position Size</div>
-            <div>Entry: 1.0850 | SL: 1.0810 (40 pip) | TP1: 1.0930 (80 pip) | TP2: 1.0980 (130 pip)</div>
-            <div>R:R = 1:2 (TP1) và 1:3.25 (TP2)</div>
+            <div>// Calculate Position Size</div>
+            <div>Entry: 1.0850 | SL: 1.0810 (40 pips) | TP1: 1.0930 (80 pips) | TP2: 1.0980 (130 pips)</div>
+            <div>R:R = 1:2 (TP1) and 1:3.25 (TP2)</div>
             <br />
             <div>Risk 1% = $5,000 × 1% = $50</div>
-            <div>Pip value mini lot = $1</div>
+            <div>Mini lot pip value = $1</div>
             <div>Position Size = $50 / (40 × $1) = 1.25 mini lots</div>
             <br />
-            <div className="text-gray-400 text-xs">// Kế hoạch exit:</div>
-            <div className="text-gray-400">- Chốt 0.625 lot (50%) tại TP1 = +$50 lợi nhuận</div>
-            <div className="text-gray-400">- Move SL về entry cho 0.625 lot còn lại</div>
-            <div className="text-gray-400">- Để chạy đến TP2 = +$81 thêm</div>
-            <div className="text-gray-400 text-xs">// Tổng lợi nhuận tối đa = $131 với rủi ro $50 → R:R thực tế 1:2.6</div>
+            <div className="text-gray-400 text-xs">// Exit plan:</div>
+            <div className="text-gray-400">- Take profit 0.625 lots (50%) at TP1 = +$50 profit</div>
+            <div className="text-gray-400">- Move SL to entry for remaining 0.625 lots</div>
+            <div className="text-gray-400">- Let it run to TP2 = +$81 extra</div>
+            <div className="text-gray-400 text-xs">// Max total profit = $131 with $50 risk → Actual R:R 1:2.6</div>
           </div>
-          <Callout type="ok">✅ Forex weekend risk: Thứ 6 đóng lệnh trước 22:00 hoặc dời SL về BE để tránh gap cuối tuần. Đặc biệt nếu có tin tức lớn (NFP, FOMC) vào cuối tuần.</Callout>
+          <Callout type="ok">✅ Forex weekend risk: Close trades on Friday before 22:00 or move SL to BE to avoid weekend gaps. Especially if there is major news (NFP, FOMC) over the weekend.</Callout>
         </ScenarioCard>
 
-        <ScenarioCard icon="₿" title="Tình huống: BTC/USDT D1, tài khoản $5,000" badge="Volatility cao nhất" badgeColor="bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-700 dark:text-[#FCD535]">
-          <p className="text-[14px] text-gray-700 dark:text-[#9ca3b0] mb-4">Crypto cực kỳ volatile — BTC có thể giảm 20% trong 1 ngày. <strong>SL PHẢI rộng hơn</strong> (3-8% từ entry) hoặc sẽ bị quét liên tục. Position size nhỏ hơn để bù đắp SL rộng.</p>
+        <ScenarioCard icon="₿" title="Scenario: BTC/USDT D1, $5,000 account" badge="Highest Volatility" badgeColor="bg-yellow-100 dark:bg-[#FCD535]/20 text-yellow-700 dark:text-[#FCD535]">
+          <p className="text-[16.5px] text-gray-700 dark:text-[#9ca3b0] mb-4">Crypto is extremely volatile — BTC can drop 20% in 1 day. <strong>SL MUST be wider</strong> (3-8% from entry) or you will get swept constantly. Smaller position size to compensate for wide SL.</p>
           <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-xl p-4 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
             <div>// Crypto Position Sizing</div>
-            <div>Entry: $60,000 | SL: $56,400 (6% xuống) | TP1: $67,200 (12%) | TP2: $72,000 (20%)</div>
+            <div>Entry: $60,000 | SL: $56,400 (6% down) | TP1: $67,200 (12%) | TP2: $72,000 (20%)</div>
             <br />
-            <div className="text-gray-400 text-xs">// SL rộng hơn nhiều vì Crypto volatile hơn Forex!</div>
-            <div>Risk 1% = $50 (giữ nguyên — không tăng risk vì volatile hơn)</div>
-            <div>SL = $3,600 trên mỗi BTC</div>
+            <div className="text-gray-400 text-xs">// SL is much wider because Crypto is more volatile than Forex!</div>
+            <div>Risk 1% = $50 (kept the same — do not increase risk because it's volatile)</div>
+            <div>SL = $3,600 per BTC</div>
             <br />
             <div>Position Size = $50 / $3,600 = 0.0139 BTC ≈ $833 notional value</div>
-            <div className="text-gray-400 text-xs">(Chỉ dùng $833/$5,000 = 16.6% tài khoản — còn lại làm buffer)</div>
+            <div className="text-gray-400 text-xs">(Only using $833/$5,000 = 16.6% of account — the rest is buffer)</div>
             <br />
-            <div className="text-gray-400 text-xs">// Lưu ý quan trọng với Crypto:</div>
-            <div className="text-gray-400">- Không giao dịch Altcoin nhỏ với position size lớn (thanh khoản thấp)</div>
-            <div className="text-gray-400">- Luôn có SL vì Crypto 24/7 — không thể "chờ đến sáng"</div>
-            <div className="text-gray-400">- Tin tức hack, regulatory có thể làm giá -30% trong 1 giờ</div>
+            <div className="text-gray-400 text-xs">// Important note for Crypto:</div>
+            <div className="text-gray-400">- Do not trade small Altcoins with large position sizes (low liquidity)</div>
+            <div className="text-gray-400">- Always use SL because Crypto is 24/7 — you can't "wait until morning"</div>
+            <div className="text-gray-400">- Hack or regulatory news can drop price -30% in 1 hour</div>
           </div>
-          <Callout type="bad">🚫 Leverage Crypto: Nhiều sàn Crypto cho leverage 20x, 50x, 100x. KHÔNG DÙNG leverage &gt;5x với Crypto. Biến động 5% với leverage 20x = mất 100% tài khoản trong 1 nến.</Callout>
+          <Callout type="bad">🚫 Crypto Leverage: Many exchanges offer 20x, 50x, 100x leverage. DO NOT USE &gt;5x leverage for Crypto. A 5% move with 20x leverage = 100% account loss in 1 candle.</Callout>
         </ScenarioCard>
 
-        <ScenarioCard icon="🥇" title="Tình huống: XAU/USD H4, tài khoản $5,000" badge="Phù hợp nhất với bạn" badgeColor="bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81]">
-          <p className="text-[14px] text-gray-700 dark:text-[#9ca3b0] mb-4">Vàng có volatility trung bình, chịu ảnh hưởng mạnh từ USD, lãi suất Fed, và địa chính trị. Bạn đã có kinh nghiệm với vàng → điểm xuất phát lý tưởng để áp dụng hệ thống NNN.</p>
+        <ScenarioCard icon="🥇" title="Scenario: XAU/USD H4, $5,000 account" badge="Best fit for you" badgeColor="bg-green-100 dark:bg-[#0ECB81]/20 text-green-700 dark:text-[#0ECB81]">
+          <p className="text-[16.5px] text-gray-700 dark:text-[#9ca3b0] mb-4">Gold has medium volatility, strongly affected by USD, Fed rates, and geopolitics. You already have experience with Gold → ideal starting point for NNN system.</p>
           <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-xl p-4 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
             <div>// XAU/USD Position Sizing</div>
-            <div>Entry: $2,000/oz | SL: $1,975 (25 pip/điểm) | TP1: $2,050 (50 pip) | TP2: $2,080 (80 pip)</div>
+            <div>Entry: $2,000/oz | SL: $1,975 (25 pips/points) | TP1: $2,050 (50 pips) | TP2: $2,080 (80 pips)</div>
             <br />
             <div>Risk 1% = $50</div>
-            <div>Pip/Point value với XAU mini = $1/point</div>
+            <div>Pip/Point value for XAU mini = $1/point</div>
             <div>Position Size = $50 / (25 × $1) = 2 mini lots (= 2 oz)</div>
             <br />
-            <div className="text-gray-400 text-xs">// Thực tế:</div>
-            <div>Lời TP1: 2oz × $50 = $100 (R:R = 1:2)</div>
-            <div>Lời TP2 (sau partial): 1oz × $80 = $80</div>
-            <div>Tổng lợi nhuận: $180 với risk $50</div>
+            <div className="text-gray-400 text-xs">// Reality:</div>
+            <div>TP1 Profit: 2oz × $50 = $100 (R:R = 1:2)</div>
+            <div>TP2 Profit (after partial): 1oz × $80 = $80</div>
+            <div>Total Profit: $180 with $50 risk</div>
             <br />
-            <div className="text-gray-400 text-xs">// Quản lý tin tức vàng:</div>
-            <div className="text-gray-400">- Thứ 6 NFP: Vàng có thể dao động $20-50 trong 5 phút</div>
-            <div className="text-gray-400">- FOMC: Biến động lớn, spread nở rộng → đóng lệnh trước 1 giờ</div>
-            <div className="text-gray-400">- Địa chính trị: Vàng tăng đột ngột → không short trong thời kỳ bất ổn</div>
+            <div className="text-gray-400 text-xs">// Gold news management:</div>
+            <div className="text-gray-400">- Friday NFP: Gold can swing $20-50 in 5 minutes</div>
+            <div className="text-gray-400">- FOMC: Huge volatility, spreads widen → close trades 1 hour before</div>
+            <div className="text-gray-400">- Geopolitics: Gold spikes suddenly → do not short during unstable times</div>
           </div>
         </ScenarioCard>
 
-        <ScenarioCard icon="📈" title="Tình huống: Cổ phiếu FPT (HoSE), tài khoản 50,000,000 VNĐ" badge="Phức tạp nhất" badgeColor="bg-purple-100 dark:bg-[#9b59ff]/20 text-purple-700 dark:text-[#9b59ff]">
-          <p className="text-[14px] text-gray-700 dark:text-[#9ca3b0] mb-4">Cổ phiếu có rủi ro đặc thù: tin tức doanh nghiệp, earnings, gap qua đêm, thanh khoản thấp ở cổ phiếu nhỏ. <strong>Position size nhỏ hơn</strong> so với Forex/Vàng vì rủi ro overnight gap.</p>
+        <ScenarioCard icon="📈" title="Scenario: FPT Stock (HoSE), 50,000,000 VND account" badge="Most Complex" badgeColor="bg-purple-100 dark:bg-[#9b59ff]/20 text-purple-700 dark:text-[#9b59ff]">
+          <p className="text-[16.5px] text-gray-700 dark:text-[#9ca3b0] mb-4">Stocks have specific risks: company news, earnings, overnight gaps, low liquidity for small caps. <strong>Smaller position size</strong> than Forex/Gold due to overnight gap risk.</p>
           <div className="bg-gray-900 dark:bg-[#0A0D13] rounded-xl p-4 font-mono text-sm text-green-400 dark:text-[#00d084] border border-gray-700 dark:border-[#2B3139]">
-            <div>// Cổ phiếu VN Position Sizing</div>
-            <div>Entry: 95,000 VNĐ/cp | SL: 90,250 (5% xuống) | TP: 107,000 (12.6% lên)</div>
+            <div>// VN Stock Position Sizing</div>
+            <div>Entry: 95,000 VND/share | SL: 90,250 (5% down) | TP: 107,000 (12.6% up)</div>
             <div>R:R ≈ 1:2.5</div>
             <br />
-            <div>Risk 1% = 50,000,000 × 1% = 500,000 VNĐ</div>
-            <div>SL = 95,000 - 90,250 = 4,750 VNĐ/cp</div>
-            <div>Số cổ phiếu = 500,000 / 4,750 = 105 cổ phiếu</div>
-            <div>Vốn dùng = 105 × 95,000 = 9,975,000 VNĐ (20% tài khoản)</div>
+            <div>Risk 1% = 50,000,000 × 1% = 500,000 VND</div>
+            <div>SL = 95,000 - 90,250 = 4,750 VND/share</div>
+            <div>Number of shares = 500,000 / 4,750 = 105 shares</div>
+            <div>Capital used = 105 × 95,000 = 9,975,000 VND (20% of account)</div>
             <br />
-            <div className="text-gray-400 text-xs">// Lưu ý đặc thù VN-Index:</div>
-            <div className="text-gray-400">- T+3: mua hôm nay, 3 ngày sau mới bán được → không intraday</div>
-            <div className="text-gray-400">- Biên độ ±7% HOSE, ±10% HNX</div>
-            <div className="text-gray-400">- Không dùng margin trong giai đoạn học (rủi ro cao)</div>
-            <div className="text-gray-400">- Earnings season: tránh giao dịch 1-2 tuần trước khi công ty báo cáo</div>
+            <div className="text-gray-400 text-xs">// VN-Index specific notes:</div>
+            <div className="text-gray-400">- T+3: buy today, can only sell 3 days later → no intraday</div>
+            <div className="text-gray-400">- Price limit ±7% HOSE, ±10% HNX</div>
+            <div className="text-gray-400">- Do not use margin during learning phase (high risk)</div>
+            <div className="text-gray-400">- Earnings season: avoid trading 1-2 weeks before earnings reports</div>
           </div>
         </ScenarioCard>
 
         <SimpleQuiz
-          q="Bạn có tài khoản $3,000 và muốn áp dụng cùng một quy tắc: risk 2%/lệnh cho cả Forex (SL 40pip, $1/pip) và Crypto BTC (SL 5%). Tính position size cho cả 2. Lệnh nào có notional value lớn hơn?"
-          opts={['Forex lớn hơn vì pip value lớn hơn', 'Forex: $60/(40×$1)=1.5 lot ($15,000 notional). BTC ở $60k: $60/(5%×$60,000)=$60/$3,000=0.02 BTC ($1,200 notional). Forex lớn hơn — nhưng volatility BTC cao hơn nên thực tế rủi ro tương đương', 'Crypto lớn hơn vì giá BTC cao hơn', 'Cả hai đều bằng nhau vì cùng risk 2%']}
+          q="You have a $3,000 account and want to apply the same rule: 2% risk/trade for both Forex (SL 40pips, $1/pip) and Crypto BTC (SL 5%). Calculate position size for both. Which trade has a larger notional value?"
+          opts={['Forex is larger because pip value is larger', 'Forex: $60/(40×$1)=1.5 lots ($15,000 notional). BTC at $60k: $60/(5%×$60,000)=$60/$3,000=0.02 BTC ($1,200 notional). Forex is larger — but BTC volatility is higher so actual risk is equivalent', 'Crypto is larger because BTC price is higher', 'Both are equal because of 2% risk']}
           correctIdx={1}
-          explanation="Cả 2 đều risk $60 (2% của $3k). Nhưng notional value khác nhau vì SL của Crypto tính theo % giá lớn hơn."
+          explanation="Both risk $60 (2% of $3k). But notional values differ because Crypto SL is based on a larger % of price."
         />
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 7</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 7 Summary</div>
           <ul className="space-y-2">
-            {['Forex: ổn định nhất, SL 20-50pip, risk 1-2%, leverage 1:10-1:20 an toàn.', 'Crypto: volatile nhất, SL 3-8% giá, risk 0.5-1%, leverage tối đa 1:5.', 'Vàng: trung bình, cần chú ý NFP/FOMC, risk 1-2% là hợp lý.', 'Cổ phiếu: overnight gap risk, T+3 với VN, không margin khi học.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['Forex: most stable, SL 20-50pips, risk 1-2%, leverage 1:10-1:20 safe.', 'Crypto: most volatile, SL 3-8% of price, risk 0.5-1%, max leverage 1:5.', 'Gold: medium, watch NFP/FOMC, risk 1-2% is reasonable.', 'Stocks: overnight gap risk, T+3 for VN, no margin when learning.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -910,49 +910,49 @@ const CHAPTER_4_DATA = [
     chapter: "Chapter 4: Risk Management", title: "8. Risk Profile",
     content: (
       <>
-        <SectionHead icon="🎭" title="Khẩu vị rủi ro — Hiểu bản thân trước khi giao dịch" desc="Không có chiến lược quản lý vốn 'tốt nhất' cho tất cả." />
-        <Callout type="tip">Chiến lược tốt nhất là chiến lược phù hợp với tài chính, tâm lý và mục tiêu của BẠN. Profile phù hợp = trading thoải mái, không stress → quyết định tốt hơn → kết quả tốt hơn.</Callout>
+        <SectionHead icon="🎭" title="Risk Appetite — Understand yourself before trading" desc="There is no 'best' money management strategy for everyone." />
+        <Callout type="tip">The best strategy is one that fits YOUR finances, psychology, and goals. Right profile = comfortable, stress-free trading → better decisions → better results.</Callout>
 
-        <SectionHead icon="🎭" title="3 Khẩu vị rủi ro chính" />
+        <SectionHead icon="🎭" title="3 Main Risk Profiles" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-6">
           {[
-            { icon: '🛡️', name: 'Conservative', color: 'blue', risk: 'Risk: 0.5–1% / lệnh', desc: 'Ưu tiên bảo toàn vốn tuyệt đối. Sẵn sàng hy sinh lợi nhuận để giảm tối đa rủi ro.', dd: '10%', target: '15–30%', suitable: 'Mới ≤1 năm' },
-            { icon: '⚖️', name: 'Moderate', color: 'green', risk: 'Risk: 1–2% / lệnh', desc: 'Cân bằng giữa tăng trưởng và bảo toàn. Chuẩn quốc tế cho hầu hết traders.', dd: '20%', target: '30–60%', suitable: '6+ tháng kinh nghiệm' },
-            { icon: '🔥', name: 'Aggressive', color: 'red', risk: 'Risk: 2–3% / lệnh', desc: 'Tối đa hóa tăng trưởng. Chấp nhận biến động lớn để đạt lợi nhuận cao.', dd: '30%', target: '60–100%+', suitable: '2+ năm, vốn rủi ro' },
+            { icon: '🛡️', name: 'Conservative', color: 'blue', risk: 'Risk: 0.5–1% / trade', desc: 'Prioritize absolute capital preservation. Willing to sacrifice profit to minimize risk.', dd: '10%', target: '15–30%', suitable: 'New ≤1 year' },
+            { icon: '⚖️', name: 'Moderate', color: 'green', risk: 'Risk: 1–2% / trade', desc: 'Balance between growth and preservation. Global standard for most traders.', dd: '20%', target: '30–60%', suitable: '6+ months exp' },
+            { icon: '🔥', name: 'Aggressive', color: 'red', risk: 'Risk: 2–3% / trade', desc: 'Maximize growth. Accept large volatility for high returns.', dd: '30%', target: '60–100%+', suitable: '2+ years, risk capital' },
           ].map((p, i) => (
             <div key={i} className={`border-2 rounded-2xl p-5 bg-white dark:bg-[#181A20] ${p.color === 'blue' ? 'border-blue-300 dark:border-[#378ADD]' : p.color === 'green' ? 'border-green-400 dark:border-[#0ECB81]' : 'border-red-400 dark:border-[#F6465D]'}`}>
               <div className="text-3xl mb-3">{p.icon}</div>
               <div className={`font-bold text-lg mb-1 ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.name}</div>
               <div className={`text-sm font-mono mb-3 ${p.color === 'blue' ? 'text-blue-600 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-600 dark:text-[#0ECB81]' : 'text-red-600 dark:text-[#F6465D]'}`}>{p.risk}</div>
-              <p className="text-[13px] text-gray-600 dark:text-[#9ca3b0] mb-4">{p.desc}</p>
-              <div className="space-y-2 text-[12px] font-mono">
-                <div className="flex justify-between"><span className="text-gray-500 dark:text-[#848E9C]">Max DD chấp nhận</span><span className={`font-bold ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.dd}</span></div>
-                <div className="flex justify-between"><span className="text-gray-500 dark:text-[#848E9C]">Target lợi nhuận/năm</span><span className={`font-bold ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.target}</span></div>
-                <div className="flex justify-between"><span className="text-gray-500 dark:text-[#848E9C]">Phù hợp với</span><span className={`font-bold ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.suitable}</span></div>
+              <p className="text-[15.5px] text-gray-600 dark:text-[#9ca3b0] mb-4">{p.desc}</p>
+              <div className="space-y-2 text-[14.5px] font-mono">
+                <div className="flex justify-between"><span className="text-gray-500 dark:text-[#848E9C]">Acceptable Max DD</span><span className={`font-bold ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.dd}</span></div>
+                <div className="flex justify-between"><span className="text-gray-500 dark:text-[#848E9C]">Yearly Profit Target</span><span className={`font-bold ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.target}</span></div>
+                <div className="flex justify-between"><span className="text-gray-500 dark:text-[#848E9C]">Suitable for</span><span className={`font-bold ${p.color === 'blue' ? 'text-blue-700 dark:text-[#378ADD]' : p.color === 'green' ? 'text-green-700 dark:text-[#0ECB81]' : 'text-red-700 dark:text-[#F6465D]'}`}>{p.suitable}</span></div>
               </div>
             </div>
           ))}
         </div>
 
-        <SectionHead icon="📋" title="Trading Plan theo từng Profile" />
+        <SectionHead icon="📋" title="Trading Plan by Profile" />
         <CyberTable
-          headers={['Hạng mục', '🛡️ Conservative', '⚖️ Moderate', '🔥 Aggressive']}
+          headers={['Category', '🛡️ Conservative', '⚖️ Moderate', '🔥 Aggressive']}
           rows={[
-            ['Risk/lệnh', '0.5–1%', '1–2%', '2–3%'],
-            ['Max lệnh cùng lúc', '2–3', '3–5', '5–8'],
+            ['Risk/trade', '0.5–1%', '1–2%', '2–3%'],
+            ['Max concurrent trades', '2–3', '3–5', '5–8'],
             ['Daily loss limit', '−3%', '−5%', '−7%'],
             ['Weekly loss limit', '−5%', '−10%', '−15%'],
-            ['Thị trường phù hợp', 'Forex, Gold', 'Forex, Gold, Crypto top', 'Tất cả + Altcoin'],
-            ['R:R tối thiểu', '1:2', '1:1.5', '1:1.5'],
-            ['Tần suất giao dịch', '1–3 lệnh/tuần', '3–7 lệnh/tuần', 'Daily–multiple'],
+            ['Suitable markets', 'Forex, Gold', 'Forex, Gold, Top Crypto', 'All + Altcoins'],
+            ['Minimum R:R', '1:2', '1:1.5', '1:1.5'],
+            ['Trading frequency', '1–3 trades/week', '3–7 trades/week', 'Daily–multiple'],
           ]}
         />
 
         <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-6 my-6">
-          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Tóm tắt Bài 8</div>
+          <div className="font-bold text-[#d97706] dark:text-[#00d084] mb-4 flex items-center gap-2 text-sm uppercase tracking-wider">▸ Lesson 8 Summary</div>
           <ul className="space-y-2">
-            {['Conservative: 0.5-1%, DD 10%, phù hợp người mới và vốn không thể mất.', 'Moderate: 1-2%, DD 20%, chuẩn quốc tế sau 6+ tháng kinh nghiệm.', 'Aggressive: 2-3%, DD 30%, chỉ với vốn rủi ro và 2+ năm kinh nghiệm.', 'Profile phù hợp = trading thoải mái, không stress → quyết định tốt hơn → kết quả tốt hơn.'].map((item, i) => (
-              <li key={i} className="flex gap-2 items-start text-[15px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
+            {['Conservative: 0.5-1%, DD 10%, suitable for beginners and capital you cannot afford to lose.', 'Moderate: 1-2%, DD 20%, global standard after 6+ months experience.', 'Aggressive: 2-3%, DD 30%, only with risk capital and 2+ years experience.', 'Right profile = comfortable, stress-free trading → better decisions → better results.'].map((item, i) => (
+              <li key={i} className="flex gap-2 items-start text-[17.5px] text-gray-700 dark:text-[#9ca3b0]"><span className="text-[#d97706] dark:text-[#00d084] shrink-0 mt-1">▸</span>{item}</li>
             ))}
           </ul>
         </div>
@@ -963,33 +963,33 @@ const CHAPTER_4_DATA = [
     chapter: "Chapter 4: Risk Management", title: "9. Final Quiz",
     content: (
       <>
-        <SectionHead icon="📝" title="Quiz Tổng kết Chương 4" desc="15 câu hỏi — Mục tiêu: 11/15 trước khi tiếp tục." />
-        <Callout type="warn">Đây là chương quan trọng nhất — quản lý vốn quyết định trader tồn tại hay biến mất. Đạt ít nhất 11/15 trước khi tiếp tục sang Chương 5.</Callout>
+        <SectionHead icon="📝" title="Chapter 4 Final Quiz" desc="10 questions — Goal: 8/10 before continuing." />
+        <Callout type="warn">This is the most important chapter — risk management decides whether a trader survives or disappears. Score at least 8/10 before moving to Chapter 5.</Callout>
 
         {[
-          { q: 'Trader A win rate 70% nhưng R:R 1:0.2 (thắng $20, thua $100). Sau 100 lệnh, trader có lời không?', opts: ['Có lời vì win rate 70%', 'Không lời — (70×$20)−(30×$100)=$1,400−$3,000=−$1,600. Win rate cao không đủ', 'Hòa vốn', 'Tùy vào thị trường'], ci: 1, ex: 'Win rate cao không đảm bảo có lời. Kỳ vọng = (WR×Win)−(LR×Loss) = (0.7×20)−(0.3×100) = 14−30 = −$16/lệnh.' },
-          { q: 'Tài khoản $8,000. Risk 1.5%, SL = 60 pip, pip value = $1. Position size là bao nhiêu?', opts: ['3 lot', '2 lot', '8,000×1.5%=$120. Size=$120/(60×$1)=2 lot', '1.5 lot'], ci: 2, ex: 'Công thức: Risk$=Acc×Risk%=$120. Size=Risk$/(SL×PipVal)=$120/60=2 lot.' },
-          { q: 'Sau 8 lệnh thua liên tiếp với risk 5%, tài khoản $10,000 còn lại bao nhiêu?', opts: ['$6,000', '$10,000×(0.95)^8=$6,634', '$7,200', '$5,000'], ci: 1, ex: 'Compound: $10,000×(0.95)^8≈$6,634. Mất 33.7% — đây là lý do không risk >2%.' },
-          { q: 'Khi nào được phép tăng risk từ 1% lên 2%?', opts: ['Sau 5 lệnh thắng liên tiếp', 'Sau 3 tháng, 50+ lệnh với kỳ vọng dương và DD trong dự báo', 'Khi cảm thấy tự tin', 'Sau khi tài khoản tăng 10%'], ci: 1, ex: 'Phải thỏa MẤT CẢ 4 điều kiện: thời gian (3+ tháng), mẫu đủ lớn (50+ lệnh), kỳ vọng dương, DD trong dự báo.' },
-          { q: 'Difference giữa Fixed Fractional và Fixed Risk là gì?', opts: ['Không có sự khác biệt', 'Fixed Fractional dùng % tài khoản HIỆN TẠI, Fixed Risk dùng số tiền cố định — Fixed Fractional tự động adjust theo vốn', 'Fixed Fractional chỉ dùng cho Forex', 'Fixed Risk an toàn hơn'], ci: 1, ex: 'Fixed Fractional: risk % của balance hiện tại → tự động tăng khi thắng, giảm khi thua. Fixed Risk ($xx cố định) không adjust theo vốn.' },
-          { q: 'Quarter Kelly với win rate 50%, R:R 1:2 bằng bao nhiêu?', opts: ['25%', 'Full Kelly=(50%×2−50%)/2=25%. Quarter Kelly=25%/4=6.25%', '12.5%', '3%'], ci: 1, ex: 'Full Kelly=(WR×RR−LR)/RR=(0.5×2−0.5)/2=0.5/2=25%. Quarter Kelly=25%/4=6.25%. An toàn và được khuyến nghị.' },
-          { q: 'Pyramiding an toàn yêu cầu gì trước khi thêm lệnh?', opts: ['Giá tăng mạnh', 'Lệnh gốc đã Move to Break Even — không còn rủi ro vốn', 'Có 3 tín hiệu hội tụ mới', 'Tài khoản tăng 5%'], ci: 1, ex: 'Bắt buộc: lệnh gốc phải Move to BE trước khi pyramid. Kích thước lệnh thêm phải ≤50% lệnh trước.' },
-          { q: 'Đâu là ngưỡng Daily Drawdown để dừng giao dịch ngay?', opts: ['2%', '10%', '>3-5% trong 1 ngày → dừng ngay, không "gỡ"', '1%'], ci: 2, ex: 'Circuit Breaker: Daily >3-5% → dừng ngay. Weekly >7-10% → giảm size. Monthly >15-20% → dừng 2 tuần.' },
-          { q: 'Crypto BTC tài khoản $5,000, risk 1%, SL 5%. Position size (BTC giá $60,000)?', opts: ['0.1 BTC', '0.0167 BTC ($50/$3,000)', '0.05 BTC', '0.5 BTC'], ci: 1, ex: 'Risk$=$5,000×1%=$50. SL$=5%×$60,000=$3,000/BTC. Size=$50/$3,000=0.0167 BTC.' },
-          { q: 'Conservative profile phù hợp với ai?', opts: ['Trader 3+ năm muốn tối đa lợi nhuận', 'Người mới ≤1 năm, risk 0.5-1%, max DD 10%', 'Trader muốn giao dịch daily', 'Người có vốn không cần thiết yếu'], ci: 1, ex: 'Conservative: 0.5-1%/lệnh, max DD 10%, 1-3 lệnh/tuần. Phù hợp nhất cho người mới và vốn không thể mất.' },
+          { q: 'Trader A has a 70% win rate but a 1:0.2 R:R (wins $20, loses $100). After 100 trades, is the trader profitable?', opts: ['Profitable because of 70% win rate', 'Not profitable — (70×$20)−(30×$100)=$1,400−$3,000=−$1,600. High win rate is not enough', 'Breakeven', 'Depends on the market'], ci: 1, ex: 'High win rate doesn\'t guarantee profit. Expectancy = (WR×Win)−(LR×Loss) = (0.7×20)−(0.3×100) = 14−30 = −$16/trade.' },
+          { q: 'Account is $8,000. Risk 1.5%, SL = 60 pips, pip value = $1. What is the position size?', opts: ['3 lots', '2 lots', '8,000×1.5%=$120. Size=$120/(60×$1)=2 lots', '1.5 lots'], ci: 2, ex: 'Formula: Risk$=Acc×Risk%=$120. Size=Risk$/(SL×PipVal)=$120/60=2 lots.' },
+          { q: 'After 8 consecutive losing trades with 5% risk, how much is left of a $10,000 account?', opts: ['$6,000', '$10,000×(0.95)^8=$6,634', '$7,200', '$5,000'], ci: 1, ex: 'Compound: $10,000×(0.95)^8≈$6,634. Lost 33.7% — this is why you don\'t risk >2%.' },
+          { q: 'When are you allowed to increase risk from 1% to 2%?', opts: ['After 5 consecutive winning trades', 'After 3 months, 50+ trades with positive expectancy and DD within forecast', 'When feeling confident', 'After account grows 10%'], ci: 1, ex: 'Must meet ALL 4 conditions: time (3+ months), large enough sample (50+ trades), positive expectancy, DD within forecast.' },
+          { q: 'What is the difference between Fixed Fractional and Fixed Risk?', opts: ['No difference', 'Fixed Fractional uses % of CURRENT account, Fixed Risk uses a fixed dollar amount — Fixed Fractional auto-adjusts with capital', 'Fixed Fractional is only for Forex', 'Fixed Risk is safer'], ci: 1, ex: 'Fixed Fractional: risk % of current balance → auto-increases when winning, decreases when losing. Fixed Risk (fixed $xx) doesn\'t adjust with capital.' },
+          { q: 'What is Quarter Kelly with a 50% win rate and 1:2 R:R?', opts: ['25%', 'Full Kelly=(50%×2−50%)/2=25%. Quarter Kelly=25%/4=6.25%', '12.5%', '3%'], ci: 1, ex: 'Full Kelly=(WR×RR−LR)/RR=(0.5×2−0.5)/2=0.5/2=25%. Quarter Kelly=25%/4=6.25%. Safe and recommended.' },
+          { q: 'What does safe pyramiding require before adding a trade?', opts: ['Price rises strongly', 'Original trade Moved to Break Even — no capital risk', '3 new converging signals', 'Account grows 5%'], ci: 1, ex: 'Mandatory: original trade must Move to BE before pyramiding. Added size must be ≤50% of previous trade.' },
+          { q: 'What is the Daily Drawdown threshold to stop trading immediately?', opts: ['2%', '10%', '>3-5% in 1 day → stop immediately, no "recovering"', '1%'], ci: 2, ex: 'Circuit Breaker: Daily >3-5% → stop immediately. Weekly >7-10% → reduce size. Monthly >15-20% → stop for 2 weeks.' },
+          { q: 'Crypto BTC, $5,000 account, risk 1%, SL 5%. Position size (BTC price $60,000)?', opts: ['0.1 BTC', '0.0167 BTC ($50/$3,000)', '0.05 BTC', '0.5 BTC'], ci: 1, ex: 'Risk$=$5,000×1%=$50. SL$=5%×$60,000=$3,000/BTC. Size=$50/$3,000=0.0167 BTC.' },
+          { q: 'Who is the Conservative profile suitable for?', opts: ['3+ year trader wanting max profit', 'Beginners ≤1 year, risk 0.5-1%, max DD 10%', 'Trader wanting to trade daily', 'Someone with non-essential capital'], ci: 1, ex: 'Conservative: 0.5-1%/trade, max DD 10%, 1-3 trades/week. Best for beginners and capital you can\'t afford to lose.' },
         ].map((q, i) => (
-          <SimpleQuiz key={i} q={`Câu ${i + 1}: ${q.q}`} opts={q.opts} correctIdx={q.ci} explanation={q.ex} />
+          <SimpleQuiz key={i} q={`Question ${i + 1}: ${q.q}`} opts={q.opts} correctIdx={q.ci} explanation={q.ex} />
         ))}
 
-        <ExerciseBox title="Chuẩn bị cho Chương 5 — Tâm lý giao dịch" desc="Trước khi học Chương 5, thiết lập Trading Plan cá nhân dựa trên Risk Profile của bạn:" steps={[
-          { d: 'Xác định Risk Profile của bạn (Conservative/Moderate/Aggressive) từ bài 8. Ghi rõ: risk/lệnh, max lệnh cùng lúc, daily/weekly loss limit.' },
-          { d: 'Tạo Position Size Calculator cho thị trường bạn sẽ giao dịch (vàng hoặc forex). Tính position size cho 5 tình huống SL khác nhau.' },
-          { d: 'Thiết lập Circuit Breaker rules cá nhân: "Nếu tài khoản giảm X% trong ngày/tuần/tháng, tôi sẽ làm gì?" Viết ra, in ra, dán cạnh máy tính.' },
-          { d: 'Backtest 20 lệnh trên chart giả với đúng risk profile bạn đã chọn. Xem drawdown max là bao nhiêu.' },
+        <ExerciseBox title="Preparation for Chapter 5 — Trading Psychology" desc="Before studying Chapter 5, set up your personal Trading Plan based on your Risk Profile:" steps={[
+          { d: 'Determine your Risk Profile (Conservative/Moderate/Aggressive) from lesson 8. Write down: risk/trade, max concurrent trades, daily/weekly loss limit.' },
+          { d: 'Create a Position Size Calculator for the market you will trade (Gold or Forex). Calculate position size for 5 different SL scenarios.' },
+          { d: 'Set up personal Circuit Breaker rules: "If the account drops X% in a day/week/month, what will I do?" Write it down, print it, paste it next to your computer.' },
+          { d: 'Backtest 20 trades on a demo chart with the exact risk profile you chose. See what the max drawdown is.' },
         ]} />
       </>
     )
   },
 ];
 
-export default CHAPTER_4_DATA;
+export default CHAPTER_4_DATA_EN;

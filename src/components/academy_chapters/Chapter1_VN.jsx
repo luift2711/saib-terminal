@@ -109,7 +109,7 @@ const MatchGame = () => {
             <div
               key={item.id}
               onClick={() => handleLeftSelect(item.id)}
-              className={`p-5 border-2 rounded-xl text-[15px] cursor-pointer transition-all mb-3 shadow-sm dark:shadow-none ${btnClass('L', item.id)}`}
+              className={`p-5 border-2 rounded-xl text-[17.5px] cursor-pointer transition-all mb-3 shadow-sm dark:shadow-none ${btnClass('L', item.id)}`}
             >
               {item.t}
             </div>
@@ -123,7 +123,7 @@ const MatchGame = () => {
             <div
               key={item.id}
               onClick={() => handleRightSelect(item.id)}
-              className={`p-5 border-2 rounded-xl text-[15px] cursor-pointer transition-all mb-3 shadow-sm dark:shadow-none ${btnClass('R', item.id)}`}
+              className={`p-5 border-2 rounded-xl text-[17.5px] cursor-pointer transition-all mb-3 shadow-sm dark:shadow-none ${btnClass('R', item.id)}`}
             >
               {item.t}
             </div>
@@ -131,13 +131,12 @@ const MatchGame = () => {
         </div>
       </div>
       <div
-        className={`mt-6 text-[15px] font-bold ${
-          matched.length === 4
+        className={`mt-6 text-[17.5px] font-bold ${matched.length === 4
             ? 'text-green-600 dark:text-[#0ECB81]'
             : flash
               ? 'text-red-600 dark:text-[#F6465D]'
               : 'text-gray-500 dark:text-[#848E9C]'
-        }`}
+          }`}
       >
         {getStatus()}
       </div>
@@ -190,24 +189,24 @@ const LeverageSim = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">
               Tài khoản ($)
             </label>
             <input
               type="number"
               value={balance}
               onChange={(event) => setBalance(Number(event.target.value) || 0)}
-              className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors"
+              className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors"
             />
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">
               Đòn bẩy
             </label>
             <select
               value={leverage}
               onChange={(event) => setLeverage(Number(event.target.value))}
-              className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors"
+              className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors"
             >
               <option value={1}>1:1</option>
               <option value={5}>1:5</option>
@@ -219,7 +218,7 @@ const LeverageSim = () => {
             </select>
           </div>
           <div>
-            <label className="text-[13px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">
+            <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">
               Giá đi ngược (%)
             </label>
             <input
@@ -227,14 +226,14 @@ const LeverageSim = () => {
               step="0.1"
               value={move}
               onChange={(event) => setMove(Number(event.target.value) || 0)}
-              className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[16px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors"
+              className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors"
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="bg-blue-50 dark:bg-[#378ADD]/10 p-5 rounded-2xl text-center border border-blue-100 dark:border-transparent">
-            <div className="text-[12px] text-blue-700 dark:text-[#378ADD] font-bold uppercase mb-2">
+            <div className="text-[14.5px] text-blue-700 dark:text-[#378ADD] font-bold uppercase mb-2">
               Giá trị kiểm soát
             </div>
             <div className="text-xl md:text-2xl font-black text-blue-700 dark:text-[#378ADD] font-mono">
@@ -242,7 +241,7 @@ const LeverageSim = () => {
             </div>
           </div>
           <div className="bg-red-50 dark:bg-[#F6465D]/10 p-5 rounded-2xl text-center border border-red-100 dark:border-transparent">
-            <div className="text-[12px] text-red-700 dark:text-[#F6465D] font-bold uppercase mb-2">
+            <div className="text-[14.5px] text-red-700 dark:text-[#F6465D] font-bold uppercase mb-2">
               Lỗ giả định
             </div>
             <div className="text-xl md:text-2xl font-black text-red-700 dark:text-[#F6465D] font-mono">
@@ -250,7 +249,7 @@ const LeverageSim = () => {
             </div>
           </div>
           <div className={`${bgStatus} p-5 rounded-2xl text-center border border-transparent`}>
-            <div className={`text-[12px] font-bold uppercase mb-2 ${statusColor}`}>
+            <div className={`text-[14.5px] font-bold uppercase mb-2 ${statusColor}`}>
               % tài khoản mất
             </div>
             <div className={`text-xl md:text-2xl font-black font-mono ${statusColor}`}>
@@ -259,7 +258,7 @@ const LeverageSim = () => {
           </div>
         </div>
 
-        <div className={`p-5 rounded-2xl text-[16px] leading-relaxed ${bgStatus} ${statusColor}`}>
+        <div className={`p-5 rounded-2xl text-[18.5px] leading-relaxed ${bgStatus} ${statusColor}`}>
           {msg}
         </div>
       </div>
@@ -333,7 +332,7 @@ const CandleLab = () => {
 
   return (
     <div className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-200 dark:border-[#2B3139] rounded-3xl p-8 my-10 shadow-md dark:shadow-xl transition-colors">
-      <div className="text-[14px] font-bold text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-8">
+      <div className="text-[16.5px] font-bold text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-8">
         Biểu đồ minh họa: click vào nến để xem ý nghĩa
       </div>
       <div className="flex flex-wrap items-end justify-center gap-8 min-h-[140px] pb-6">
@@ -341,23 +340,22 @@ const CandleLab = () => {
           <div
             key={item.name}
             onClick={() => setActive(index)}
-            className={`flex flex-col items-center cursor-pointer transition-all duration-300 hover:scale-110 ${
-              active !== null && active !== index ? 'opacity-30' : 'opacity-100'
-            }`}
+            className={`flex flex-col items-center cursor-pointer transition-all duration-300 hover:scale-110 ${active !== null && active !== index ? 'opacity-30' : 'opacity-100'
+              }`}
           >
             {item.candle}
-            <div className="text-[12px] text-gray-500 dark:text-[#848E9C] mt-3 font-mono text-center leading-tight">
+            <div className="text-[14.5px] text-gray-500 dark:text-[#848E9C] mt-3 font-mono text-center leading-tight">
               {item.label}
             </div>
           </div>
         ))}
       </div>
-      <div className="mt-8 bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl min-h-[120px] transition-colors text-[16px] text-gray-800 dark:text-[#EAECEF] leading-[1.8] shadow-sm">
+      <div className="mt-8 bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl min-h-[120px] transition-colors text-[18.5px] text-gray-800 dark:text-[#EAECEF] leading-[1.8] shadow-sm">
         {active === null ? (
           'Nhấp vào một cây nến bên trên để xem ý nghĩa chi tiết.'
         ) : (
           <div className="animate-in fade-in">
-            <div className="font-bold text-black dark:text-white text-[18px] mb-3">
+            <div className="font-bold text-black dark:text-white text-[20.5px] mb-3">
               {candles[active].name}
             </div>
             <div>{candles[active].desc}</div>
@@ -506,7 +504,7 @@ const CandleQuiz = () => {
       <div className="bg-[#0B0E11] p-6 border-b border-[#2B3139]">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <div className="text-[11px] font-black tracking-widest uppercase text-[#FCD535] mb-2">
+            <div className="text-[13.5px] font-black tracking-widest uppercase text-[#FCD535] mb-2">
               Tình huống {current + 1} / {candleQuizData.length}
             </div>
             <div className="text-white font-bold">{q.label}</div>
@@ -520,7 +518,7 @@ const CandleQuiz = () => {
             <div key={index} className="flex flex-col items-center">
               <Candle {...candle} />
               {index === q.candles.length - 1 && (
-                <div className="text-[11px] text-[#FCD535] mt-2 font-bold">Nến này</div>
+                <div className="text-[13.5px] text-[#FCD535] mt-2 font-bold">Nến này</div>
               )}
             </div>
           ))}
@@ -549,7 +547,7 @@ const CandleQuiz = () => {
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center text-sm font-black shrink-0 bg-gray-100 dark:bg-[#181A20]">
                   {String.fromCharCode(65 + index)}
                 </div>
-                <span className="text-[16px] leading-[1.7] mt-1">{opt}</span>
+                <span className="text-[18.5px] leading-[1.7] mt-1">{opt}</span>
               </button>
             );
           })}
@@ -557,11 +555,10 @@ const CandleQuiz = () => {
 
         {selected !== null && (
           <div
-            className={`mt-6 p-6 rounded-2xl text-[16px] leading-relaxed ${
-              selected === q.c
+            className={`mt-6 p-6 rounded-2xl text-[18.5px] leading-relaxed ${selected === q.c
                 ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]'
                 : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'
-            }`}
+              }`}
           >
             <strong className="block text-lg mb-2">
               {selected === q.c ? 'Chính xác.' : 'Chưa đúng.'}
@@ -588,51 +585,61 @@ const FinalQuiz = () => {
       q: 'Giá cổ phiếu công ty A tăng liên tục trong 2 tuần trước khi kết quả kinh doanh tốt được công bố. Khi kết quả chính thức ra, giá lại giảm. Hiện tượng này thường được gọi là gì?',
       opts: ['Lỗi thị trường', 'Buy the rumor, sell the news', 'Insider trading', 'Bong bóng giá'],
       c: 1,
+      exp: 'Đây là hiện tượng "Tin đồn thì mua, tin thật thì bán". Đám đông mua vào kỳ vọng tốt, và khi tin chính thức ra, những người mua sớm sẽ chốt lời khiến giá giảm.'
     },
     {
       q: 'Bạn SELL EUR/USD ở 1.0900, SL ở 1.0930, TP ở 1.0810. R:R của lệnh này là bao nhiêu?',
       opts: ['1:1', '1:2', '1:3', '1:4'],
       c: 2,
+      exp: 'Khoảng cách SL: 1.0930 - 1.0900 = 30 pip. Khoảng cách TP: 1.0900 - 1.0810 = 90 pip. Tỷ lệ Risk:Reward = 30:90 = 1:3.'
     },
     {
       q: 'Phiên giao dịch nào thường có thanh khoản cao nhất trong ngày theo giờ Việt Nam?',
       opts: ['5:00-9:00 Tokyo', '14:00-17:00 London sáng', '19:00-23:00 London + New York overlap', '23:00-3:00 đêm'],
       c: 2,
+      exp: 'Phiên giao thoa giữa London và New York (19:00 - 23:00 giờ VN) là lúc cả hai trung tâm tài chính lớn nhất thế giới cùng hoạt động, tạo ra thanh khoản và biến động cao nhất.'
     },
     {
       q: 'Leverage 1:50 với tài khoản $2,000. Nếu dùng toàn bộ sức mua, giá đi ngược 2%, tài khoản sẽ ra sao?',
       opts: ['$40', '$200', 'Khoảng $2,000, gần như mất toàn bộ', '$100'],
       c: 2,
+      exp: 'Với đòn bẩy 1:50, biến động 2% của thị trường sẽ khuếch đại thành 2% * 50 = 100% đối với tài khoản của bạn, khiến tài khoản bị cháy (mất toàn bộ).'
     },
     {
       q: 'Sau uptrend dài, xuất hiện nến có bóng trên rất dài, thân nhỏ ở dưới, tại vùng kháng cự. Đây là tín hiệu gì?',
       opts: ['Tiếp tục tăng, mua vào', 'Shooting Star, cảnh báo đảo chiều giảm', 'Nến bình thường', 'Bán ngay không cần xác nhận'],
       c: 1,
+      exp: 'Bóng trên dài cho thấy phe mua cố gắng đẩy giá lên nhưng bị phe bán áp đảo và đẩy xuống mạnh mẽ. Đây là mẫu hình Shooting Star, cảnh báo có thể đảo chiều giảm.'
     },
     {
       q: 'Bid = 1.0848, Ask = 1.0851. Spread là bao nhiêu pip?',
       opts: ['1 pip', '2 pip', '3 pip', '4 pip'],
       c: 2,
+      exp: 'Spread = Ask - Bid = 1.0851 - 1.0848 = 0.0003, tương đương 3 pip.'
     },
     {
       q: 'Tài khoản $5,000, bạn muốn risk 1%. SL cách entry 40 pip. Tổng pip value tối đa cho vị thế nên khoảng bao nhiêu?',
       opts: ['$0.50/pip', '$1.25/pip', '$2.00/pip', '$0.80/pip'],
       c: 1,
+      exp: 'Risk 1% của $5,000 = $50. Nếu SL = 40 pip, thì Pip Value = $50 / 40 = $1.25/pip. Bạn nên đi size lệnh sao cho mỗi pip trị giá $1.25.'
     },
     {
       q: 'D1 đang downtrend. Trên M15 có setup tăng rất đẹp. Theo Top-Down Analysis, bạn nên làm gì?',
       opts: ['BUY ngay vì M15 đẹp', 'Không vào BUY vì ngược chiều D1', 'SELL theo D1 mà không cần setup', 'Xem thêm M1 để quyết định'],
       c: 1,
+      exp: 'Nguyên tắc Top-Down Analysis là luôn thuận theo xu hướng của khung thời gian lớn (D1). Nếu D1 giảm thì không nên Buy trên khung nhỏ hơn dù setup có đẹp đến đâu.'
     },
     {
       q: 'Doji xuất hiện sau downtrend dài tại hỗ trợ mạnh. Hành động hợp lý là gì?',
       opts: ['BUY ngay vì Doji = đảo chiều', 'Chờ nến xác nhận tăng rồi mới cân nhắc', 'SELL tiếp', 'Bỏ qua vì Doji vô nghĩa'],
       c: 1,
+      exp: 'Doji chỉ thể hiện sự lưỡng lự của thị trường, không phải là xác nhận đảo chiều. Cần chờ thêm nến xác nhận tăng sau đó để vào lệnh an toàn.'
     },
     {
       q: 'Bull trap thường hoạt động như thế nào?',
       opts: ['Thị trường luôn đi tiếp theo hướng breakout', 'Giá phá lên để hút lực mua, sau đó đảo chiều khiến người mua mắc kẹt', 'Không liên quan đến thanh khoản', 'Chỉ xuất hiện ở cổ phiếu'],
       c: 1,
+      exp: 'Bull trap (Bẫy tăng giá) là khi giá tạo tín hiệu phá vỡ kháng cự giả để dụ trader mua vào, sau đó lập tức quay đầu giảm sâu khiến những người vừa mua bị mắc kẹt.'
     },
   ];
   const [answers, setAnswers] = useState({});
@@ -672,13 +679,18 @@ const FinalQuiz = () => {
                   key={opt}
                   onClick={() => handleSelect(qIdx, oIdx)}
                   disabled={showRes}
-                  className={`p-4 border-2 rounded-xl text-left text-[15px] transition-all ${btnClass}`}
+                  className={`p-4 border-2 rounded-xl text-left text-[17.5px] transition-all ${btnClass}`}
                 >
                   {String.fromCharCode(65 + oIdx)}. {opt}
                 </button>
               );
             })}
           </div>
+          {showRes && answers[qIdx] !== undefined && q.exp && (
+             <div className={`mt-6 p-6 rounded-2xl text-[18.5px] leading-relaxed animate-in slide-in-from-top-2 ${answers[qIdx] === q.c ? 'bg-green-50 dark:bg-[#0ECB81]/10 text-green-800 dark:text-[#0ECB81]' : 'bg-red-50 dark:bg-[#F6465D]/10 text-red-800 dark:text-[#F6465D]'}`}>
+               <strong className="block text-lg mb-2">{answers[qIdx] === q.c ? '✅ Chính xác!' : '❌ Chưa đúng.'}</strong> {q.exp}
+             </div>
+          )}
         </div>
       ))}
 
@@ -698,7 +710,7 @@ const FinalQuiz = () => {
           <h2 className="text-4xl font-black text-black dark:text-white mb-4">
             Kết quả: {score}/{qs.length}
           </h2>
-          <p className="text-gray-600 dark:text-[#848E9C] text-[16px] mb-8">
+          <p className="text-gray-600 dark:text-[#848E9C] text-[18.5px] mb-8">
             {score >= 7
               ? 'Đạt mục tiêu. Bạn đã nắm nền tảng đủ để sang Chương 2.'
               : 'Chưa đạt 7/10. Nên đọc lại thuật ngữ, leverage, nến Nhật và Top-Down Analysis.'}
@@ -718,7 +730,7 @@ const FinalQuiz = () => {
   );
 };
 
-const CHAPTER_1_DATA = [
+const CHAPTER_1_DATA_VN = [
   {
     title: '1. Thị trường là gì?',
     content: (
@@ -733,10 +745,10 @@ const CHAPTER_1_DATA = [
           Hãy tưởng tượng một chợ cá. Người bán muốn bán giá cao, người mua muốn mua giá thấp. Khi hai bên đồng ý một mức giá, giao dịch xảy ra. Thị trường tài chính cũng vậy: giá là nơi người mua và người bán tạm thời đồng thuận.
         </StoryBox>
 
-        <p className="text-[16px] md:text-[17px] leading-[1.8] text-gray-800 dark:text-[#EAECEF] mb-4">
+        <p className="text-[18.5px] md:text-[19.5px] leading-[1.8] text-gray-800 dark:text-[#EAECEF] mb-4">
           <strong>Thị trường tài chính</strong> là nơi người tham gia mua bán tài sản như tiền tệ, vàng, cổ phiếu, crypto, hàng hóa hoặc chỉ số. Bạn không cần có mặt ở một địa điểm vật lý. Mọi thứ diễn ra qua sàn giao dịch, broker hoặc nền tảng điện tử.
         </p>
-        <p className="text-[16px] md:text-[17px] leading-[1.8] text-gray-800 dark:text-[#EAECEF] mb-6">
+        <p className="text-[18.5px] md:text-[19.5px] leading-[1.8] text-gray-800 dark:text-[#EAECEF] mb-6">
           Giá không di chuyển vì một người muốn nó lên hay xuống. Giá di chuyển vì sự mất cân bằng giữa cung và cầu, cộng thêm kỳ vọng tương lai của đám đông.
         </p>
 
@@ -751,7 +763,7 @@ const CHAPTER_1_DATA = [
         />
 
         <SectionHead icon={<Brain />} title="Giá phản ánh kỳ vọng" />
-        <p className="text-[16px] md:text-[17px] leading-[1.8] text-gray-800 dark:text-[#EAECEF] mb-4">
+        <p className="text-[18.5px] md:text-[19.5px] leading-[1.8] text-gray-800 dark:text-[#EAECEF] mb-4">
           Thị trường thường phản ứng trước tin tức chính thức. Nếu ai cũng kỳ vọng công ty có báo cáo tốt, giá có thể đã tăng trước khi báo cáo ra. Khi tin thật ra đúng như kỳ vọng, giá vẫn có thể giảm vì người mua sớm chốt lời.
         </p>
         <Callout type="tip">
@@ -796,10 +808,10 @@ const CHAPTER_1_DATA = [
               className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl shadow-sm dark:shadow-none"
             >
               <div className="font-bold text-black dark:text-white text-lg mb-2">{name}</div>
-              <div className="text-[15px] text-gray-500 dark:text-[#848E9C] leading-relaxed mb-3">
+              <div className="text-[17.5px] text-gray-500 dark:text-[#848E9C] leading-relaxed mb-3">
                 {desc}
               </div>
-              <div className="text-[12px] font-mono text-[#378ADD]">{examples}</div>
+              <div className="text-[14.5px] font-mono text-[#378ADD]">{examples}</div>
             </div>
           ))}
         </div>
@@ -821,32 +833,32 @@ const CHAPTER_1_DATA = [
         <SectionHead icon={<Clock />} title="Các phiên giao dịch trong ngày" />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
           <div className="border border-gray-200 dark:border-[#2B3139] bg-white dark:bg-transparent p-5 rounded-2xl shadow-sm">
-            <div className="text-[13px] text-gray-500 dark:text-[#848E9C] mb-2 uppercase tracking-wider font-bold">
+            <div className="text-[15.5px] text-gray-500 dark:text-[#848E9C] mb-2 uppercase tracking-wider font-bold">
               Sydney / Tokyo
             </div>
             <div className="font-bold text-black dark:text-white text-lg font-mono">5:00-14:00 VN</div>
-            <div className="text-[14px] text-gray-500 dark:text-[#64748B] mt-2">Thường ít biến động hơn.</div>
+            <div className="text-[16.5px] text-gray-500 dark:text-[#64748B] mt-2">Thường ít biến động hơn.</div>
           </div>
           <div className="border border-yellow-200 dark:border-[#FCD535]/30 bg-yellow-50 dark:bg-[#FCD535]/5 p-5 rounded-2xl shadow-sm">
-            <div className="text-[13px] text-yellow-700 dark:text-[#FCD535] mb-2 uppercase tracking-wider font-bold">
+            <div className="text-[15.5px] text-yellow-700 dark:text-[#FCD535] mb-2 uppercase tracking-wider font-bold">
               London
             </div>
             <div className="font-bold text-black dark:text-white text-lg font-mono">14:00-23:00 VN</div>
-            <div className="text-[14px] text-yellow-700 dark:text-[#FCD535] mt-2">Thanh khoản tăng, EUR/GBP hoạt động mạnh.</div>
+            <div className="text-[16.5px] text-yellow-700 dark:text-[#FCD535] mt-2">Thanh khoản tăng, EUR/GBP hoạt động mạnh.</div>
           </div>
           <div className="border-2 border-yellow-400 dark:border-[#FCD535]/50 bg-yellow-100 dark:bg-[#FCD535]/10 p-5 rounded-2xl shadow-sm">
-            <div className="text-[13px] text-yellow-800 dark:text-[#FCD535] mb-2 uppercase tracking-wider font-bold">
+            <div className="text-[15.5px] text-yellow-800 dark:text-[#FCD535] mb-2 uppercase tracking-wider font-bold">
               New York
             </div>
             <div className="font-bold text-black dark:text-white text-lg font-mono">19:00-24:00+ VN</div>
-            <div className="text-[14px] text-yellow-800 dark:text-[#FCD535] mt-2">USD chi phối, tin Mỹ thường gây biến động lớn.</div>
+            <div className="text-[16.5px] text-yellow-800 dark:text-[#FCD535] mt-2">USD chi phối, tin Mỹ thường gây biến động lớn.</div>
           </div>
           <div className="border border-blue-200 dark:border-[#378ADD]/30 bg-blue-50 dark:bg-[#378ADD]/5 p-5 rounded-2xl shadow-sm">
-            <div className="text-[13px] text-blue-700 dark:text-[#378ADD] mb-2 uppercase tracking-wider font-bold">
+            <div className="text-[15.5px] text-blue-700 dark:text-[#378ADD] mb-2 uppercase tracking-wider font-bold">
               London + New York overlap
             </div>
             <div className="font-bold text-black dark:text-white text-lg font-mono">19:00-23:00 VN</div>
-            <div className="text-[14px] text-blue-700 dark:text-[#378ADD] mt-2">Thường là vùng thanh khoản cao nhất ngày.</div>
+            <div className="text-[16.5px] text-blue-700 dark:text-[#378ADD] mt-2">Thường là vùng thanh khoản cao nhất ngày.</div>
           </div>
         </div>
 
@@ -880,9 +892,9 @@ const CHAPTER_1_DATA = [
               className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-6 rounded-2xl shadow-sm dark:shadow-none"
             >
               <h4 className="text-black dark:text-white font-bold text-lg mb-2">
-                {title} <span className="text-gray-500 dark:text-[#848E9C] text-[14px] font-medium ml-2">{meta}</span>
+                {title} <span className="text-gray-500 dark:text-[#848E9C] text-[16.5px] font-medium ml-2">{meta}</span>
               </h4>
-              <p className="text-gray-600 dark:text-[#848E9C] text-[15px] leading-[1.7]">{desc}</p>
+              <p className="text-gray-600 dark:text-[#848E9C] text-[17.5px] leading-[1.7]">{desc}</p>
             </div>
           ))}
         </div>
@@ -1015,7 +1027,7 @@ const CHAPTER_1_DATA = [
           Bạn có $10,000 và muốn mua căn nhà $100,000. Ngân hàng cho vay 90%, tức bạn dùng đòn bẩy 1:10. Nhà tăng 10%, bạn lời $10,000 trên vốn $10,000. Nhà giảm 10%, bạn mất toàn bộ vốn. Trading tương tự, nhưng biến động có thể xảy ra trong vài phút.
         </StoryBox>
 
-        <p className="text-[16px] md:text-[17px] leading-[1.8] text-gray-800 dark:text-[#EAECEF] mb-4">
+        <p className="text-[18.5px] md:text-[19.5px] leading-[1.8] text-gray-800 dark:text-[#EAECEF] mb-4">
           Leverage không tự làm bạn thua. Thứ làm cháy tài khoản là dùng khối lượng quá lớn so với tài khoản và không có stoploss rõ ràng. Cùng một leverage 1:100, người risk 1% mỗi lệnh vẫn khác hoàn toàn người dùng toàn bộ sức mua.
         </p>
 
@@ -1059,28 +1071,28 @@ const CHAPTER_1_DATA = [
 
         {/* Annotated Candle Diagram */}
         <div className="bg-[#0d1117] rounded-2xl p-6 my-8 overflow-x-auto border border-gray-800">
-          <div className="text-[11px] text-gray-400 font-mono uppercase tracking-widest mb-4">// Giải phẫu một cây nến — Nhấp/hover để khám phá</div>
+          <div className="text-[13.5px] text-gray-400 font-mono uppercase tracking-widest mb-4">// Giải phẫu một cây nến — Nhấp/hover để khám phá</div>
           <svg viewBox="0 0 600 240" className="w-full h-auto min-w-[420px]" role="img" aria-label="Annotated candlestick diagram">
             {/* Wicks */}
-            <line x1="200" y1="20" x2="200" y2="70" stroke="#00d084" strokeWidth="2.5"/>
-            <line x1="200" y1="170" x2="200" y2="210" stroke="#00d084" strokeWidth="2.5"/>
+            <line x1="200" y1="20" x2="200" y2="70" stroke="#00d084" strokeWidth="2.5" />
+            <line x1="200" y1="170" x2="200" y2="210" stroke="#00d084" strokeWidth="2.5" />
             {/* Candle body */}
-            <rect x="182" y="70" width="36" height="100" fill="#00d084" rx="4"/>
+            <rect x="182" y="70" width="36" height="100" fill="#00d084" rx="4" />
             {/* H annotation */}
-            <line x1="200" y1="20" x2="340" y2="20" stroke="#9ca3b0" strokeWidth="1" strokeDasharray="4 3"/>
-            <rect x="342" y="12" width="210" height="18" fill="#1e2535" rx="3"/>
+            <line x1="200" y1="20" x2="340" y2="20" stroke="#9ca3b0" strokeWidth="1" strokeDasharray="4 3" />
+            <rect x="342" y="12" width="210" height="18" fill="#1e2535" rx="3" />
             <text x="350" y="25" fill="#e8eaf0" fontSize="12" fontFamily="monospace">← Giá cao nhất (H) = $2,050</text>
             {/* C annotation */}
-            <line x1="218" y1="70" x2="340" y2="70" stroke="#9ca3b0" strokeWidth="1" strokeDasharray="4 3"/>
-            <rect x="342" y="62" width="210" height="18" fill="#1e2535" rx="3"/>
+            <line x1="218" y1="70" x2="340" y2="70" stroke="#9ca3b0" strokeWidth="1" strokeDasharray="4 3" />
+            <rect x="342" y="62" width="210" height="18" fill="#1e2535" rx="3" />
             <text x="350" y="75" fill="#00d084" fontSize="12" fontFamily="monospace" fontWeight="bold">← Đóng cửa (C) = $2,040</text>
             {/* O annotation */}
-            <line x1="218" y1="170" x2="340" y2="155" stroke="#9ca3b0" strokeWidth="1" strokeDasharray="4 3"/>
-            <rect x="342" y="147" width="210" height="18" fill="#1e2535" rx="3"/>
+            <line x1="218" y1="170" x2="340" y2="155" stroke="#9ca3b0" strokeWidth="1" strokeDasharray="4 3" />
+            <rect x="342" y="147" width="210" height="18" fill="#1e2535" rx="3" />
             <text x="350" y="160" fill="#e8eaf0" fontSize="12" fontFamily="monospace">← Mở cửa (O) = $1,990</text>
             {/* L annotation */}
-            <line x1="200" y1="210" x2="340" y2="210" stroke="#9ca3b0" strokeWidth="1" strokeDasharray="4 3"/>
-            <rect x="342" y="202" width="210" height="18" fill="#1e2535" rx="3"/>
+            <line x1="200" y1="210" x2="340" y2="210" stroke="#9ca3b0" strokeWidth="1" strokeDasharray="4 3" />
+            <rect x="342" y="202" width="210" height="18" fill="#1e2535" rx="3" />
             <text x="350" y="215" fill="#e8eaf0" fontSize="12" fontFamily="monospace">← Giá thấp nhất (L) = $1,975</text>
             {/* Labels left side */}
             <text x="60" y="25" fill="#9ca3b0" fontSize="11" fontFamily="monospace" textAnchor="middle">High</text>
@@ -1088,12 +1100,12 @@ const CHAPTER_1_DATA = [
             <text x="60" y="140" fill="#9ca3b0" fontSize="10" fontFamily="monospace" textAnchor="middle">(C - O)</text>
             <text x="60" y="215" fill="#9ca3b0" fontSize="11" fontFamily="monospace" textAnchor="middle">Low</text>
             {/* Brace lines left */}
-            <line x1="160" y1="20" x2="148" y2="20" stroke="#5a6275" strokeWidth="1.5"/>
-            <line x1="148" y1="20" x2="148" y2="210" stroke="#5a6275" strokeWidth="1.5"/>
-            <line x1="148" y1="210" x2="160" y2="210" stroke="#5a6275" strokeWidth="1.5"/>
-            <line x1="148" y1="115" x2="100" y2="115" stroke="#5a6275" strokeWidth="1.5"/>
+            <line x1="160" y1="20" x2="148" y2="20" stroke="#5a6275" strokeWidth="1.5" />
+            <line x1="148" y1="20" x2="148" y2="210" stroke="#5a6275" strokeWidth="1.5" />
+            <line x1="148" y1="210" x2="160" y2="210" stroke="#5a6275" strokeWidth="1.5" />
+            <line x1="148" y1="115" x2="100" y2="115" stroke="#5a6275" strokeWidth="1.5" />
             {/* Info box bottom */}
-            <rect x="10" y="225" width="350" height="12" fill="#00d08410" rx="3"/>
+            <rect x="10" y="225" width="350" height="12" fill="#00d08410" rx="3" />
             <text x="16" y="234" fill="#00d084" fontSize="10" fontFamily="monospace">NẾN TĂNG — Đóng cửa (C) cao hơn Mở cửa (O). Thân xanh.</text>
           </svg>
         </div>
@@ -1138,7 +1150,7 @@ const CHAPTER_1_DATA = [
           <div className="overflow-x-auto border border-[rgba(15,17,23,0.18)] dark:border-[rgba(255,255,255,0.13)] rounded-xl">
             <table className="w-full text-left border-collapse min-w-[650px]">
               <thead>
-                <tr className="bg-[#f2f0ea] dark:bg-[#1e2535] text-[#636878] dark:text-[#9ca3b0] text-[11px] font-mono uppercase tracking-[0.15em] border-b border-[rgba(15,17,23,0.18)] dark:border-[rgba(255,255,255,0.13)]">
+                <tr className="bg-[#f2f0ea] dark:bg-[#1e2535] text-[#636878] dark:text-[#9ca3b0] text-[13.5px] font-mono uppercase tracking-[0.15em] border-b border-[rgba(15,17,23,0.18)] dark:border-[rgba(255,255,255,0.13)]">
                   <th className="p-4">Timeframe</th>
                   <th className="p-4">Mỗi nến = ?</th>
                   <th className="p-4">Mục đích chính</th>
@@ -1146,7 +1158,7 @@ const CHAPTER_1_DATA = [
                   <th className="p-4">Giữ lệnh</th>
                 </tr>
               </thead>
-              <tbody className="text-[13.5px] text-[#2a2e3a] dark:text-[#9ca3b0]">
+              <tbody className="text-[16px] text-[#2a2e3a] dark:text-[#9ca3b0]">
                 {[
                   ['MN', '1 tháng', 'Xu hướng vĩ mô dài hạn', 'Position trader', 'Vài tháng – vài năm', false],
                   ['W1', '1 tuần', 'Bối cảnh xu hướng lớn', 'Swing trader dài', 'Vài tuần – tháng', false],
@@ -1156,12 +1168,11 @@ const CHAPTER_1_DATA = [
                   ['M15 / M5', '15 / 5 phút', 'Entry precision, kiểm tra spread', 'Scalper / Day trader', '15 phút – vài giờ', false],
                   ['M1', '1 phút', 'Scalping thuần, nhiễu cao', 'Scalper chuyên nghiệp', 'Vài phút', false],
                 ].map(([tf, candle, purpose, trader, hold, highlight]) => (
-                  <tr key={tf} className={`border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] last:border-0 transition-colors ${
-                    highlight
+                  <tr key={tf} className={`border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] last:border-0 transition-colors ${highlight
                       ? 'bg-[#d97706]/15/50 dark:bg-[#d97706]/10 font-semibold text-[#0f1117] dark:text-[#e8eaf0]'
                       : 'hover:bg-[#faf9f6] dark:hover:bg-[rgba(255,255,255,0.02)]'
-                  }`}>
-                    <td className={`p-4 font-mono font-bold ${ highlight ? 'text-[#d97706] dark:text-[#f5a623]' : 'text-[#0f1117] dark:text-[#e8eaf0]'}`}>{tf}</td>
+                    }`}>
+                    <td className={`p-4 font-mono font-bold ${highlight ? 'text-[#d97706] dark:text-[#f5a623]' : 'text-[#0f1117] dark:text-[#e8eaf0]'}`}>{tf}</td>
                     <td className="p-4">{candle}</td>
                     <td className="p-4 leading-snug">{purpose}</td>
                     <td className="p-4">{trader}</td>
@@ -1171,7 +1182,7 @@ const CHAPTER_1_DATA = [
               </tbody>
             </table>
           </div>
-          <p className="text-[13px] text-[#636878] dark:text-[#5a6275] mt-3 font-mono">⭐ D1 và H4 là hai khung thời gian cốt lõi trong phương pháp NNN.</p>
+          <p className="text-[15.5px] text-[#636878] dark:text-[#5a6275] mt-3 font-mono">⭐ D1 và H4 là hai khung thời gian cốt lõi trong phương pháp NNN.</p>
         </div>
 
         <div className="my-8">
@@ -1195,7 +1206,7 @@ const CHAPTER_1_DATA = [
                   <strong className="text-black dark:text-white block text-lg mb-1 transition-colors">
                     {title}
                   </strong>
-                  <span className="text-[15px] text-gray-500 dark:text-[#848E9C] transition-colors">
+                  <span className="text-[17.5px] text-gray-500 dark:text-[#848E9C] transition-colors">
                     {desc}
                   </span>
                 </div>
@@ -1242,4 +1253,4 @@ const CHAPTER_1_DATA = [
   },
 ];
 
-export default CHAPTER_1_DATA;
+export default CHAPTER_1_DATA_VN;
