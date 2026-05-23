@@ -6,7 +6,7 @@ import Flashcards from './components/Flashcards';
 import TradingJournal from './components/TradingJournal';
 import FloatingCoach from './components/FloatingCoach';
 import { auth, provider } from './firebase';
-import { signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import { signInWithPopup, signOut, onAuthStateChanged, updatePassword, sendPasswordResetEmail, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, EmailAuthProvider, linkWithCredential } from 'firebase/auth';
 import { Mail, Eye, EyeOff } from 'lucide-react';
 
 const App = () => {
@@ -38,27 +38,50 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  // State cho Form Login Glassmorphism
+  // State cho Form Login/Register
+  const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
+  // Thêm state cho Register
+  const [regName, setRegName] = useState('');
+  const [regConfirmPassword, setRegConfirmPassword] = useState('');
+  const [showRegConfirm, setShowRegConfirm] = useState(false);
+
   // State cho Welcome / Splash Screen
   const [showNameInput, setShowNameInput] = useState(false);
   const [showSplash, setShowSplash] = useState(false);
   const [tempName, setTempName] = useState('');
+  const [userName, setUserName] = useState('');
   const [isFirstLogin, setIsFirstLogin] = useState(false);
+
+  // States cho việc tạo mật khẩu lần đầu
+  const [setupStep, setSetupStep] = useState(1);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  // States cho Profile Modal
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editPassword, setEditPassword] = useState('');
+  const [editConfirmPassword, setEditConfirmPassword] = useState('');
+  const [showEditPassword, setShowEditPassword] = useState(false);
+  const [showEditConfirmPassword, setShowEditConfirmPassword] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setAuthLoading(false);
       if (currentUser) {
-        const storedName = localStorage.getItem('SAIB_trader_name');
+        const storedName = localStorage.getItem(`SAIB_trader_name_${currentUser.uid}`);
         if (!storedName) {
           setShowNameInput(true);
         } else {
+          setUserName(storedName);
           setShowSplash(true);
           setTimeout(() => setShowSplash(false), 3000); // Tắt splash sau 3s
         }
@@ -68,17 +91,99 @@ const App = () => {
   }, []);
 
   const handleSaveName = () => {
-    if (tempName.trim()) {
-      localStorage.setItem('SAIB_trader_name', tempName.trim());
+    if (tempName.trim() && user) {
+      const name = tempName.trim();
+      localStorage.setItem(`SAIB_trader_name_${user.uid}`, name);
+      setUserName(name);
+      setSetupStep(2); // Luôn chuyển qua bước 2 vì đây là luồng đăng nhập mới
+    }
+  };
+
+  const handleSavePassword = async () => {
+    if (newPassword.length < 6) {
+      alert(lang === 'vi' ? 'Mật khẩu phải từ 6 ký tự' : 'Password must be at least 6 characters');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      alert(lang === 'vi' ? 'Mật khẩu xác nhận không khớp' : 'Passwords do not match');
+      return;
+    }
+    try {
+      const hasPasswordProvider = user.providerData.some(p => p.providerId === 'password');
+      if (hasPasswordProvider) {
+        await updatePassword(user, newPassword);
+      } else {
+        const credential = EmailAuthProvider.credential(user.email, newPassword);
+        await linkWithCredential(user, credential);
+      }
       setIsFirstLogin(true);
       setShowNameInput(false);
       setShowSplash(true);
       setTimeout(() => setShowSplash(false), 3000);
+    } catch (error) {
+      console.error(error);
+      if (error.code === 'auth/requires-recent-login') {
+        alert(lang === 'vi' ? 'Lý do bảo mật: Phiên đăng nhập đã cũ. Vui lòng đăng xuất và đăng nhập lại bằng Google để tạo mật khẩu!' : 'Security: Session is old. Please log out and log in again with Google to create a password!');
+      } else {
+        alert(`Lỗi tạo mật khẩu: ${error.code} - ${error.message}`);
+      }
     }
   };
 
+  const handleOpenProfile = () => {
+    setEditName(userName || user.displayName || '');
+    setEditPassword('');
+    setEditConfirmPassword('');
+    setShowProfileModal(true);
+  };
+
+  const handleSaveProfile = async () => {
+    try {
+      if (editName.trim() && editName.trim() !== userName) {
+        const name = editName.trim();
+        localStorage.setItem(`SAIB_trader_name_${user.uid}`, name);
+        setUserName(name);
+        await updateProfile(user, { displayName: name });
+      }
+
+      if (editPassword) {
+        if (editPassword.length < 6) {
+          alert(lang === 'vi' ? 'Mật khẩu phải từ 6 ký tự!' : 'Password must be at least 6 characters!');
+          return;
+        }
+        if (editPassword !== editConfirmPassword) {
+          alert(lang === 'vi' ? 'Mật khẩu xác nhận không khớp!' : 'Passwords do not match!');
+          return;
+        }
+        
+        try {
+          const hasPasswordProvider = user.providerData.some(p => p.providerId === 'password');
+          if (hasPasswordProvider) {
+            await updatePassword(user, editPassword);
+          } else {
+            const credential = EmailAuthProvider.credential(user.email, editPassword);
+            await linkWithCredential(user, credential);
+          }
+        } catch (err) {
+          if (err.code === 'auth/requires-recent-login') {
+            alert(lang === 'vi' ? 'Vì lý do bảo mật, vui lòng ĐĂNG XUẤT và ĐĂNG NHẬP LẠI bằng Google trước khi đổi mật khẩu.' : 'For security reasons, please LOG OUT and LOG IN again with Google before changing password.');
+            return;
+          }
+          throw err;
+        }
+        alert(lang === 'vi' ? 'Cập nhật thông tin thành công! Giờ bạn có thể dùng mật khẩu này để đăng nhập.' : 'Profile updated successfully! You can now use this password to log in.');
+      }
+
+      setShowProfileModal(false);
+    } catch (error) {
+      console.error(error);
+      alert(lang === 'vi' ? `Lỗi cập nhật Profile: ${error.code} - ${error.message}` : `Update error: ${error.code} - ${error.message}`);
+    }
+  };
+
+
   const getGreeting = () => {
-    const storedName = localStorage.getItem('SAIB_trader_name') || 'Trader';
+    const storedName = userName || (user ? user.displayName : 'Trader');
 
     if (isFirstLogin) {
       return lang === 'vi' ? `Chào mừng đến SAIB, ${storedName}` : `Welcome to SAIB, ${storedName}`;
@@ -108,6 +213,71 @@ const App = () => {
     } catch (error) {
       console.error(error);
       alert("Đăng nhập thất bại. Vui lòng cập nhật đúng Firebase Config trong file .env!");
+    }
+  };
+
+  const handleEmailLogin = async () => {
+    if (!email || !password) {
+      alert(lang === 'vi' ? 'Vui lòng nhập Email/Username và Mật khẩu!' : 'Please enter Email/Username and Password!');
+      return;
+    }
+    
+    // Xử lý nếu người dùng nhập Username thay vì Email
+    const cleanEmail = email.trim();
+    const loginEmail = cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@saib.user`;
+
+    try {
+      await signInWithEmailAndPassword(auth, loginEmail, password);
+    } catch (error) {
+      console.error(error);
+      alert(lang === 'vi' ? `Đăng nhập thất bại: ${error.code}` : `Login failed: ${error.code}`);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      alert(lang === 'vi' ? 'Vui lòng nhập Email để nhận link đổi mật khẩu!' : 'Please enter your Email to reset password!');
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert(lang === 'vi' ? `Đã gửi link đổi mật khẩu tới ${email}. Vui lòng kiểm tra hộp thư (hoặc thư mục Spam).` : `Password reset link sent to ${email}. Please check your inbox (or Spam folder).`);
+    } catch (error) {
+      console.error(error);
+      alert('Lỗi: ' + error.message);
+    }
+  };
+
+  const handleRegister = async () => {
+    if (!regName || !email || !password || !regConfirmPassword) {
+      alert(lang === 'vi' ? 'Vui lòng điền đầy đủ thông tin!' : 'Please fill in all fields!');
+      return;
+    }
+    if (password !== regConfirmPassword) {
+      alert(lang === 'vi' ? 'Mật khẩu xác nhận không khớp!' : 'Passwords do not match!');
+      return;
+    }
+    if (password.length < 6) {
+      alert(lang === 'vi' ? 'Mật khẩu phải từ 6 ký tự!' : 'Password must be at least 6 characters!');
+      return;
+    }
+    
+    // Xử lý nếu người dùng nhập Username thay vì Email
+    const cleanEmail = email.trim();
+    const registerEmail = cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@saib.user`;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, registerEmail, password);
+      const user = userCredential.user;
+      await updateProfile(user, { displayName: regName });
+      localStorage.setItem(`SAIB_trader_name_${user.uid}`, regName);
+      setUserName(regName);
+      setIsFirstLogin(true); // Gắn cờ hiện splash lần đầu
+      setShowSplash(true);
+      setTimeout(() => setShowSplash(false), 3000);
+    } catch (error) {
+      console.error(error);
+      alert(lang === 'vi' ? `Đăng ký thất bại: ${error.code}` : `Registration failed: ${error.code}`);
     }
   };
 
@@ -199,14 +369,28 @@ const App = () => {
             <p className="text-[10px] text-[#636878] dark:text-[#9ca3b0] font-bold uppercase tracking-widest">Trading Gym & Academy</p>
           </div>
 
-          <h2 className="text-2xl font-black text-[#1C2C44] dark:text-white mb-6 uppercase tracking-widest">Login</h2>
+          <h2 className="text-2xl font-black text-[#1C2C44] dark:text-white mb-6 uppercase tracking-widest">
+            {isRegisterMode ? (lang === 'vi' ? 'Đăng Ký' : 'Register') : 'Login'}
+          </h2>
 
           <div className="w-full space-y-6 mb-8">
+            {isRegisterMode && (
+              <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 flex items-center group focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                <input
+                  type="text"
+                  placeholder={lang === 'vi' ? 'Tên hiển thị' : 'Your Name'}
+                  value={regName}
+                  onChange={e => setRegName(e.target.value)}
+                  className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/40 dark:placeholder-white/40 focus:outline-none"
+                />
+              </div>
+            )}
+
             {/* Email Input */}
             <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 flex items-center group focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
               <input
-                type="email"
-                placeholder="Email"
+                type="text"
+                placeholder="Email / Username"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/40 dark:placeholder-white/40 focus:outline-none"
@@ -228,29 +412,60 @@ const App = () => {
               </button>
             </div>
 
-            {/* Remember & Forgot */}
-            <div className="flex justify-between items-center text-[10px] font-bold">
-              <label className="flex items-center gap-2 cursor-pointer text-[#1C2C44]/70 dark:text-white/70 hover:text-[#1C2C44] dark:hover:text-white transition-colors">
-                <input type="checkbox" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} className="w-3.5 h-3.5 rounded border-[#1C2C44]/20 dark:border-white/20 accent-[#D4AF37] dark:accent-[#00d084]" />
-                Remember Me
-              </label>
-              <button className="text-[#1C2C44]/70 dark:text-white/70 hover:text-[#D4AF37] dark:hover:text-[#00d084] transition-colors">
-                Forgot Password?
-              </button>
-            </div>
+            {isRegisterMode && (
+              <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 flex items-center group focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                <input
+                  type={showRegConfirm ? "text" : "password"}
+                  placeholder={lang === 'vi' ? 'Xác nhận mật khẩu' : 'Confirm Password'}
+                  value={regConfirmPassword}
+                  onChange={e => setRegConfirmPassword(e.target.value)}
+                  className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/40 dark:placeholder-white/40 focus:outline-none pr-8"
+                />
+                <button onClick={() => setShowRegConfirm(!showRegConfirm)} className="absolute right-0 text-[#1C2C44]/40 dark:text-white/40 hover:text-[#1C2C44] dark:hover:text-white focus:outline-none transition-colors">
+                  {showRegConfirm ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+            )}
+
+            {/* Remember & Forgot (Chỉ hiện khi Đăng nhập) */}
+            {!isRegisterMode && (
+              <div className="flex justify-between items-center text-[10px] font-bold">
+                <label className="flex items-center gap-2 cursor-pointer text-[#1C2C44]/70 dark:text-white/70 hover:text-[#1C2C44] dark:hover:text-white transition-colors">
+                  <input type="checkbox" checked={rememberMe} onChange={() => setRememberMe(!rememberMe)} className="w-3.5 h-3.5 rounded border-[#1C2C44]/20 dark:border-white/20 accent-[#D4AF37] dark:accent-[#00d084]" />
+                  Remember Me
+                </label>
+                <button onClick={handleForgotPassword} className="text-[#1C2C44]/70 dark:text-white/70 hover:text-[#D4AF37] dark:hover:text-[#00d084] transition-colors">
+                  Forgot Password?
+                </button>
+              </div>
+            )}
           </div>
 
-          <button className="w-full bg-gradient-to-r from-[#1C2C44] to-[#2A3F5C] dark:from-[#D4AF37] dark:to-[#C59B27] text-white dark:text-[#0e1117] py-3.5 rounded-xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-md mb-6">
-            Login
-          </button>
+          {isRegisterMode ? (
+            <button onClick={handleRegister} className="w-full bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:from-[#00d084] dark:to-[#00a86b] text-white dark:text-[#0e1117] py-3.5 rounded-xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-md mb-6">
+              {lang === 'vi' ? 'Đăng Ký' : 'Register'}
+            </button>
+          ) : (
+            <button onClick={handleEmailLogin} className="w-full bg-gradient-to-r from-[#1C2C44] to-[#2A3F5C] dark:from-[#D4AF37] dark:to-[#C59B27] text-white dark:text-[#0e1117] py-3.5 rounded-xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-md mb-6">
+              Login
+            </button>
+          )}
 
           <button onClick={handleLogin} className="w-full flex items-center justify-center gap-3 bg-white/60 dark:bg-[rgba(15,17,23,0.4)] text-[#1C2C44] dark:text-white border border-white/50 dark:border-white/10 py-3.5 rounded-xl font-bold hover:bg-white dark:hover:bg-[#111827] hover:scale-[1.02] transition-all shadow-sm">
             <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)"><path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z" /><path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z" /><path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.809 -21.864 52.039 -21.864 51.239 C -21.864 50.439 -21.724 49.669 -21.484 48.949 L -21.484 45.859 L -25.464 45.859 C -26.284 47.479 -26.754 49.299 -26.754 51.239 C -26.754 53.179 -26.284 54.999 -25.464 56.619 L -21.484 53.529 Z" /><path fill="#EA4335" d="M -14.754 43.989 C -12.984 43.989 -11.404 44.599 -10.154 45.789 L -6.734 42.369 C -8.804 40.429 -11.514 39.239 -14.754 39.239 C -19.444 39.239 -23.494 41.939 -25.464 45.859 L -21.484 48.949 C -20.534 46.099 -17.884 43.989 -14.754 43.989 Z" /></g></svg>
-            Sign in with Google
+            {isRegisterMode ? (lang === 'vi' ? 'Đăng ký bằng Google' : 'Sign up with Google') : 'Sign in with Google'}
           </button>
 
           <div className="mt-8 text-center text-[11px] font-bold text-[#1C2C44]/70 dark:text-white/70">
-            Don't have an Account? <button className="text-[#D4AF37] dark:text-[#00d084] hover:underline ml-1">Register</button>
+            {isRegisterMode ? (
+              <>
+                {lang === 'vi' ? 'Đã có tài khoản?' : 'Already have an Account?'} <button onClick={() => setIsRegisterMode(false)} className="text-[#D4AF37] dark:text-[#00d084] hover:underline ml-1">{lang === 'vi' ? 'Đăng nhập' : 'Login'}</button>
+              </>
+            ) : (
+              <>
+                {lang === 'vi' ? 'Chưa có tài khoản?' : "Don't have an Account?"} <button onClick={() => setIsRegisterMode(true)} className="text-[#D4AF37] dark:text-[#00d084] hover:underline ml-1">{lang === 'vi' ? 'Đăng ký' : 'Register'}</button>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -270,27 +485,73 @@ const App = () => {
         </div>
 
         <div className="relative z-10 flex flex-col items-center bg-white/40 dark:bg-[#111827]/40 backdrop-blur-2xl p-10 rounded-[2rem] border border-white/50 dark:border-white/10 shadow-[0_8px_32px_0_rgba(31,38,135,0.1)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] max-w-md w-full mx-4 text-center">
-          <h2 className="text-3xl font-serif font-bold text-[#1C2C44] dark:text-white mb-2">
-            {lang === 'vi' ? 'Chào mừng đến SAIB' : 'Welcome to SAIB'}
-          </h2>
-          <p className="text-[16px] text-[#636878] dark:text-[#9ca3b0] mb-8 font-semibold">
-            {lang === 'vi' ? 'Chúng tôi có thể xưng hô với bạn thế nào?' : 'How can we call you?'}
-          </p>
-          <input
-            type="text"
-            value={tempName}
-            onChange={e => setTempName(e.target.value)}
-            placeholder={lang === 'vi' ? 'Tên của bạn...' : 'Your name...'}
-            className="w-full bg-white/50 dark:bg-[#0B0E11]/50 border border-[#1C2C44]/20 dark:border-white/20 rounded-xl px-5 py-4 text-xl text-center text-[#1C2C44] dark:text-white font-bold outline-none focus:border-[#D4AF37] dark:focus:border-[#00d084] mb-8 transition-colors"
-            autoFocus
-            onKeyDown={(e) => { if (e.key === 'Enter') handleSaveName(); }}
-          />
-          <button
-            onClick={handleSaveName}
-            className="w-full bg-gradient-to-r from-[#1C2C44] to-[#2A3F5C] dark:from-[#D4AF37] dark:to-[#C59B27] text-white dark:text-[#0e1117] py-4 rounded-xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-md"
-          >
-            {lang === 'vi' ? 'Bắt đầu hành trình' : 'Start Journey'}
-          </button>
+          {setupStep === 1 ? (
+            <>
+              <h2 className="text-3xl font-serif font-bold text-[#1C2C44] dark:text-white mb-2">
+                {lang === 'vi' ? 'Chào mừng đến SAIB' : 'Welcome to SAIB'}
+              </h2>
+              <p className="text-[16px] text-[#636878] dark:text-[#9ca3b0] mb-8 font-semibold">
+                {lang === 'vi' ? 'Chúng tôi có thể xưng hô với bạn thế nào?' : 'How can we call you?'}
+              </p>
+              <input
+                type="text"
+                value={tempName}
+                onChange={e => setTempName(e.target.value)}
+                placeholder={lang === 'vi' ? 'Tên của bạn...' : 'Your name...'}
+                className="w-full bg-white/50 dark:bg-[#0B0E11]/50 border border-[#1C2C44]/20 dark:border-white/20 rounded-xl px-5 py-4 text-xl text-center text-[#1C2C44] dark:text-white font-bold outline-none focus:border-[#D4AF37] dark:focus:border-[#00d084] mb-8 transition-colors"
+                autoFocus
+                onKeyDown={(e) => { if (e.key === 'Enter') handleSaveName(); }}
+              />
+              <button
+                onClick={handleSaveName}
+                className="w-full bg-gradient-to-r from-[#1C2C44] to-[#2A3F5C] dark:from-[#D4AF37] dark:to-[#C59B27] text-white dark:text-[#0e1117] py-4 rounded-xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-md"
+              >
+                {lang === 'vi' ? 'Bắt đầu hành trình' : 'Start Journey'}
+              </button>
+            </>
+          ) : (
+            <>
+              <h2 className="text-3xl font-serif font-bold text-[#1C2C44] dark:text-white mb-8">
+                {lang === 'vi' ? 'Tạo mật khẩu' : 'Create Password'}
+              </h2>
+              
+              <div className="w-full space-y-4 mb-8 text-left">
+                <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 flex items-center group focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                  <input
+                    type={showNewPassword ? "text" : "password"}
+                    placeholder={lang === 'vi' ? 'Mật khẩu mới' : 'New Password'}
+                    value={newPassword}
+                    onChange={e => setNewPassword(e.target.value)}
+                    className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/40 dark:placeholder-white/40 focus:outline-none pr-8"
+                  />
+                  <button onClick={() => setShowNewPassword(!showNewPassword)} className="absolute right-0 text-[#1C2C44]/40 dark:text-white/40 hover:text-[#1C2C44] dark:hover:text-white focus:outline-none transition-colors">
+                    {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                
+                <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 flex items-center group focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    placeholder={lang === 'vi' ? 'Xác nhận mật khẩu' : 'Confirm Password'}
+                    value={confirmPassword}
+                    onChange={e => setConfirmPassword(e.target.value)}
+                    className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/40 dark:placeholder-white/40 focus:outline-none pr-8"
+                    onKeyDown={(e) => { if (e.key === 'Enter') handleSavePassword(); }}
+                  />
+                  <button onClick={() => setShowConfirmPassword(!showConfirmPassword)} className="absolute right-0 text-[#1C2C44]/40 dark:text-white/40 hover:text-[#1C2C44] dark:hover:text-white focus:outline-none transition-colors">
+                    {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                onClick={handleSavePassword}
+                className="w-full bg-gradient-to-r from-[#1C2C44] to-[#2A3F5C] dark:from-[#D4AF37] dark:to-[#C59B27] text-white dark:text-[#0e1117] py-4 rounded-xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-md"
+              >
+                {lang === 'vi' ? 'Hoàn tất' : 'Complete'}
+              </button>
+            </>
+          )}
         </div>
       </div>
     );
@@ -359,7 +620,13 @@ const App = () => {
           <div className="text-right ml-2 flex flex-col items-end">
             <div className="flex items-center gap-2 mb-1 bg-white/50 dark:bg-[rgba(255,255,255,0.03)] px-2 py-1 rounded-full border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)]">
               <img src={user.photoURL || 'https://via.placeholder.com/30'} alt="Avatar" className="w-4 h-4 rounded-full" />
-              <span className="text-[10px] font-bold text-[#1C2C44] dark:text-[#e8eaf0] truncate max-w-[80px]">{user.displayName || 'Trader'}</span>
+              <span 
+                className="text-[10px] font-bold text-[#1C2C44] dark:text-[#e8eaf0] truncate max-w-[80px] cursor-pointer hover:text-[#D4AF37] dark:hover:text-[#00d084] transition-colors"
+                onClick={handleOpenProfile}
+                title={lang === 'vi' ? 'Nhấn để sửa Profile' : 'Click to edit Profile'}
+              >
+                {userName || user.displayName || 'Trader'}
+              </span>
               <button onClick={handleLogout} className="text-[9px] font-bold text-[#F6465D] hover:text-white hover:bg-[#F6465D] px-1.5 py-0.5 rounded transition-colors uppercase tracking-widest ml-1">Đăng xuất</button>
             </div>
             <div className="flex items-baseline gap-2">
@@ -378,11 +645,77 @@ const App = () => {
             {activeTab === 'flashcards' && <Flashcards lang={lang} />}
             {activeTab === 'quiz' && <DailyQuiz lang={lang} />}
             {activeTab === 'journal' && <TradingJournal lang={lang} />}
-            {activeTab === 'gym' && <TradingGym balance={balance} setBalance={setBalance} isDarkMode={isDarkMode} lang={lang} />}
+            {activeTab === 'gym' && <TradingGym lang={lang} balance={balance} setBalance={setBalance} />}
           </div>
         )}
       </main>
+
       <FloatingCoach lang={lang} />
+
+      {/* PROFILE EDIT MODAL */}
+      {showProfileModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+          <div className="bg-[#faf9f6] dark:bg-[#111827] w-full max-w-sm rounded-[2rem] p-8 border border-[rgba(15,17,23,0.1)] dark:border-white/10 shadow-2xl relative">
+            <button onClick={() => setShowProfileModal(false)} className="absolute top-4 right-5 text-2xl font-bold text-[#1C2C44]/50 dark:text-white/50 hover:text-red-500 transition-colors">&times;</button>
+            <h2 className="text-2xl font-black text-[#1C2C44] dark:text-white mb-6 uppercase tracking-widest text-center">
+              {lang === 'vi' ? 'Hồ Sơ Của Bạn' : 'Your Profile'}
+            </h2>
+            
+            <div className="space-y-4 mb-8">
+              {/* Tên */}
+              <div>
+                <label className="text-[10px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase tracking-widest mb-2 block">
+                  {lang === 'vi' ? 'Tên hiển thị' : 'Display Name'}
+                </label>
+                <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                  <input
+                    type="text"
+                    value={editName}
+                    onChange={e => setEditName(e.target.value)}
+                    className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Mật khẩu */}
+              <div className="pt-4">
+                <label className="text-[10px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase tracking-widest mb-2 block">
+                  {lang === 'vi' ? 'Đổi mật khẩu (Bỏ trống nếu không đổi)' : 'Change Password (Leave blank to keep)'}
+                </label>
+                <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 mb-4 focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                  <input
+                    type={showEditPassword ? "text" : "password"}
+                    placeholder={lang === 'vi' ? 'Mật khẩu mới...' : 'New password...'}
+                    value={editPassword}
+                    onChange={e => setEditPassword(e.target.value)}
+                    className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/30 dark:placeholder-white/30 focus:outline-none pr-8"
+                  />
+                  <button onClick={() => setShowEditPassword(!showEditPassword)} className="absolute right-0 text-[#1C2C44]/40 dark:text-white/40 hover:text-[#1C2C44] dark:hover:text-white">
+                    {showEditPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+
+                <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                  <input
+                    type={showEditConfirmPassword ? "text" : "password"}
+                    placeholder={lang === 'vi' ? 'Xác nhận mật khẩu mới...' : 'Confirm new password...'}
+                    value={editConfirmPassword}
+                    onChange={e => setEditConfirmPassword(e.target.value)}
+                    className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/30 dark:placeholder-white/30 focus:outline-none pr-8"
+                  />
+                  <button onClick={() => setShowEditConfirmPassword(!showEditConfirmPassword)} className="absolute right-0 text-[#1C2C44]/40 dark:text-white/40 hover:text-[#1C2C44] dark:hover:text-white">
+                    {showEditConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button onClick={handleSaveProfile} className="w-full bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:from-[#00d084] dark:to-[#00a86b] text-white dark:text-[#0e1117] py-3.5 rounded-xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-md">
+              {lang === 'vi' ? 'Lưu thay đổi' : 'Save Changes'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* SPLASH SCREEN OVERLAY */}
       {showSplash && (
