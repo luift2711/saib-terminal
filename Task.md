@@ -30,14 +30,14 @@ File này lưu trữ toàn bộ tiến trình và kế hoạch chi tiết để 
 ## Giai Đoạn 2: Đưa Web lên Online (Deployment & PWA)
 
 ### 1. Lưu trữ và Quản lý Source Code
-- [ ] Khởi tạo kho lưu trữ Git cục bộ (`git init`) nếu chưa có.
-- [ ] Tạo tài khoản GitHub (nếu bạn chưa có) và đẩy toàn bộ source code của project lên một repository riêng tư (Private Repository).
+- [x] Khởi tạo kho lưu trữ Git cục bộ (`git init`) nếu chưa có.
+- [x] Tạo tài khoản GitHub (nếu bạn chưa có) và đẩy toàn bộ source code của project lên một repository riêng tư (Private Repository).
 
 ### 2. Triển khai (Deploy) lên Hosting Miễn Phí (Vercel / Netlify)
-- [ ] Đăng nhập Vercel (bằng tài khoản GitHub).
-- [ ] Kết nối repository GitHub với Vercel. Vercel sẽ tự động nhận diện đây là dự án React/Vite và tiến hành build.
-- [ ] Nhận đường link public (vd: `https://trading-gym.vercel.app`) để truy cập từ bất kỳ thiết bị nào.
-- [ ] **CI/CD:** Kể từ lúc này, mọi thay đổi code đẩy lên GitHub sẽ tự động cập nhật lên web online trong vòng 1-2 phút.
+- [x] Đăng nhập Vercel (bằng tài khoản GitHub).
+- [x] Kết nối repository GitHub với Vercel. Vercel sẽ tự động nhận diện đây là dự án React/Vite và tiến hành build.
+- [x] Nhận đường link public (vd: `https://trading-gym.vercel.app`) để truy cập từ bất kỳ thiết bị nào.
+- [x] **CI/CD:** Kể từ lúc này, mọi thay đổi code đẩy lên GitHub sẽ tự động cập nhật lên web online trong vòng 1-2 phút.
 
 ### 3. Tính năng nâng cao: PWA (Progressive Web App) - *Tuỳ chọn*
 - [x] Cấu hình Vite PWA Plugin để biến trang web thành một ứng dụng có thể cài đặt.
