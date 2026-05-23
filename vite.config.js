@@ -35,4 +35,7 @@ export default defineConfig({
       }
     })
   ],
+  build: {
+    chunkSizeWarningLimit: 2000, // Tăng giới hạn cảnh báo lên 2000kb (2MB)
+  },
 })
