@@ -48,6 +48,7 @@ const App = () => {
   const [showNameInput, setShowNameInput] = useState(false);
   const [showSplash, setShowSplash] = useState(false);
   const [tempName, setTempName] = useState('');
+  const [isFirstLogin, setIsFirstLogin] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -69,6 +70,7 @@ const App = () => {
   const handleSaveName = () => {
     if (tempName.trim()) {
       localStorage.setItem('SAIB_trader_name', tempName.trim());
+      setIsFirstLogin(true);
       setShowNameInput(false);
       setShowSplash(true);
       setTimeout(() => setShowSplash(false), 3000);
@@ -76,9 +78,13 @@ const App = () => {
   };
 
   const getGreeting = () => {
-    const hour = new Date().getHours();
     const storedName = localStorage.getItem('SAIB_trader_name') || 'Trader';
 
+    if (isFirstLogin) {
+      return lang === 'vi' ? `Chào mừng đến SAIB, ${storedName}` : `Welcome to SAIB, ${storedName}`;
+    }
+
+    const hour = new Date().getHours();
     if (lang === 'vi') {
       if (hour >= 5 && hour < 7) return `Dậy sớm thế, ${storedName}!`;
       if (hour >= 7 && hour < 12) return `Mừng bạn trở lại, ${storedName}!`;
