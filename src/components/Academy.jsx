@@ -188,33 +188,46 @@ const Academy = ({ lang = 'vi' }) => {
                             animate={{ y: 0, opacity: 1, rotateX: 0 }}
                             transition={{ type: "spring", stiffness: 300, damping: 15 }}
                             className="block dark:hidden shrink-0 relative"
+                            style={{ perspective: '800px' }}
                           >
-                            <div className="absolute -inset-1.5 bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] rounded-full blur-sm opacity-50 animate-pulse"></div>
+                            {/* Vòng sáng nhấp nháy phía sau */}
+                            <div className="absolute -inset-2 bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] rounded-full blur-md opacity-40 animate-pulse"></div>
+                            
+                            {/* Coin 3D Container (Spin + Bounce) */}
                             <motion.div
-                              animate={{ rotateY: 360 }}
-                              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                              className="w-[26px] h-[26px] rounded-full bg-gradient-to-br from-[#FFF8E7] via-[#D4AF37] to-[#8B6508] p-[1.5px] shadow-[0_4px_10px_rgba(212,175,55,0.6)] relative z-10"
+                              animate={{ 
+                                rotateY: [0, 360], 
+                                y: [0, -6, 0] 
+                              }}
+                              transition={{ 
+                                rotateY: { duration: 3.5, repeat: Infinity, ease: "linear" },
+                                y: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
+                              }}
+                              style={{ transformStyle: 'preserve-3d' }}
+                              className="w-[28px] h-[28px] relative z-10"
                             >
-                              <div className="w-full h-full rounded-full bg-gradient-to-tl from-[#D4AF37] via-[#F3E5AB] to-[#996515] border-[0.5px] border-[#FFF8E7]/70 flex items-center justify-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.25)]">
-                                <div className="w-[18px] h-[18px] rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8860B] flex items-center justify-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.9)] border border-[#996515]/60 relative overflow-hidden">
-                                  <div className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-r from-transparent via-[#FFF8E7]/40 to-transparent rotate-45"></div>
-                                  <Bitcoin size={12} className="text-[#FFFDF5] drop-shadow-[0_1px_1.5px_rgba(139,101,8,0.9)] relative z-10" strokeWidth={2.5} />
-                                </div>
-                              </div>
+                              {/* 4 layers để tạo độ dày siêu mỏng (khoảng 2px) như đồng xu thật */}
+                              {[...Array(4)].map((_, i) => (
+                                <img 
+                                  key={i}
+                                  src="/bitcoin.png" 
+                                  onError={(e) => { e.target.onerror = null; e.target.src = "https://cryptologos.cc/logos/bitcoin-btc-logo.png"; }}
+                                  alt=""
+                                  className="absolute inset-0 w-full h-full rounded-full"
+                                  style={{ 
+                                    transform: `translateZ(${(i - 1.5) * 0.8}px) ${i === 0 ? 'rotateY(180deg)' : ''}`,
+                                    filter: (i === 1 || i === 2) ? 'brightness(0.6)' : 'drop-shadow(0 2px 4px rgba(212,175,55,0.4))'
+                                  }}
+                                />
+                              ))}
                             </motion.div>
-                            <motion.div
-                              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5], rotate: [0, 90, 180] }}
-                              transition={{ duration: 2, repeat: Infinity }}
-                              className="absolute -top-1 -right-1 text-[#F3E5AB] drop-shadow-[0_0_3px_#D4AF37] z-20"
-                            >
+                            
+                            {/* Các ngôi sao lấp lánh xung quanh */}
+                            <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5], rotate: [0, 90, 180] }} transition={{ duration: 2, repeat: Infinity }} className="absolute -top-1 -right-1 text-[#F3E5AB] drop-shadow-[0_0_3px_#D4AF37] z-20">
+                              <Star size={10} fill="currentColor" />
+                            </motion.div>
+                            <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.8, 0.3], rotate: [0, -90, -180] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }} className="absolute -bottom-1 -left-1 text-[#D4AF37] drop-shadow-[0_0_2px_#D4AF37] z-20">
                               <Star size={8} fill="currentColor" />
-                            </motion.div>
-                            <motion.div
-                              animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.8, 0.3], rotate: [0, -90, -180] }}
-                              transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-                              className="absolute -bottom-1 -left-1 text-[#D4AF37] drop-shadow-[0_0_2px_#D4AF37] z-20"
-                            >
-                              <Star size={6} fill="currentColor" />
                             </motion.div>
                           </motion.div>
                         </>

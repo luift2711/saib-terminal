@@ -248,59 +248,10 @@ const Timeline = () => (
   </div>
 );
 
-const NameRegistration = () => {
-  const [name, setName] = useState('');
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    const stored = localStorage.getItem('SAIB_trader_name');
-    if (stored) {
-      setName(stored);
-      setSaved(true);
-    }
-  }, []);
-
-  const handleSave = () => {
-    if (name.trim()) {
-      localStorage.setItem('SAIB_trader_name', name.trim());
-      setSaved(true);
-    }
-  };
-
-  return (
-    <FadeUp className="my-16 text-center max-w-xl mx-auto px-4 bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-8 rounded-3xl shadow-sm dark:shadow-none">
-      <div className="text-[12.5px] font-mono tracking-[0.2em] uppercase text-[#D4AF37] mb-4">Nhập tên của bạn</div>
-      <h3 className="text-2xl font-serif font-bold text-black dark:text-white mb-4">Ghi danh để bắt đầu hành trình</h3>
-      <p className="text-[16.5px] text-gray-600 dark:text-gray-400 leading-relaxed mb-6">
-        Tên của bạn sẽ được lưu lại trong hệ thống và sử dụng cho Lời Tuyên Thệ và Chứng Chỉ Tốt Nghiệp ở cuối khóa học (Chương 6).
-      </p>
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <input 
-          type="text" 
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
-            if (saved) setSaved(false);
-          }}
-          placeholder="Tên của bạn (VD: John Doe)" 
-          className="bg-gray-50 dark:bg-[#0B0E11] border border-gray-300 dark:border-[#2B3139] rounded-xl px-5 py-3 text-[17.5px] text-black dark:text-white outline-none focus:border-[#D4AF37] w-full sm:w-64 transition-colors"
-        />
-        <button 
-          onClick={handleSave}
-          className={`px-6 py-3 rounded-xl font-bold text-[16.5px] transition-all flex items-center justify-center gap-2 ${saved ? 'bg-green-500 text-white' : 'bg-[#D4AF37] hover:bg-[#F3E5AB] text-black hover:shadow-[0_4px_15px_rgba(212,175,55,0.3)]'}`}
-        >
-          {saved ? <><CheckCircle2 size={18} /> Đã lưu</> : 'Xác nhận'}
-        </button>
-      </div>
-    </FadeUp>
-  );
-};
-
 const Chapter0Content = () => {
   return (
     <div className="pb-16 max-w-5xl mx-auto">
       <HeroSection />
-      <NameRegistration />
       <Manifesto />
       <div className="h-px w-full max-w-md mx-auto bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent my-16" />
       <ProblemSection />
