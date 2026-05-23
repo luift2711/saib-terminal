@@ -1,49 +1,57 @@
-# Kế Hoạch Tối Ưu Mobile UI/UX & Đưa Web Lên Online (Deployment)
+# Kế Hoạch Xây Dựng SAIB Trading Arena & Ranking System
 
-File này lưu trữ toàn bộ tiến trình và kế hoạch chi tiết để biến ứng dụng Trading Gym thành một sản phẩm hoạt động hoàn hảo trên mọi thiết bị (Mobile, iPad, PC) và public lên internet.
-
-## Giai Đoạn 1: Tối ưu UI/UX cho Mobile & iPad (Responsive Design)
-
-### 1. Cấu trúc lại Layout Tổng thể & Navigation
-- [x] **Sidebar & Header:** 
-  - Ẩn Sidebar cố định bên trái khi ở màn hình nhỏ (Mobile/iPad).
-  - Thêm thanh Header cố định phía trên cùng cho Mobile chứa nút Menu (Hamburger Icon).
-  - Cài đặt hiệu ứng Drawer (trượt ngang từ trái sang) khi bấm nút Menu để hiển thị Sidebar trên Mobile.
-- [x] **Padding & Margin:** Giảm thiểu khoảng cách (padding/margin) thừa trên các container chính để tận dụng tối đa không gian màn hình nhỏ (`p-4` thay vì `p-8`).
-
-### 2. Tối ưu các thành phần bên trong (Thành phần học thuật & Flashcards)
-- [x] **Flashcards Component:**
-  - Đảm bảo thẻ Flashcard tự động co giãn vừa khung màn hình điện thoại.
-  - Tối ưu chiều cao của thẻ để không bị che khuất khi nội dung quá dài.
-  - Các nút điều khiển (Next, Prev, Flip) cần được làm lớn hơn (tối thiểu `44x44px`) để dễ chạm bằng ngón tay.
-- [x] **Bảng biểu (CyberTable):** Thêm thuộc tính `overflow-x-auto` để người dùng có thể vuốt ngang các bảng có nhiều cột (ví dụ: bảng so sánh các thị trường) mà không làm vỡ layout toàn trang.
-- [x] **Các thẻ Scenario / Interactive Simulator:** 
-  - Đảm bảo các input form (nhập số liệu, tính lot) co lại thành 1 cột (`flex-col` hoặc `grid-cols-1`) thay vì nằm ngang trên điện thoại.
-  - Test các Simulator (Tính Kelly, Chuỗi thua, Fibo) trên kích thước màn hình nhỏ.
-
-### 3. Typography & Touch Targets
-- [x] **Font chữ:** Dùng các breakpoint của Tailwind (`text-base md:text-lg lg:text-xl`) để font chữ tự động thu nhỏ lại một chút trên điện thoại giúp dễ đọc và không chiếm quá nhiều dòng.
-- [x] **Hiệu ứng tương tác:** Loại bỏ hoặc vô hiệu hóa các hiệu ứng `hover` phức tạp trên mobile vì không có chuột, thay thế bằng các hiệu ứng phản hồi ngay khi chạm (`active` hoặc `focus`).
+File này lưu trữ toàn bộ tiến trình và kế hoạch chi tiết để nâng cấp SAIB từ một ứng dụng học tập thành một **Đấu Trường Thực Chiến 1v1 (Trading Arena)** với hệ thống Rank và Gamification siêu gây nghiện.
 
 ---
 
-## Giai Đoạn 2: Đưa Web lên Online (Deployment & PWA)
+## Giai Đoạn 1: Hệ Thống Rank & Lưu Trữ Tài Sản Vĩnh Viễn
+Thay vì số vốn $10,000 bị reset sau mỗi lần F5, tài khoản của người dùng sẽ gắn liền với cơ sở dữ liệu Firebase. Hệ thống Level (Rank) sẽ tự động thăng/giáng cấp dựa trên tổng tài sản.
 
-### 1. Lưu trữ và Quản lý Source Code
-- [x] Khởi tạo kho lưu trữ Git cục bộ (`git init`) nếu chưa có.
-- [x] Tạo tài khoản GitHub (nếu bạn chưa có) và đẩy toàn bộ source code của project lên một repository riêng tư (Private Repository).
+### 1. Đồng bộ Balance lên Firebase
+- [x] **Khởi tạo Firestore Database (Admin cần làm):**
+  1. Vào **Firebase Console** -> mục **Build** (hoặc Xây dựng) -> chọn **Firestore Database**.
+  2. Bấm **Create database**.
+  3. Chọn **Start in test mode** -> Bấm **Next**.
+  4. Để location mặc định và bấm **Enable**.
+- [x] Tích hợp Firestore vào code (`firebase.js`).
+- [x] Tạo Collection `users`, liên kết với `uid` của tài khoản Authentication.
+- [x] Lưu `balance` (số dư) của người dùng vào Firestore. Lấy số dư này khi app khởi động thay vì dùng state mặc định $10,000.
 
-### 2. Triển khai (Deploy) lên Hosting Miễn Phí (Vercel / Netlify)
-- [x] Đăng nhập Vercel (bằng tài khoản GitHub).
-- [x] Kết nối repository GitHub với Vercel. Vercel sẽ tự động nhận diện đây là dự án React/Vite và tiến hành build.
-- [x] Nhận đường link public (vd: `https://trading-gym.vercel.app`) để truy cập từ bất kỳ thiết bị nào.
-- [x] **CI/CD:** Kể từ lúc này, mọi thay đổi code đẩy lên GitHub sẽ tự động cập nhật lên web online trong vòng 1-2 phút.
+### 2. Xây dựng Logic Leveling (Thăng hạng / Giáng cấp)
+Xây dựng logic kiểm tra số dư và gán danh hiệu:
+- [x] **Beginner**: Dưới $20,000 (Mặc định tài khoản mới nhận cấp vốn $10,000).
+- [x] **Intermediate Trader**: Đạt mốc $20,000.
+- [x] **Professional Trader**: Đạt mốc $50,000.
+- [x] **Grandmaster of Trader**: Đạt mốc $100,000.
+- [x] **Giáng cấp**: Viết hàm tự động giáng cấp nếu người chơi giao dịch thua lỗ làm số dư tụt xuống dưới các mốc trên.
+- [x] Thêm nút **"Xin cấp lại vốn" (Bailout/Reset)**: Dành cho những tài khoản cháy rụi (ví dụ dưới $500), cho phép họ reset vốn về mốc Beginner ($10,000) nhưng sẽ bị lưu lịch sử "Phá sản".
 
-### 3. Tính năng nâng cao: PWA (Progressive Web App) - *Tuỳ chọn*
-- [x] Cấu hình Vite PWA Plugin để biến trang web thành một ứng dụng có thể cài đặt.
-- [x] Thiết lập file `manifest.json` và các icons ứng dụng.
-- [x] Cho phép người dùng bấm nút **"Thêm vào Màn hình chính" (Add to Home Screen)** trên Safari/Chrome để sử dụng web như một App Native mượt mà không có thanh địa chỉ trình duyệt.
+### 3. Cập nhật Giao diện (UI) Profile & Menu
+- [x] Cập nhật góc phải Header: Hiển thị Avatar + Rank Huy Hiệu (Logo nhỏ) kế bên Balance.
+- [ ] Thêm tab "Lịch sử giao dịch" hoặc "Thống kê" trong Modal Profile để xem mình đã đạt được bao nhiêu %.
 
 ---
 
-*Lưu ý: Chúng ta sẽ đi theo thứ tự từ trên xuống dưới. Vui lòng check các mục `[ ]` thành `[x]` khi hoàn thành để dễ dàng theo dõi tiến độ.*
+## Giai Đoạn 2: Đấu Trường 1v1 Arena (Multiplayer Real-time)
+Mang tính năng cốt lõi của ý tưởng: Trận chiến sinh tử 1v1. Người thắng sẽ "nuốt" một phần tiền lãi của người thua.
+
+### 1. Sảnh Chờ (Matchmaking Lobby)
+- [ ] Tạo giao diện **Arena**: Hiển thị nút "Tìm đối thủ".
+- [ ] Thống kê giao dịch: Cần lưu trữ và tính toán **Tỷ lệ thắng (% Win Rate)** của từng tài khoản lên Firestore để làm cơ sở ghép trận.
+- [ ] Logic ghép cặp (Matchmaking): Chỉ ghép những người chơi có **% Win Rate tương đương nhau** (thay vì ghép theo Rank) để đảm bảo công bằng tuyệt đối. Tránh vấn nạn Smurfing (người tay to lập nick Beginner đi hành gà).
+- [ ] Setup thông số trận đấu: Cho phép chọn thời gian đọ sức (VD: 15 phút, 30 phút, 1 giờ).
+
+### 2. Giao diện Sàn Đấu 1v1 (The Battle Ring)
+- [ ] Thiết kế Layout phân đôi (Split-screen) hoặc Overlay: Hiển thị PnL (Lợi nhuận) của **Mình** và của **Đối Thủ** theo thời gian thực (Real-time sync qua Firestore).
+- [ ] Đồng hồ đếm ngược (Countdown Timer) siêu to và kịch tính.
+- [ ] (Nâng cao) Ẩn vị thế (vào lệnh gì) của đối thủ, chỉ hiển thị số tiền PnL đang nhảy số.
+
+### 3. Luật Phân Định Thắng Thua
+Sau khi đồng hồ đếm ngược về 0:
+- [ ] So sánh tổng Lợi Nhuận (Profit) sinh ra trong khoảng thời gian diễn ra trận đấu (không tính số vốn gốc lúc bắt đầu trận).
+- [ ] Người nào Profit cao hơn là Người Thắng.
+- [ ] **Hình Phạt & Thưởng**: Hệ thống tự động trừ tiền của Người Thua bằng **1/2 (50%)** số Lợi Nhuận của Người Thắng, và chuyển thẳng vào số dư của Người Thắng.
+- [ ] (Trường hợp cả 2 cùng lỗ): Người lỗ ít hơn sẽ thắng và được lấy 1 phần tiền của người lỗ nhiều hơn, hoặc đơn giản là trận hoà. Cần thống nhất kịch bản này với người thiết kế luật.
+
+---
+*Lưu ý: Đánh dấu `[x]` thay cho `[ ]` khi một chức năng được hoàn thiện.*
