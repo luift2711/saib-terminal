@@ -25,7 +25,7 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
             const isChosen = selected === i;
-            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] active:border- md:hover:border-[#D4AF37] dark:active:border- md:hover:border-[#FCD535] active:shadow- md:hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:active:shadow- md:hover:shadow-none active:bg- md:hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:active:bg- md:hover:bg-none dark:active:bg- md:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
+            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
             let letterClass = "bg-gray-100 dark:bg-[#181A20] text-gray-500 dark:text-[#848E9C]";
             if (selected !== null) {
               if (i === correctIdx) { btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden"; letterClass = "bg-green-500 dark:bg-[#0ECB81] text-white"; }
@@ -156,14 +156,14 @@ ${exit || '[Chưa điền]'}
         {/* §5 */}
         <div className="text-[13.5px] font-mono text-yellow-600 dark:text-[#FCD535] uppercase tracking-widest mb-4">§5 · Quy tắc ra lệnh (Exit Rules)</div>
         <div className="mb-8"><label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-2 block">Chiến lược TP và SL</label><textarea value={exit} onChange={e => setExit(e.target.value)} rows="5" placeholder={"Ví dụ: SL = dưới Swing Low -10pip\nTP1 = Fibonacci 127% (chốt 50% vị thế)\nTP2 = Fibonacci 162% (chốt toàn bộ)\nSau TP1 → Move SL về Break Even\nKhông dời SL ra xa khi bị chạm"} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" /></div>
-        <button onClick={generatePlan} className="w-full py-4 rounded-xl font-black text-[18.5px] uppercase tracking-wider transition-all bg-yellow-500 dark:bg-[#00d084] active:bg- md:hover:bg-yellow-400 dark:active:bg- md:hover:bg-[#00e691] text-black shadow-[0_4px_14px_0_rgba(234,179,8,0.39)] dark:shadow-[0_4px_14px_0_rgba(0,208,132,0.39)]">
+        <button onClick={generatePlan} className="w-full py-4 rounded-xl font-black text-[18.5px] uppercase tracking-wider transition-all bg-yellow-500 dark:bg-[#00d084] hover:bg-yellow-400 dark:hover:bg-[#00e691] text-black shadow-[0_4px_14px_0_rgba(234,179,8,0.39)] dark:shadow-[0_4px_14px_0_rgba(0,208,132,0.39)]">
           ✦ Tạo Trading Plan của tôi ✦
         </button>
         {plan && (
           <div className="mt-6 bg-gray-50 dark:bg-[#0B0E11] border border-yellow-400 dark:border-[#FCD535]/50 rounded-2xl p-6">
             <div className="text-[13.5px] font-mono text-yellow-600 dark:text-[#FCD535] uppercase tracking-widest mb-4">📋 TRADING PLAN — {plan.date}</div>
             <pre className="text-[15.5px] text-gray-700 dark:text-[#9ca3b0] leading-relaxed whitespace-pre-wrap font-mono">{plan.content}</pre>
-            <button onClick={() => navigator.clipboard?.writeText(plan.content)} className="mt-4 px-6 py-2 border border-yellow-400 dark:border-[#FCD535]/50 text-yellow-700 dark:text-[#FCD535] rounded-xl text-[15.5px] font-bold active:bg- md:hover:bg-yellow-50 dark:active:bg- md:hover:bg-[#FCD535]/10 transition-colors">📋 Copy Plan</button>
+            <button onClick={() => navigator.clipboard?.writeText(plan.content)} className="mt-4 px-6 py-2 border border-yellow-400 dark:border-[#FCD535]/50 text-yellow-700 dark:text-[#FCD535] rounded-xl text-[15.5px] font-bold hover:bg-yellow-50 dark:hover:bg-[#FCD535]/10 transition-colors">📋 Copy Plan</button>
           </div>
         )}
       </div>
@@ -212,7 +212,7 @@ const BacktestTracker = () => {
           <div><label className="text-[11.5px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-1 block">Risk (R)</label><input type="number" value={risk} step={0.5} onChange={e => setRisk(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-2 text-[16.5px] text-black dark:text-white outline-none font-mono" /></div>
           <div><label className="text-[11.5px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-1 block">Reward (R)</label><input type="number" value={reward} step={0.5} onChange={e => setReward(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-2 text-[16.5px] text-black dark:text-white outline-none font-mono" /></div>
           <div><label className="text-[11.5px] font-mono text-gray-500 dark:text-[#848E9C] uppercase tracking-widest mb-1 block">Setup</label><select value={setup} onChange={e => setSetup(e.target.value)} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-2 text-[16.5px] text-black dark:text-white outline-none"><option value="NNN①">NNN① Thân ngắn</option><option value="NNN②">NNN② Nến ôm</option><option value="NNN③">NNN③ EMA21</option><option value="NNN④">NNN④ Fibonacci</option><option value="Engulfing">Engulfing</option><option value="Hammer & Shooting Star">Hammer & Shooting Star</option><option value="Doji & Biến thể">Doji & Biến thể</option><option value="Morning & Evening Star">Morning & Evening Star</option><option value="Harami & Three Soldiers">Harami & Three Soldiers</option></select></div>
-          <div className="flex items-end"><button onClick={addEntry} className="w-full py-2 rounded-xl font-black text-sm bg-yellow-500 dark:bg-[#00d084] active:bg- md:hover:bg-yellow-400 dark:active:bg- md:hover:bg-[#00e691] text-black transition-all">+ Thêm</button></div>
+          <div className="flex items-end"><button onClick={addEntry} className="w-full py-2 rounded-xl font-black text-sm bg-yellow-500 dark:bg-[#00d084] hover:bg-yellow-400 dark:hover:bg-[#00e691] text-black transition-all">+ Thêm</button></div>
         </div>
         <div className="grid grid-cols-4 gap-4 mb-6">
           {[
@@ -235,7 +235,7 @@ const BacktestTracker = () => {
             </div>
           ))}
         </div>
-        <button onClick={clear} className="mt-4 px-5 py-2 border border-gray-300 dark:border-[#2B3139] text-gray-600 dark:text-[#848E9C] rounded-xl text-[15.5px] font-bold active:bg- md:hover:bg-gray-100 dark:active:bg- md:hover:bg-[#181A20] transition-colors">🗑 Xóa tất cả</button>
+        <button onClick={clear} className="mt-4 px-5 py-2 border border-gray-300 dark:border-[#2B3139] text-gray-600 dark:text-[#848E9C] rounded-xl text-[15.5px] font-bold hover:bg-gray-100 dark:hover:bg-[#181A20] transition-colors">🗑 Xóa tất cả</button>
       </div>
     </div>
   );
@@ -318,7 +318,7 @@ const GoLiveChecklist = () => {
           {cat.items.map((item) => {
             const idx = itemIndex++;
             return (
-              <div key={idx} onClick={() => toggle(idx)} className={`flex items-start gap-4 px-5 py-3 border-b border-gray-100 dark:border-[#2B3139]/50 cursor-pointer transition-colors last:border-0 ${checked.has(idx) ? 'bg-green-50 dark:bg-[#0ECB81]/5' : 'active:bg- md:hover:bg-gray-50 dark:active:bg- md:hover:bg-[#181A20]/50'}`}>
+              <div key={idx} onClick={() => toggle(idx)} className={`flex items-start gap-4 px-5 py-3 border-b border-gray-100 dark:border-[#2B3139]/50 cursor-pointer transition-colors last:border-0 ${checked.has(idx) ? 'bg-green-50 dark:bg-[#0ECB81]/5' : 'hover:bg-gray-50 dark:hover:bg-[#181A20]/50'}`}>
                 <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${checked.has(idx) ? 'bg-green-500 dark:bg-[#0ECB81] border-green-500 dark:border-[#0ECB81]' : 'border-gray-300 dark:border-[#2B3139]'}`}>
                   {checked.has(idx) && <span className="text-white text-[12.5px] font-black">✓</span>}
                 </div>
@@ -366,7 +366,7 @@ const TradersOath = () => {
         {!sworn ? (
           <>
             <input type="text" value={name} onChange={e => setName(e.target.value)} placeholder="Nhập tên của bạn" className="bg-[#0a0c18] border border-yellow-500/30 rounded-xl px-5 py-3 text-[18.5px] text-white font-bold text-center w-72 outline-none focus:border-yellow-400 mb-4 block mx-auto" />
-            <button onClick={takeOath} className="px-8 py-3 bg-gradient-to-br from-orange-500 to-yellow-500 text-black font-black text-[17.5px] rounded-xl hover:-translate-y-1 active:shadow- md:hover:shadow-[0_8px_24px_rgba(245,166,35,0.3)] transition-all">✦ Tôi tuyên thệ ✦</button>
+            <button onClick={takeOath} className="px-8 py-3 bg-gradient-to-br from-orange-500 to-yellow-500 text-black font-black text-[17.5px] rounded-xl hover:-translate-y-1 hover:shadow-[0_8px_24px_rgba(245,166,35,0.3)] transition-all">✦ Tôi tuyên thệ ✦</button>
           </>
         ) : (
           <div className="bg-green-900/30 border border-green-500/30 rounded-2xl p-6 text-green-300 font-serif italic text-[17.5px] leading-relaxed max-w-lg mx-auto">

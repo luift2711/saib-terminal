@@ -49,7 +49,7 @@ export const StoryBox = ({ label, icon, children }) => (
     initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
     className="bg-gradient-to-br from-[#FDFBF7] to-[#F5F0E6] dark:bg-none dark:bg-[#1e2535] border border-[#D4AF37]/50 dark:border-[rgba(255,255,255,0.1)] rounded-2xl p-8 my-8 relative overflow-hidden group shadow-[0_4px_20px_rgba(212,175,55,0.15)] dark:shadow-lg"
   >
-    <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/15 dark:bg-[#00d084]/10 rounded-full blur-3xl group-active:bg- md:hover:bg-[#D4AF37]/25 dark:group-active:bg- md:hover:bg-[#00d084]/20 transition-all duration-700"></div>
+    <div className="absolute top-0 right-0 w-32 h-32 bg-[#D4AF37]/15 dark:bg-[#00d084]/10 rounded-full blur-3xl group-hover:bg-[#D4AF37]/25 dark:group-hover:bg-[#00d084]/20 transition-all duration-700"></div>
     <div className="text-[11px] font-mono tracking-[0.2em] uppercase text-[#B8860B] dark:text-[#f5a623] mb-5 flex items-center gap-3 font-bold">
       {icon ? <span className="text-xl opacity-80">{icon}</span> : <Cpu size={16} />}
       {label}
@@ -86,7 +86,7 @@ export const CyberTable = ({ headers, rows }) => (
       </thead>
       <tbody className="text-[14px] text-[#2a2e3a] dark:text-[#9ca3b0] font-medium">
         {rows.map((row, i) => (
-          <tr key={i} className="border-b border-[#D4AF37]/15 dark:border-[rgba(255,255,255,0.07)] active:bg- md:hover:bg-[#F5F0E6]/50 dark:active:bg- md:hover:bg-[rgba(255,255,255,0.02)] transition-colors last:border-0">
+          <tr key={i} className="border-b border-[#D4AF37]/15 dark:border-[rgba(255,255,255,0.07)] hover:bg-[#F5F0E6]/50 dark:hover:bg-[rgba(255,255,255,0.02)] transition-colors last:border-0">
             {row.map((cell, j) => (
               <td key={j} className={`p-4 leading-[1.7] ${j===0 ? 'text-[#1C2C44] dark:text-[#e8eaf0] font-bold font-mono' : ''}`} dangerouslySetInnerHTML={{__html: cell}}></td>
             ))}
@@ -115,7 +115,7 @@ export const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
             const isChosen = selected === i;
-            let btnClass = "border-[#D4AF37]/30 dark:border-[rgba(255,255,255,0.13)] text-[#2a2e3a] dark:text-[#9ca3b0] active:border- md:hover:border-[#D4AF37] dark:active:border- md:hover:border-[#00d084] active:shadow- md:hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:active:shadow- md:hover:shadow-none active:bg- md:hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:active:bg- md:hover:bg-none dark:active:bg- md:hover:bg-[#00d084]/10 bg-transparent";
+            let btnClass = "border-[#D4AF37]/30 dark:border-[rgba(255,255,255,0.13)] text-[#2a2e3a] dark:text-[#9ca3b0] hover:border-[#D4AF37] dark:hover:border-[#00d084] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#00d084]/10 bg-transparent";
             let letterClass = "bg-[#F5F0E6] dark:bg-[#1e2535] text-[#1C2C44] dark:text-[#e8eaf0] font-mono font-bold";
             
             if (selected !== null) {
@@ -166,7 +166,7 @@ export const TermCard = ({ name, eng, simple, example }) => {
   return (
     <motion.div 
       initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-      className="border border-[#D4AF37]/30 dark:border-[rgba(255,255,255,0.07)] rounded-xl overflow-hidden mb-3 bg-[#FDFBF7] dark:bg-[#161b25] active:shadow- md:hover:shadow-md dark:active:shadow- md:hover:shadow-[0_0_15px_rgba(0,208,132,0.05)] transition-all"
+      className="border border-[#D4AF37]/30 dark:border-[rgba(255,255,255,0.07)] rounded-xl overflow-hidden mb-3 bg-[#FDFBF7] dark:bg-[#161b25] hover:shadow-md dark:hover:shadow-[0_0_15px_rgba(0,208,132,0.05)] transition-all"
     >
       <div onClick={() => setIsOpen(!isOpen)} className="flex items-center justify-between p-4 md:p-5 cursor-pointer bg-[#F5F0E6] dark:bg-[#1e2535]">
         <span className="text-[15px] font-mono font-bold text-[#1C2C44] dark:text-[#e8eaf0]">{name}</span>
@@ -204,7 +204,7 @@ export const ExerciseBox = ({ title, desc, steps }) => (
     <div className="space-y-4">
       {steps.map((s, i) => (
         <div key={i} className="flex gap-4 items-start group relative z-10">
-          <div className="w-6 h-6 rounded-md bg-[#D4AF37]/15 dark:bg-[#00d084]/10 border border-[#D4AF37]/60 dark:border-[#00d084]/50 text-[#B8860B] dark:text-[#00d084] text-[11px] font-mono flex items-center justify-center shrink-0 mt-0.5 group-active:bg- md:hover:bg-[#D4AF37] dark:group-active:bg- md:hover:bg-[#00d084] group-active:text- md:hover:text-white dark:group-active:text- md:hover:text-[#0e1117] transition-colors">{s.n || i+1}</div>
+          <div className="w-6 h-6 rounded-md bg-[#D4AF37]/15 dark:bg-[#00d084]/10 border border-[#D4AF37]/60 dark:border-[#00d084]/50 text-[#B8860B] dark:text-[#00d084] text-[11px] font-mono flex items-center justify-center shrink-0 mt-0.5 group-hover:bg-[#D4AF37] dark:group-hover:bg-[#00d084] group-hover:text-white dark:group-hover:text-[#0e1117] transition-colors">{s.n || i+1}</div>
           <div className="text-[14px] font-medium leading-[1.7] text-[#2D3748] dark:text-[#e8eaf0] transition-colors" dangerouslySetInnerHTML={{__html: s.d}}></div>
         </div>
       ))}
@@ -217,7 +217,7 @@ export const ResourceCard = ({ type, name, lang, desc, why, link }) => {
   return (
     <motion.div 
       initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-      className="border border-[#D4AF37]/30 dark:border-[rgba(255,255,255,0.13)] rounded-xl overflow-hidden mb-3 bg-[#FDFBF7] dark:bg-[#161b25] active:border- md:hover:border-[#D4AF37]/60 dark:active:border- md:hover:border-[rgba(255,255,255,0.3)] active:shadow- md:hover:shadow-md transition-all"
+      className="border border-[#D4AF37]/30 dark:border-[rgba(255,255,255,0.13)] rounded-xl overflow-hidden mb-3 bg-[#FDFBF7] dark:bg-[#161b25] hover:border-[#D4AF37]/60 dark:hover:border-[rgba(255,255,255,0.3)] hover:shadow-md transition-all"
     >
       <div onClick={()=>setOpen(!open)} className="p-4 flex gap-4 items-center cursor-pointer bg-[#F5F0E6] dark:bg-[#1e2535]">
         <div className="w-10 h-10 rounded-lg bg-[#FDFBF7] dark:bg-[#252d3e] border border-[#D4AF37]/30 dark:border-[rgba(255,255,255,0.07)] flex justify-center items-center text-[#B8860B] dark:text-[#00d084] shrink-0 shadow-sm"><BookOpen size={18}/></div>
@@ -237,7 +237,7 @@ export const ResourceCard = ({ type, name, lang, desc, why, link }) => {
             <div className="p-5 border-t border-[#D4AF37]/20 dark:border-[rgba(255,255,255,0.07)] text-[14px] font-medium leading-relaxed text-[#2D3748] dark:text-[#e8eaf0]">
               <p className="mb-4">{desc}</p>
               <div className="text-[#B8860B] dark:text-[#00d084] font-mono text-[12px] mb-5 border-l-2 border-[#D4AF37] dark:border-[#00d084] pl-3 font-bold">→ {why}</div>
-              <a href={link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-[#1C2C44] dark:bg-[#00d084] text-[#FDFBF7] dark:text-[#0e1117] px-5 py-2 rounded-lg font-mono text-[12px] active:bg- md:hover:bg-[#2A4365] dark:active:bg- md:hover:bg-[#00e691] transition-colors shadow-md">
+              <a href={link} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 bg-[#1C2C44] dark:bg-[#00d084] text-[#FDFBF7] dark:text-[#0e1117] px-5 py-2 rounded-lg font-mono text-[12px] hover:bg-[#2A4365] dark:hover:bg-[#00e691] transition-colors shadow-md">
                 ACCESS SYSTEM
               </a>
             </div>

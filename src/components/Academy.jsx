@@ -123,10 +123,10 @@ const Academy = ({ lang = 'vi' }) => {
     }
   }[lang];
 
-  const SidebarContent = () => (
+  const renderSidebarContent = () => (
     <>
       {/* System Sync / Progress */}
-      <div className="p-5 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)]">
+      <div className="p-5 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/90 dark:bg-[#0e1117]/90 backdrop-blur-md relative z-20 shrink-0">
         <motion.div
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
           className="bg-[#fff]/60 dark:bg-black/40 backdrop-blur-md rounded-2xl p-5 border border-[#d97706]/40 dark:border-[rgba(255,255,255,0.1)] relative overflow-hidden shadow-sm"
@@ -172,7 +172,7 @@ const Academy = ({ lang = 'vi' }) => {
                     }}
                     className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all duration-300 ${active
                       ? 'bg-gradient-to-r from-[#D4AF37]/15 to-transparent dark:bg-none dark:bg-[#00d084]/10 border border-[#D4AF37]/50 dark:border-[#00d084]/30 text-[#1C2C44] dark:text-[#00d084] shadow-[inset_2px_0_0_#D4AF37] dark:shadow-none'
-                      : 'border border-transparent text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#1C2C44] dark:active:text- md:hover:text-[#e8eaf0] active:bg- md:hover:bg-[#D4AF37]/5 dark:active:bg- md:hover:bg-[rgba(255,255,255,0.04)]'
+                      : 'border border-transparent text-[#636878] dark:text-[#9ca3b0] hover:text-[#1C2C44] dark:hover:text-[#e8eaf0] hover:bg-[#D4AF37]/5 dark:hover:bg-[rgba(255,255,255,0.04)]'
                       }`}
                   >
                     <span className={`text-[15px] leading-snug ${active ? 'font-bold' : 'font-medium'}`}>
@@ -249,13 +249,13 @@ const Academy = ({ lang = 'vi' }) => {
               <h2 className="text-[13px] font-black tracking-[0.15em] text-[#1C2C44] dark:text-[#e8eaf0]">MENU</h2>
               <button 
                 onClick={() => setIsMobileMenuOpen(false)} 
-                className="p-2 rounded-full bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] z-10 active:bg- md:hover:bg-[rgba(15,17,23,0.1)] transition-colors"
+                className="p-2 rounded-full bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] z-10 hover:bg-[rgba(15,17,23,0.1)] transition-colors"
               >
                  <X size={20} className="text-[#0f1117] dark:text-[#e8eaf0]" />
               </button>
             </div>
             <div className="flex-1 overflow-hidden flex flex-col">
-              <SidebarContent />
+              {renderSidebarContent()}
             </div>
           </motion.aside>
         </div>
@@ -279,7 +279,7 @@ const Academy = ({ lang = 'vi' }) => {
 
         {/* ── DESKTOP SIDEBAR ────────────────────────────────── */}
         <aside className="hidden lg:flex w-72 shrink-0 h-full flex-col border-r border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/80 dark:bg-[#0e1117]/80 backdrop-blur-sm">
-          <SidebarContent />
+          {renderSidebarContent()}
         </aside>
 
         {/* ── MAIN CONTENT ───────────────────────────── */}
@@ -311,7 +311,7 @@ const Academy = ({ lang = 'vi' }) => {
                   onClick={() => toggleComplete(selectedLesson.id)}
                   className={`w-full py-3.5 rounded-xl font-mono text-[14.5px] tracking-[0.12em] transition-all duration-300 uppercase flex items-center justify-center gap-2 ${completedLessons.has(selectedLesson.id)
                     ? 'bg-transparent border border-[#D4AF37] dark:border-[#00d084]/50 text-[#D4AF37] dark:text-[#00d084]'
-                    : 'bg-[#1C2C44] dark:bg-[#00d084]/10 border border-[#1C2C44] dark:border-[#00d084]/30 text-[#FDFBF7] dark:text-[#00d084] active:bg- md:hover:bg-[#2A4365] dark:active:bg- md:hover:bg-[#00d084]/20 shadow-md dark:shadow-none'
+                    : 'bg-[#1C2C44] dark:bg-[#00d084]/10 border border-[#1C2C44] dark:border-[#00d084]/30 text-[#FDFBF7] dark:text-[#00d084] hover:bg-[#2A4365] dark:hover:bg-[#00d084]/20 shadow-md dark:shadow-none'
                     }`}
                 >
                   {completedLessons.has(selectedLesson.id) ? (
@@ -325,14 +325,14 @@ const Academy = ({ lang = 'vi' }) => {
                   <button
                     disabled={currentIndex === 0}
                     onClick={() => goToLesson(currentIndex - 1)}
-                    className="px-5 py-2.5 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#636878] dark:text-[#9ca3b0] active:bg- md:hover:bg-[rgba(15,17,23,0.05)] dark:active:bg- md:hover:bg-[rgba(255,255,255,0.05)] active:text- md:hover:text-[#0f1117] dark:active:text- md:hover:text-[#e8eaf0] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
+                    className="px-5 py-2.5 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#636878] dark:text-[#9ca3b0] hover:bg-[rgba(15,17,23,0.05)] dark:hover:bg-[rgba(255,255,255,0.05)] hover:text-[#0f1117] dark:hover:text-[#e8eaf0] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
                   >
                     <ChevronLeft size={15} /> {t.prev}
                   </button>
                   <button
                     disabled={currentIndex === allLessons.length - 1}
                     onClick={() => goToLesson(currentIndex + 1)}
-                    className="px-5 py-2.5 rounded-xl bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#0f1117] dark:text-[#e8eaf0] active:bg- md:hover:bg-[rgba(15,17,23,0.08)] dark:active:bg- md:hover:bg-[rgba(255,255,255,0.08)] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
+                    className="px-5 py-2.5 rounded-xl bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#0f1117] dark:text-[#e8eaf0] hover:bg-[rgba(15,17,23,0.08)] dark:hover:bg-[rgba(255,255,255,0.08)] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
                   >
                     {t.next} <ChevronRight size={15} />
                   </button>

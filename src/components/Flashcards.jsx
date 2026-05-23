@@ -266,7 +266,7 @@ const Flashcards = ({ lang = 'vi' }) => {
       </div>
 
       <div className="flex justify-between items-center mt-6 px-1 md:px-2 gap-2">
-        <button onClick={handlePrev} className="flex items-center justify-center min-h-[44px] min-w-[44px] text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#0f1117] dark:active:text- md:hover:text-white text-[13.5px] font-bold px-4 md:px-5 py-2.5 bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] rounded-xl border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.05)] transition-colors active:bg-[rgba(15,17,23,0.08)]">{t.prev}</button>
+        <button onClick={handlePrev} className="flex items-center justify-center min-h-[44px] min-w-[44px] text-[#636878] dark:text-[#9ca3b0] hover:text-[#0f1117] dark:hover:text-white text-[13.5px] font-bold px-4 md:px-5 py-2.5 bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] rounded-xl border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.05)] transition-colors active:bg-[rgba(15,17,23,0.08)]">{t.prev}</button>
         <span className="text-[13.5px] font-mono font-bold text-[#636878] dark:text-[#9ca3b0] bg-[rgba(15,17,23,0.04)] dark:bg-[rgba(255,255,255,0.05)] px-4 py-1.5 rounded-full shrink-0">
           {cardIndex + 1} / {flashcards.length}
         </span>

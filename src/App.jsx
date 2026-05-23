@@ -54,7 +54,7 @@ const App = () => {
     const isActive = activeTab === tabName;
     return `px-4 py-1.5 rounded-full text-[11px] font-black transition-all border ${isActive
         ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:from-transparent dark:bg-[#00d084]/15 border-[#D4AF37]/50 dark:border-[#00d084]/30 text-white dark:text-[#00d084] shadow-[0_2px_8px_rgba(212,175,55,0.4)] dark:shadow-sm'
-        : 'border-transparent text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#1C2C44] dark:active:text- md:hover:text-[#e8eaf0] active:bg- md:hover:bg-white/60 dark:active:bg- md:hover:bg-[rgba(255,255,255,0.04)]'
+        : 'border-transparent text-[#636878] dark:text-[#9ca3b0] hover:text-[#1C2C44] dark:hover:text-[#e8eaf0] hover:bg-white/60 dark:hover:bg-[rgba(255,255,255,0.04)]'
       }`;
   };
 
@@ -138,12 +138,12 @@ const App = () => {
 
           {/* NÚT CÔNG TẮC NGÔN NGỮ EN/VN */}
           <div className="flex items-center space-x-1 bg-white/50 dark:bg-[rgba(255,255,255,0.03)] p-1 rounded-full border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shadow-sm dark:shadow-none">
-            <button onClick={() => toggleLang('vi')} className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'vi' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black shadow-[0_2px_4px_rgba(212,175,55,0.3)] dark:shadow-sm' : 'text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#1C2C44] dark:active:text- md:hover:text-white'}`}>VN</button>
-            <button onClick={() => toggleLang('en')} className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black shadow-[0_2px_4px_rgba(212,175,55,0.3)] dark:shadow-sm' : 'text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#1C2C44] dark:active:text- md:hover:text-white'}`}>EN</button>
+            <button onClick={() => toggleLang('vi')} className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'vi' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black shadow-[0_2px_4px_rgba(212,175,55,0.3)] dark:shadow-sm' : 'text-[#636878] dark:text-[#9ca3b0] hover:text-[#1C2C44] dark:hover:text-white'}`}>VN</button>
+            <button onClick={() => toggleLang('en')} className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black shadow-[0_2px_4px_rgba(212,175,55,0.3)] dark:shadow-sm' : 'text-[#636878] dark:text-[#9ca3b0] hover:text-[#1C2C44] dark:hover:text-white'}`}>EN</button>
           </div>
 
           {/* NÚT CÔNG TẮC DARK/LIGHT MODE */}
-          <button onClick={toggleTheme} className="text-xl p-1.5 rounded-full bg-[rgba(15,17,23,0.03)] active:bg- md:hover:bg-[rgba(15,17,23,0.08)] dark:bg-[rgba(255,255,255,0.03)] dark:active:bg- md:hover:bg-[rgba(255,255,255,0.08)] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] transition-all shadow-sm">
+          <button onClick={toggleTheme} className="text-xl p-1.5 rounded-full bg-[rgba(15,17,23,0.03)] hover:bg-[rgba(15,17,23,0.08)] dark:bg-[rgba(255,255,255,0.03)] dark:hover:bg-[rgba(255,255,255,0.08)] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] transition-all shadow-sm">
             {isDarkMode ? '☀️' : '🌙'}
           </button>
 

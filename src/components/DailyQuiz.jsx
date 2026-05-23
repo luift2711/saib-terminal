@@ -240,7 +240,7 @@ useEffect(() => {
           <div className="w-20 h-20 rounded-full border-2 border-[#d97706] dark:border-[#00d084] border-dashed flex items-center justify-center mx-auto mb-6"><Target size={24} className="text-[#d97706] dark:text-[#00d084] shrink-0" /></div>
           <h2 className="text-2xl font-black text-[#0f1117] dark:text-white tracking-widest uppercase mb-4">{t.title}</h2>
           <p className="text-sm text-[#636878] dark:text-[#848E9C] mb-8">{t.subtitle}</p>
-          <button onClick={startQuiz} className="bg-[#d97706] dark:bg-[#00d084] text-white dark:text-black font-mono font-black px-10 py-4 rounded-xl active:scale- md:hover:scale-105 transition-all shadow-[0_0_15px_rgba(180,83,9,0.4)] dark:shadow-[0_0_15px_rgba(0,208,132,0.4)]">{t.startBtn}</button>
+          <button onClick={startQuiz} className="bg-[#d97706] dark:bg-[#00d084] text-white dark:text-black font-mono font-black px-10 py-4 rounded-xl hover:scale-105 transition-all shadow-[0_0_15px_rgba(180,83,9,0.4)] dark:shadow-[0_0_15px_rgba(0,208,132,0.4)]">{t.startBtn}</button>
         </div>
       ) : (
         <div className="space-y-4 animate-in fade-in">
@@ -266,7 +266,7 @@ useEffect(() => {
             <span className={`text-xs font-bold ${userPrice ? 'text-[#d97706] dark:text-[#00d084]' : 'text-[#636878] dark:text-[#848E9C]'}`}>{userPrice ? `${t.flagged}${userPrice.toFixed(0)}` : t.waiting}</span>
             
             {drillStatus === 'idle' ? (
-              <button onClick={checkAnswer} className="bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] active:bg- md:hover:bg-[#d97706] dark:bg-[#00d084] text-[#0f1117] dark:text-white active:text- md:hover:text-white dark:text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl transition-all border border-white/10 active:border- md:hover:border-[#d97706] dark:border-[#00d084]">{t.gradeBtn}</button>
+              <button onClick={checkAnswer} className="bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] hover:bg-[#d97706] dark:bg-[#00d084] text-[#0f1117] dark:text-white hover:text-white dark:text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl transition-all border border-white/10 hover:border-[#d97706] dark:border-[#00d084]">{t.gradeBtn}</button>
             ) : (
               <button onClick={handleNext} className="bg-[#0ECB81] hover:brightness-110 text-white dark:text-black text-[11px] uppercase tracking-wider font-bold px-8 py-3 rounded-xl shadow-[0_0_15px_rgba(14,203,129,0.3)] transition-all">
                   {questionIndex === TOTAL_QUESTIONS ? <>{t.viewResultBtn} <ArrowRight size={16} className="inline mr-1"/></> : <>{t.nextQBtn} <ArrowRight size={16} className="inline mr-1"/></>}

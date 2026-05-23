@@ -218,7 +218,7 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
                  challengeStatus === 'FAILED_MAX' ? t.failMaxDesc : 
                  t.passDesc}
               </p>
-              <button onClick={resetChallenge} className="bg-[#0f1117] dark:bg-white text-white dark:text-black font-black px-8 py-3 rounded-full active:scale- md:hover:scale-105 transition-transform uppercase">{t.resetBtn}</button>
+              <button onClick={resetChallenge} className="bg-[#0f1117] dark:bg-white text-white dark:text-black font-black px-8 py-3 rounded-full hover:scale-105 transition-transform uppercase">{t.resetBtn}</button>
            </div>
         )}
 
@@ -272,7 +272,7 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
 
       <div className="flex flex-wrap gap-2">
         {COINS.map(c => (
-          <button key={c.symbol} onClick={() => { if(!position && !pendingOrder) setActiveCoin(c); }} className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeCoin.symbol === c.symbol ? 'bg-gradient-to-br from-white to-[#FDFBF7] text-[#D4AF37] border border-[#D4AF37]/60 shadow-[0_0_15px_rgba(212,175,55,0.4)] dark:bg-[#2B3139] dark:from-[#2B3139] dark:to-[#2B3139] dark:text-white dark:border-[#848E9C] dark:shadow-md' : 'bg-[#fff] dark:bg-[#111827] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] text-[#636878] dark:text-[#848E9C] active:border- md:hover:border-[#D4AF37]/50 active:text- md:hover:text-[#D4AF37] dark:active:bg- md:hover:bg-[#2B3139]/50'}`}>{c.symbol}</button>
+          <button key={c.symbol} onClick={() => { if(!position && !pendingOrder) setActiveCoin(c); }} className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${activeCoin.symbol === c.symbol ? 'bg-gradient-to-br from-white to-[#FDFBF7] text-[#D4AF37] border border-[#D4AF37]/60 shadow-[0_0_15px_rgba(212,175,55,0.4)] dark:bg-[#2B3139] dark:from-[#2B3139] dark:to-[#2B3139] dark:text-white dark:border-[#848E9C] dark:shadow-md' : 'bg-[#fff] dark:bg-[#111827] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] text-[#636878] dark:text-[#848E9C] hover:border-[#D4AF37]/50 hover:text-[#D4AF37] dark:hover:bg-[#2B3139]/50'}`}>{c.symbol}</button>
         ))}
       </div>
 
@@ -294,8 +294,8 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
         {/* ORDER PANEL */}
         <div className="bg-[#fff] dark:bg-[#111827] p-6 rounded-2xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] flex flex-col shadow-lg">
            <div className="flex space-x-2 mb-6 bg-[#faf9f6] dark:bg-[#0B0E11] p-1.5 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
-              <button onClick={() => setOrderType('MANUAL')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'MANUAL' ? 'bg-gradient-to-br from-white to-[#FDFBF7] text-[#D4AF37] border border-[#D4AF37]/50 shadow-[0_0_12px_rgba(212,175,55,0.3)] dark:bg-[#2B3139] dark:from-[#2B3139] dark:to-[#2B3139] dark:text-[#00d084] dark:border-transparent dark:shadow-sm' : 'border border-transparent text-[#636878] dark:text-[#848E9C] active:text- md:hover:text-[#D4AF37] dark:active:text- md:hover:text-[#00d084]'}`}>{t.manualBtn}</button>
-              <button onClick={() => setOrderType('AUTO')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'AUTO' ? 'bg-gradient-to-br from-white to-[#FDFBF7] text-[#D4AF37] border border-[#D4AF37]/50 shadow-[0_0_12px_rgba(212,175,55,0.3)] dark:bg-[#2B3139] dark:from-[#2B3139] dark:to-[#2B3139] dark:text-[#00d084] dark:border-transparent dark:shadow-sm' : 'border border-transparent text-[#636878] dark:text-[#848E9C] active:text- md:hover:text-[#D4AF37] dark:active:text- md:hover:text-[#00d084]'}`}>{t.autoBtn}</button>
+              <button onClick={() => setOrderType('MANUAL')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'MANUAL' ? 'bg-gradient-to-br from-white to-[#FDFBF7] text-[#D4AF37] border border-[#D4AF37]/50 shadow-[0_0_12px_rgba(212,175,55,0.3)] dark:bg-[#2B3139] dark:from-[#2B3139] dark:to-[#2B3139] dark:text-[#00d084] dark:border-transparent dark:shadow-sm' : 'border border-transparent text-[#636878] dark:text-[#848E9C] hover:text-[#D4AF37] dark:hover:text-[#00d084]'}`}>{t.manualBtn}</button>
+              <button onClick={() => setOrderType('AUTO')} className={`flex-1 text-[11px] py-2.5 rounded-lg font-bold transition-all uppercase tracking-wider ${orderType === 'AUTO' ? 'bg-gradient-to-br from-white to-[#FDFBF7] text-[#D4AF37] border border-[#D4AF37]/50 shadow-[0_0_12px_rgba(212,175,55,0.3)] dark:bg-[#2B3139] dark:from-[#2B3139] dark:to-[#2B3139] dark:text-[#00d084] dark:border-transparent dark:shadow-sm' : 'border border-transparent text-[#636878] dark:text-[#848E9C] hover:text-[#D4AF37] dark:hover:text-[#00d084]'}`}>{t.autoBtn}</button>
            </div>
            
            <div className="mb-6">
@@ -317,8 +317,8 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
                   <input type="number" value={tpInput} onChange={e => setTpInput(e.target.value)} className="w-full bg-[#faf9f6] dark:bg-[#0B0E11] border border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] p-3 text-sm text-[#0f1117] dark:text-white rounded-xl focus:border-[#0ECB81] focus:outline-none" />
                 </div>
                 <div className="flex gap-3 pt-4 border-t border-[rgba(15,17,23,0.1)] dark:border-[#2B3139]">
-                  <button onClick={() => openManualPosition('LONG')} className="flex-1 bg-[#0ECB81]/10 border border-[#0ECB81]/30 active:border- md:hover:border-[#0ECB81] text-[#0ECB81] py-4 rounded-xl font-black text-[13px] tracking-wider transition-all">LONG</button>
-                  <button onClick={() => openManualPosition('SHORT')} className="flex-1 bg-[#F6465D]/10 border border-[#F6465D]/30 active:border- md:hover:border-[#F6465D] text-[#F6465D] py-4 rounded-xl font-black text-[13px] tracking-wider transition-all">SHORT</button>
+                  <button onClick={() => openManualPosition('LONG')} className="flex-1 bg-[#0ECB81]/10 border border-[#0ECB81]/30 hover:border-[#0ECB81] text-[#0ECB81] py-4 rounded-xl font-black text-[13px] tracking-wider transition-all">LONG</button>
+                  <button onClick={() => openManualPosition('SHORT')} className="flex-1 bg-[#F6465D]/10 border border-[#F6465D]/30 hover:border-[#F6465D] text-[#F6465D] py-4 rounded-xl font-black text-[13px] tracking-wider transition-all">SHORT</button>
                 </div>
              </div>
            ) : (
@@ -342,8 +342,8 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
                   </div>
                 </div>
                 <div className="flex gap-2 pt-3">
-                  <button onClick={() => placePendingOrder('LONG')} className="flex-1 bg-[#d97706]/10 dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706]/30 dark:border-[#00d084]/30 active:border- md:hover:border-[#d97706] dark:active:border- md:hover:border-[#00d084]">BUY STOP</button>
-                  <button onClick={() => placePendingOrder('SHORT')} className="flex-1 bg-[#d97706]/10 dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706]/30 dark:border-[#00d084]/30 active:border- md:hover:border-[#d97706] dark:active:border- md:hover:border-[#00d084]">SELL STOP</button>
+                  <button onClick={() => placePendingOrder('LONG')} className="flex-1 bg-[#d97706]/10 dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706]/30 dark:border-[#00d084]/30 hover:border-[#d97706] dark:hover:border-[#00d084]">BUY STOP</button>
+                  <button onClick={() => placePendingOrder('SHORT')} className="flex-1 bg-[#d97706]/10 dark:bg-[#00d084]/10 text-[#d97706] dark:text-[#00d084] py-3 text-[10px] uppercase tracking-wider font-black rounded-lg border border-[#d97706]/30 dark:border-[#00d084]/30 hover:border-[#d97706] dark:hover:border-[#00d084]">SELL STOP</button>
                 </div>
              </div>
            )}
@@ -356,7 +356,7 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
                     <span className="text-[#d97706] dark:text-[#00d084] font-bold block mb-1">{t.waitLabel} {pendingOrder.type}</span>
                     <span className="text-[#636878] dark:text-[#848E9C] font-mono">${pendingOrder.entryPrice.toLocaleString()}</span>
                   </div>
-                  <button onClick={() => setPendingOrder(null)} className="text-[#F6465D] text-xs font-bold bg-[#F6465D]/10 px-3 py-1.5 rounded-lg active:bg- md:hover:bg-[#F6465D] active:text- md:hover:text-[#0f1117] dark:text-white transition-colors">{t.cancelBtn}</button>
+                  <button onClick={() => setPendingOrder(null)} className="text-[#F6465D] text-xs font-bold bg-[#F6465D]/10 px-3 py-1.5 rounded-lg hover:bg-[#F6465D] hover:text-[#0f1117] dark:text-white transition-colors">{t.cancelBtn}</button>
                 </div>
               )}
               {position && (
@@ -370,7 +370,7 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
                       <span>Entry: ${position.entryPrice}</span>
                       <span>SL: ${position.sl}</span>
                    </div>
-                   <button onClick={closePositionManual} className="w-full bg-[#0f1117] dark:bg-white text-white dark:text-black py-3 rounded-xl text-xs font-black uppercase tracking-widest active:bg- md:hover:bg-[#848E9C] transition-colors">{t.closeBtn}</button>
+                   <button onClick={closePositionManual} className="w-full bg-[#0f1117] dark:bg-white text-white dark:text-black py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-[#848E9C] transition-colors">{t.closeBtn}</button>
                 </div>
               )}
            </div>

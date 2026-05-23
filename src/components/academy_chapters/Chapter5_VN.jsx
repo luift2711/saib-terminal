@@ -25,7 +25,7 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
             const isChosen = selected === i;
-            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] active:border- md:hover:border-[#D4AF37] dark:active:border- md:hover:border-[#FCD535] active:shadow- md:hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:active:shadow- md:hover:shadow-none active:bg- md:hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:active:bg- md:hover:bg-none dark:active:bg- md:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
+            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
             let letterClass = "bg-gray-100 dark:bg-[#181A20] text-gray-500 dark:text-[#848E9C]";
             if (selected !== null) {
               if (i === correctIdx) { btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]"; letterClass = "bg-green-500 dark:bg-[#0ECB81] text-white"; }
@@ -154,7 +154,7 @@ const JournalSimulator = () => {
           <label className="text-[15.5px] text-gray-500 dark:text-[#848E9C] uppercase font-bold mb-3 block">Cảm xúc khi vào lệnh</label>
           <div className="flex flex-wrap gap-2">
             {['😤 Tự tin cao', '😰 Lo lắng', '😱 FOMO', '😠 Tức giận (sau thua)', '😌 Bình tĩnh', '🤔 Lưỡng lự', '🎯 Tập trung', '😵 Mất kiểm soát'].map(e => (
-              <button key={e} onClick={() => toggleEmo(e)} className={`px-4 py-2 rounded-xl text-[16.5px] transition-all border ${emos.includes(e) ? 'border-yellow-500 dark:border-[#FCD535] bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] font-bold' : 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-gray-700 dark:text-[#EAECEF] active:border- md:hover:border-gray-300 dark:active:border- md:hover:border-[#474D57]'}`}>
+              <button key={e} onClick={() => toggleEmo(e)} className={`px-4 py-2 rounded-xl text-[16.5px] transition-all border ${emos.includes(e) ? 'border-yellow-500 dark:border-[#FCD535] bg-yellow-50 dark:bg-[#FCD535]/10 text-yellow-800 dark:text-[#FCD535] font-bold' : 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-gray-700 dark:text-[#EAECEF] hover:border-gray-300 dark:hover:border-[#474D57]'}`}>
                 {e}
               </button>
             ))}
@@ -167,7 +167,7 @@ const JournalSimulator = () => {
             {['👁 FOMO — Vào lệnh vì sợ bỏ lỡ', '🔥 Revenge — Vào để gỡ lệnh trước', '👑 Overconfidence — Quá tự tin, không kiểm tra lại', '🧊 Loss Aversion — Không cắt lỗ đúng hạn', '🪬 Confirmation Bias — Chỉ xem tín hiệu mình muốn thấy', '🐑 Herding — Theo đám đông/signal người khác', '🎰 Overtrading — Vào lệnh không đủ setup'].map(d => (
               <label key={d} className="flex items-center gap-3 cursor-pointer group">
                 <input type="checkbox" checked={demons.includes(d)} onChange={() => toggleDemon(d)} className="w-5 h-5 rounded border-gray-300 dark:border-[#2B3139] text-yellow-500 dark:text-[#00d084] focus:ring-yellow-500 dark:focus:ring-[#00d084] bg-white dark:bg-[#181A20] cursor-pointer" />
-                <span className="text-[17.5px] text-gray-700 dark:text-[#EAECEF] group-active:text- md:hover:text-black dark:group-active:text- md:hover:text-white transition-colors">{d}</span>
+                <span className="text-[17.5px] text-gray-700 dark:text-[#EAECEF] group-hover:text-black dark:group-hover:text-white transition-colors">{d}</span>
               </label>
             ))}
           </div>
@@ -178,7 +178,7 @@ const JournalSimulator = () => {
           <textarea value={lesson} onChange={e => setLesson(e.target.value)} rows="3" placeholder="Lần sau mình sẽ... / Mình nhận ra rằng..." className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[17.5px] text-black dark:text-white focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
         </div>
 
-        <button onClick={analyze} className="w-full py-4 rounded-xl font-black text-[18.5px] uppercase tracking-wider transition-all bg-yellow-500 dark:bg-[#00d084] active:bg- md:hover:bg-yellow-400 dark:active:bg- md:hover:bg-[#00e691] text-black shadow-[0_4px_14px_0_rgba(234,179,8,0.39)] dark:shadow-[0_4px_14px_0_rgba(0,208,132,0.39)]">
+        <button onClick={analyze} className="w-full py-4 rounded-xl font-black text-[18.5px] uppercase tracking-wider transition-all bg-yellow-500 dark:bg-[#00d084] hover:bg-yellow-400 dark:hover:bg-[#00e691] text-black shadow-[0_4px_14px_0_rgba(234,179,8,0.39)] dark:shadow-[0_4px_14px_0_rgba(0,208,132,0.39)]">
           ✦ Phân tích Journal ✦
         </button>
 
