@@ -224,7 +224,7 @@ const TradingJournal = ({ lang = 'vi' }) => {
               placeholder={t.placeholderLog} 
               className="w-full bg-[#faf9f6] dark:bg-[#0B0E11] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] rounded-xl p-3 text-xs text-[#0f1117] dark:text-white h-24 focus:outline-none focus:border-[#d97706] dark:border-[#00d084]"
             />
-            <button type="submit" className="w-full bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] hover:bg-[#d97706] dark:bg-[#00d084] hover:text-white dark:text-black py-2.5 rounded-xl text-xs font-bold transition-all uppercase tracking-wider">{t.saveBtn}</button>
+            <button type="submit" className="w-full bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] active:bg- md:hover:bg-[#d97706] dark:bg-[#00d084] active:text- md:hover:text-white dark:text-black py-2.5 rounded-xl text-xs font-bold transition-all uppercase tracking-wider">{t.saveBtn}</button>
           </form>
         </div>
 
@@ -251,7 +251,7 @@ const TradingJournal = ({ lang = 'vi' }) => {
 
            <button 
              onClick={triggerSAIBotAnalysis}
-             className="mt-4 w-full bg-white dark:bg-gradient-to-r dark:from-[#00d084] dark:to-[#0ECB81] text-[#D4AF37] dark:text-[#0B0E11] border border-[#D4AF37]/50 dark:border-transparent hover:bg-yellow-50 hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] dark:hover:shadow-none dark:hover:opacity-90 py-3 rounded-xl text-xs font-black transition-all duration-500 uppercase tracking-widest flex items-center justify-center gap-2"
+             className="mt-4 w-full bg-white dark:bg-gradient-to-r dark:from-[#00d084] dark:to-[#0ECB81] text-[#D4AF37] dark:text-[#0B0E11] border border-[#D4AF37]/50 dark:border-transparent active:bg- md:hover:bg-yellow-50 active:shadow- md:hover:shadow-[0_0_20px_rgba(212,175,55,0.6)] dark:active:shadow- md:hover:shadow-none dark:hover:opacity-90 py-3 rounded-xl text-xs font-black transition-all duration-500 uppercase tracking-widest flex items-center justify-center gap-2"
            >
               <Activity size={16} />
               {lang === 'vi' ? 'Gọi SAIBot Chẩn Đoán' : 'Summon SAIBot For Diagnosis'}

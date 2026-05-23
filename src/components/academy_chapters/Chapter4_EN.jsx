@@ -28,7 +28,7 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
             const isChosen = selected === i;
-            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
+            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] active:border- md:hover:border-[#D4AF37] dark:active:border- md:hover:border-[#FCD535] active:shadow- md:hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:active:shadow- md:hover:shadow-none active:bg- md:hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:active:bg- md:hover:bg-none dark:active:bg- md:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
             let letterClass = "bg-gray-100 dark:bg-[#181A20] text-gray-500 dark:text-[#848E9C]";
             if (selected !== null) {
               if (i === correctIdx) { btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]"; letterClass = "bg-green-500 dark:bg-[#0ECB81] text-white"; }
@@ -103,7 +103,7 @@ const LossStreakSim = () => {
             <div key={i} className={`flex-1 rounded-t-sm opacity-90 transition-all ${barColor(b.pct)}`} style={{ height: `${Math.max(8, b.pct * 100)}%` }} title={`Trade ${i}: $${b.val}`} />
           ))}
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Remaining</div>
             <div className={`text-2xl font-black font-mono ${parseFloat(lostPct) > 30 ? 'text-red-600 dark:text-[#F6465D]' : parseFloat(lostPct) > 15 ? 'text-yellow-600 dark:text-[#FCD535]' : 'text-green-600 dark:text-[#0ECB81]'}`}>${finalVal.toFixed(0)}</div>
@@ -177,7 +177,7 @@ const PositionSizeCalc = () => {
             </select>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">Risk Amount</div>
             <div className="text-2xl font-black font-mono text-yellow-600 dark:text-[#FCD535]">${riskAmt.toFixed(2)}</div>
@@ -234,7 +234,7 @@ const ExpectancyCalc = () => {
             <input type="number" value={avgLoss} onChange={e => setAvgLoss(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-2">R:R Ratio</div>
             <div className="text-2xl font-black font-mono text-green-600 dark:text-[#0ECB81]">1:{rr.toFixed(1)}</div>
@@ -292,7 +292,7 @@ const KellyCalc = () => {
             <input type="number" value={avgL} onChange={e => setAvgL(Number(e.target.value))} className="w-full bg-white dark:bg-[#181A20] border border-gray-300 dark:border-[#2B3139] rounded-xl p-4 text-[18.5px] text-black dark:text-white font-mono focus:border-yellow-500 dark:focus:border-[#FCD535] outline-none transition-colors" />
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
           <div className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] rounded-2xl p-4 text-center">
             <div className="text-xs uppercase tracking-widest text-gray-500 dark:text-[#848E9C] mb-1">Full Kelly</div>
             <div className="text-2xl font-black font-mono text-red-600 dark:text-[#F6465D]">{fullKelly.toFixed(1)}%</div>

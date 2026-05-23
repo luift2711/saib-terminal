@@ -359,7 +359,7 @@ const FloatingCoach = ({ lang = 'vi' }) => {
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="hover:opacity-70 text-[#FDFBF7]/70 hover:text-[#FDFBF7] transition-opacity"
+                className="hover:opacity-70 text-[#FDFBF7]/70 active:text- md:hover:text-[#FDFBF7] transition-opacity"
               >
                 <X size={16} />
               </button>
@@ -415,7 +415,7 @@ const FloatingCoach = ({ lang = 'vi' }) => {
               <button
                 type="submit"
                 disabled={!inputText.trim() || isLoading}
-                className="bg-[#1C2C44] dark:bg-[#00d084] text-[#FDFBF7] dark:text-[#0B0E11] p-2 rounded-xl disabled:opacity-40 hover:bg-[#2A4365] dark:hover:brightness-110 transition-all"
+                className="bg-[#1C2C44] dark:bg-[#00d084] text-[#FDFBF7] dark:text-[#0B0E11] p-2 rounded-xl disabled:opacity-40 active:bg- md:hover:bg-[#2A4365] dark:hover:brightness-110 transition-all"
               >
                 {isLoading ? <Loader2 size={17} className="animate-spin" /> : <Send size={17} />}
               </button>

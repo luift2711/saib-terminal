@@ -162,9 +162,9 @@ const FeaturesSection = () => (
         { icon: <BookOpen className="w-8 h-8"/>, t: 'Trading Journal tích hợp', d: 'Template journal đầy đủ với phân tích tâm lý, nhận diện "con quỷ", và pattern recognition. Được xây dựng để dùng ngay.' },
         { icon: <Rocket className="w-8 h-8"/>, t: 'Chứng chỉ & Trading Plan', d: 'Kết thúc khóa học với Trading Plan riêng đã được xây dựng, quiz tổng hợp 20 câu, và chứng chỉ tốt nghiệp cá nhân hóa.' },
       ].map((f, i) => (
-        <FadeUp key={i} delay={0.1 * i} className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-8 rounded-3xl hover:border-[#D4AF37] transition-all group relative overflow-hidden shadow-sm dark:shadow-none">
+        <FadeUp key={i} delay={0.1 * i} className="bg-white dark:bg-[#181A20] border border-gray-200 dark:border-[#2B3139] p-8 rounded-3xl active:border- md:hover:border-[#D4AF37] transition-all group relative overflow-hidden shadow-sm dark:shadow-none">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="text-[#D4AF37] mb-6 transform group-hover:scale-110 transition-transform origin-left">{f.icon}</div>
+          <div className="text-[#D4AF37] mb-6 transform group-active:scale- md:hover:scale-110 transition-transform origin-left">{f.icon}</div>
           <h3 className="text-lg font-serif font-bold text-black dark:text-white mb-3">{f.t}</h3>
           <p className="text-[16.5px] text-gray-600 dark:text-gray-400 leading-relaxed">{f.d}</p>
         </FadeUp>
@@ -193,13 +193,13 @@ const CourseMap = () => (
         { n: '5', b: 'Chương 5 · Tâm lý', t: 'Tâm lý Giao dịch & 7 Con Quỷ', d: 'Lý do thật sự của 80% thất bại. 7 con quỷ trading được kể như thần thoại, giải thích bằng khoa học.', tags: ['FOMO','Revenge','System 1 vs 2','Journal'] },
         { n: '6', b: 'Chương 6 · Thực chiến', t: 'Xây dựng Hệ thống & Thực chiến', d: 'Kết thúc hành trình với Trading Plan cá nhân hoàn chỉnh. Backtesting, lộ trình 90 ngày demo, checklist 20 điều kiện live.', tags: ['Trading Plan','Backtesting','90 ngày Demo','Checklist Live'] },
       ].map((c, i) => (
-        <FadeUp key={i} delay={0.05 * i} className="flex border-b border-gray-100 dark:border-[#2B3139] last:border-0 hover:bg-gray-50 dark:hover:bg-[#20252E] transition-colors group">
+        <FadeUp key={i} delay={0.05 * i} className="flex border-b border-gray-100 dark:border-[#2B3139] last:border-0 active:bg- md:hover:bg-gray-50 dark:active:bg- md:hover:bg-[#20252E] transition-colors group">
           <div className="hidden md:flex items-center justify-center p-8 border-r border-gray-100 dark:border-[#2B3139] text-3xl font-serif font-bold text-[#D4AF37] opacity-30 group-hover:opacity-100 transition-opacity w-24 shrink-0">
             {c.n}
           </div>
           <div className="p-6 md:p-8 flex-1">
             <div className="text-[12.5px] font-mono tracking-widest uppercase text-gray-500 mb-2">{c.b}</div>
-            <h3 className="text-xl font-serif font-bold text-black dark:text-white mb-2 group-hover:text-[#D4AF37] transition-colors">{c.t}</h3>
+            <h3 className="text-xl font-serif font-bold text-black dark:text-white mb-2 group-active:text- md:hover:text-[#D4AF37] transition-colors">{c.t}</h3>
             <p className="text-[16.5px] text-gray-600 dark:text-gray-400 leading-relaxed mb-4">{c.d}</p>
             <div className="flex flex-wrap gap-2">
               {c.tags.map(tag => (
@@ -287,7 +287,7 @@ const NameRegistration = () => {
         />
         <button 
           onClick={handleSave}
-          className={`px-6 py-3 rounded-xl font-bold text-[16.5px] transition-all flex items-center justify-center gap-2 ${saved ? 'bg-green-500 text-white' : 'bg-[#D4AF37] hover:bg-[#F3E5AB] text-black hover:shadow-[0_4px_15px_rgba(212,175,55,0.3)]'}`}
+          className={`px-6 py-3 rounded-xl font-bold text-[16.5px] transition-all flex items-center justify-center gap-2 ${saved ? 'bg-green-500 text-white' : 'bg-[#D4AF37] active:bg- md:hover:bg-[#F3E5AB] text-black active:shadow- md:hover:shadow-[0_4px_15px_rgba(212,175,55,0.3)]'}`}
         >
           {saved ? <><CheckCircle2 size={18} /> Đã lưu</> : 'Xác nhận'}
         </button>

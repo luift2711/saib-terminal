@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, Database, Check, ChevronLeft, Cpu, Bitcoin, DollarSign, Star } from 'lucide-react';
+import { ChevronRight, Database, Check, ChevronLeft, Cpu, Bitcoin, DollarSign, Star, Menu, X } from 'lucide-react';
 import CHAPTER_0_DATA_VN from './academy_chapters/Chapter0_VN';
 import CHAPTER_0_DATA_EN from './academy_chapters/Chapter0_EN';
 import CHAPTER_1_DATA_VN from './academy_chapters/Chapter1_VN';
@@ -40,6 +40,7 @@ const readCompletedLessons = () => {
 const Academy = ({ lang = 'vi' }) => {
   const [selectedId, setSelectedId] = useState('0-0');
   const [completedLessons, setCompletedLessons] = useState(readCompletedLessons);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mainScrollRef = useRef(null);
 
   // Scroll to top on lesson change — scroll the main content area
@@ -104,124 +105,159 @@ const Academy = ({ lang = 'vi' }) => {
     }
   }[lang];
 
+  const SidebarContent = () => (
+    <>
+      {/* System Sync / Progress */}
+      <div className="p-5 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)]">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+          className="bg-[#fff]/60 dark:bg-black/40 backdrop-blur-md rounded-2xl p-5 border border-[#d97706]/40 dark:border-[rgba(255,255,255,0.1)] relative overflow-hidden shadow-sm"
+        >
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#D4AF37] dark:via-[#00d084] to-transparent"></div>
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[12.5px] font-mono uppercase tracking-[0.2em] text-[#D4AF37] dark:text-[#00d084] flex items-center gap-2 font-black">
+              <Database size={12} /> {t.systemSync}
+            </span>
+            <span className="font-mono text-[#0f1117] dark:text-[#00d084] font-bold dark:font-medium text-sm">{progressPct}%</span>
+          </div>
+          <div className="h-1 rounded-full bg-[rgba(15,17,23,0.1)] dark:bg-[rgba(255,255,255,0.05)] overflow-hidden relative">
+            <motion.div
+              initial={{ width: 0 }} animate={{ width: `${progressPct}%` }} transition={{ duration: 1, ease: "easeOut" }}
+              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#C59B27] to-[#D4AF37] dark:from-[#00d084] dark:to-[#00d084] shadow-[0_0_12px_rgba(212,175,55,0.6)] dark:shadow-[0_0_10px_rgba(0,208,132,0.5)]"
+            />
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Navigation — scrollable */}
+      <div className="flex-1 overflow-y-auto py-4 px-3 space-y-6 custom-scrollbar">
+        {chapters.map((chapter, chapterIndex) => (
+          <motion.section
+            key={chapterIndex}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: chapterIndex * 0.1 }}
+          >
+            <h3 className="text-[12.5px] font-mono uppercase tracking-[0.18em] text-[#B8860B] dark:text-[#00d084] border-b border-[#D4AF37]/30 dark:border-[#00d084]/20 pb-2 mb-3 px-2 flex items-center gap-2 font-black">
+              <span className="w-1.5 h-1.5 bg-[#D4AF37] dark:bg-[#00d084] rounded-full shadow-[0_0_6px_rgba(212,175,55,0.8)] dark:shadow-[0_0_4px_rgba(0,208,132,0.5)]"></span>
+              {chapter.title}
+            </h3>
+            <div className="space-y-0.5">
+              {chapter.data.map((lesson, lessonIndex) => {
+                const id = `${chapterIndex}-${lessonIndex}`;
+                const active = selectedLesson.id === id;
+                const done = completedLessons.has(id);
+                return (
+                  <button
+                    key={id}
+                    onClick={() => {
+                      setSelectedId(id);
+                      setIsMobileMenuOpen(false); // Đóng menu mobile khi chọn bài học
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all duration-300 ${active
+                      ? 'bg-gradient-to-r from-[#D4AF37]/15 to-transparent dark:bg-none dark:bg-[#00d084]/10 border border-[#D4AF37]/50 dark:border-[#00d084]/30 text-[#1C2C44] dark:text-[#00d084] shadow-[inset_2px_0_0_#D4AF37] dark:shadow-none'
+                      : 'border border-transparent text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#1C2C44] dark:active:text- md:hover:text-[#e8eaf0] active:bg- md:hover:bg-[#D4AF37]/5 dark:active:bg- md:hover:bg-[rgba(255,255,255,0.04)]'
+                      }`}
+                  >
+                    <span className={`text-[15px] leading-snug ${active ? 'font-bold' : 'font-medium'}`}>
+                      {lesson.title.split('. ')[1] || lesson.title}
+                    </span>
+                    <div className="flex items-center gap-1.5 shrink-0 ml-2 perspective-1000">
+                      {done && <Check size={12} className="text-[#d97706] dark:text-[#00d084] opacity-80" />}
+                      {active && (
+                        <>
+                          <DollarSign size={14} className="hidden dark:block text-[#00d084] animate-fade-pulse" />
+                          <motion.div
+                            initial={{ y: 20, opacity: 0, rotateX: 180 }}
+                            animate={{ y: 0, opacity: 1, rotateX: 0 }}
+                            transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                            className="block dark:hidden shrink-0 relative"
+                          >
+                            <div className="absolute -inset-1.5 bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] rounded-full blur-sm opacity-50 animate-pulse"></div>
+                            <motion.div
+                              animate={{ rotateY: 360 }}
+                              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                              className="w-[26px] h-[26px] rounded-full bg-gradient-to-br from-[#FFF8E7] via-[#D4AF37] to-[#8B6508] p-[1.5px] shadow-[0_4px_10px_rgba(212,175,55,0.6)] relative z-10"
+                            >
+                              <div className="w-full h-full rounded-full bg-gradient-to-tl from-[#D4AF37] via-[#F3E5AB] to-[#996515] border-[0.5px] border-[#FFF8E7]/70 flex items-center justify-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.25)]">
+                                <div className="w-[18px] h-[18px] rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8860B] flex items-center justify-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.9)] border border-[#996515]/60 relative overflow-hidden">
+                                  <div className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-r from-transparent via-[#FFF8E7]/40 to-transparent rotate-45"></div>
+                                  <Bitcoin size={12} className="text-[#FFFDF5] drop-shadow-[0_1px_1.5px_rgba(139,101,8,0.9)] relative z-10" strokeWidth={2.5} />
+                                </div>
+                              </div>
+                            </motion.div>
+                            <motion.div
+                              animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5], rotate: [0, 90, 180] }}
+                              transition={{ duration: 2, repeat: Infinity }}
+                              className="absolute -top-1 -right-1 text-[#F3E5AB] drop-shadow-[0_0_3px_#D4AF37] z-20"
+                            >
+                              <Star size={8} fill="currentColor" />
+                            </motion.div>
+                            <motion.div
+                              animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.8, 0.3], rotate: [0, -90, -180] }}
+                              transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
+                              className="absolute -bottom-1 -left-1 text-[#D4AF37] drop-shadow-[0_0_2px_#D4AF37] z-20"
+                            >
+                              <Star size={6} fill="currentColor" />
+                            </motion.div>
+                          </motion.div>
+                        </>
+                      )}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </motion.section>
+        ))}
+      </div>
+    </>
+  );
+
   return (
     // Root: fixed viewport height, no window scroll
-    <div className="h-full overflow-hidden bg-[#faf9f6] dark:bg-[#0e1117] text-[#0f1117] dark:text-[#e8eaf0] font-sans selection:bg-[#d97706]/30 dark:selection:bg-[#00d084]/30 transition-colors duration-500">
+    <div className="h-full flex flex-col overflow-hidden bg-[#faf9f6] dark:bg-[#0e1117] text-[#0f1117] dark:text-[#e8eaf0] font-sans selection:bg-[#d97706]/30 dark:selection:bg-[#00d084]/30 transition-colors duration-500">
+
+      {/* Mobile Header (Only visible on small screens) */}
+      <div className="lg:hidden flex items-center justify-between p-4 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/90 dark:bg-[#0e1117]/90 backdrop-blur-md relative z-20">
+        <div className="flex items-center gap-3">
+          <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 rounded-xl bg-white dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shadow-sm">
+             <Menu size={20} className="text-[#0f1117] dark:text-[#e8eaf0]" />
+          </button>
+          <span className="font-black text-sm uppercase tracking-widest text-[#D4AF37] dark:text-[#00d084] flex items-center gap-2">
+            <Database size={14} /> {t.systemSync}
+          </span>
+        </div>
+        <span className="font-mono font-bold text-sm text-[#0f1117] dark:text-[#00d084]">{progressPct}%</span>
+      </div>
 
       {/* Full-height flex layout: sidebar | main */}
-      <div className="h-full flex relative z-10">
+      <div className="flex-1 overflow-hidden flex relative z-10">
 
-        {/* ── SIDEBAR ────────────────────────────────── */}
-        <aside className="w-72 shrink-0 h-full flex flex-col border-r border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/80 dark:bg-[#0e1117]/80 backdrop-blur-sm">
-
-          {/* System Sync / Progress */}
-          <div className="p-5 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)]">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-              className="bg-[#fff]/60 dark:bg-black/40 backdrop-blur-md rounded-2xl p-5 border border-[#d97706]/40 dark:border-[rgba(255,255,255,0.1)] relative overflow-hidden shadow-sm"
-            >
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#D4AF37] dark:via-[#00d084] to-transparent"></div>
-              <div className="flex justify-between items-center mb-3">
-                <span className="text-[12.5px] font-mono uppercase tracking-[0.2em] text-[#D4AF37] dark:text-[#00d084] flex items-center gap-2 font-black">
-                  <Database size={12} /> {t.systemSync}
-                </span>
-                <span className="font-mono text-[#0f1117] dark:text-[#00d084] font-bold dark:font-medium text-sm">{progressPct}%</span>
-              </div>
-              <div className="h-1 rounded-full bg-[rgba(15,17,23,0.1)] dark:bg-[rgba(255,255,255,0.05)] overflow-hidden relative">
-                <motion.div
-                  initial={{ width: 0 }} animate={{ width: `${progressPct}%` }} transition={{ duration: 1, ease: "easeOut" }}
-                  className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#C59B27] to-[#D4AF37] dark:from-[#00d084] dark:to-[#00d084] shadow-[0_0_12px_rgba(212,175,55,0.6)] dark:shadow-[0_0_10px_rgba(0,208,132,0.5)]"
-                />
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Navigation — scrollable */}
-          <div className="flex-1 overflow-y-auto py-4 px-3 space-y-6 custom-scrollbar">
-            {chapters.map((chapter, chapterIndex) => (
-              <motion.section
-                key={chapterIndex}
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: chapterIndex * 0.1 }}
-              >
-                <h3 className="text-[12.5px] font-mono uppercase tracking-[0.18em] text-[#B8860B] dark:text-[#00d084] border-b border-[#D4AF37]/30 dark:border-[#00d084]/20 pb-2 mb-3 px-2 flex items-center gap-2 font-black">
-                  <span className="w-1.5 h-1.5 bg-[#D4AF37] dark:bg-[#00d084] rounded-full shadow-[0_0_6px_rgba(212,175,55,0.8)] dark:shadow-[0_0_4px_rgba(0,208,132,0.5)]"></span>
-                  {chapter.title}
-                </h3>
-                <div className="space-y-0.5">
-                  {chapter.data.map((lesson, lessonIndex) => {
-                    const id = `${chapterIndex}-${lessonIndex}`;
-                    const active = selectedLesson.id === id;
-                    const done = completedLessons.has(id);
-                    return (
-                      <button
-                        key={id}
-                        onClick={() => setSelectedId(id)}
-                        className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all duration-300 ${active
-                          ? 'bg-gradient-to-r from-[#D4AF37]/15 to-transparent dark:bg-none dark:bg-[#00d084]/10 border border-[#D4AF37]/50 dark:border-[#00d084]/30 text-[#1C2C44] dark:text-[#00d084] shadow-[inset_2px_0_0_#D4AF37] dark:shadow-none'
-                          : 'border border-transparent text-[#636878] dark:text-[#9ca3b0] hover:text-[#1C2C44] dark:hover:text-[#e8eaf0] hover:bg-[#D4AF37]/5 dark:hover:bg-[rgba(255,255,255,0.04)]'
-                          }`}
-                      >
-                        <span className={`text-[15px] leading-snug ${active ? 'font-bold' : 'font-medium'}`}>
-                          {lesson.title.split('. ')[1] || lesson.title}
-                        </span>
-                        <div className="flex items-center gap-1.5 shrink-0 ml-2 perspective-1000">
-                          {done && <Check size={12} className="text-[#d97706] dark:text-[#00d084] opacity-80" />}
-                          {active && (
-                            <>
-                              <DollarSign size={14} className="hidden dark:block text-[#00d084] animate-fade-pulse" />
-                              <motion.div
-                                initial={{ y: 20, opacity: 0, rotateX: 180 }}
-                                animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                                transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                                className="block dark:hidden shrink-0 relative"
-                              >
-                                {/* Hào quang vàng ròng (Outer glow) */}
-                                <div className="absolute -inset-1.5 bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] rounded-full blur-sm opacity-50 animate-pulse"></div>
-
-                                {/* Đồng tiền vàng (The Gold Coin) */}
-                                <motion.div
-                                  animate={{ rotateY: 360 }}
-                                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                                  className="w-[26px] h-[26px] rounded-full bg-gradient-to-br from-[#FFF8E7] via-[#D4AF37] to-[#8B6508] p-[1.5px] shadow-[0_4px_10px_rgba(212,175,55,0.6)] relative z-10"
-                                >
-                                  {/* Viền trong chạm khắc (Inner Coin Bezel) */}
-                                  <div className="w-full h-full rounded-full bg-gradient-to-tl from-[#D4AF37] via-[#F3E5AB] to-[#996515] border-[0.5px] border-[#FFF8E7]/70 flex items-center justify-center shadow-[inset_0_2px_4px_rgba(0,0,0,0.25)]">
-                                    {/* Lõi kim loại quý (Core) */}
-                                    <div className="w-[18px] h-[18px] rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8860B] flex items-center justify-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.9)] border border-[#996515]/60 relative overflow-hidden">
-                                      {/* Hiệu ứng chói sáng vắt chéo */}
-                                      <div className="absolute top-0 left-[-50%] w-[200%] h-full bg-gradient-to-r from-transparent via-[#FFF8E7]/40 to-transparent rotate-45"></div>
-                                      <Bitcoin size={12} className="text-[#FFFDF5] drop-shadow-[0_1px_1.5px_rgba(139,101,8,0.9)] relative z-10" strokeWidth={2.5} />
-                                    </div>
-                                  </div>
-                                </motion.div>
-
-                                {/* Lấp lánh sang chảnh (Bling Sparkles) */}
-                                <motion.div
-                                  animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5], rotate: [0, 90, 180] }}
-                                  transition={{ duration: 2, repeat: Infinity }}
-                                  className="absolute -top-1 -right-1 text-[#F3E5AB] drop-shadow-[0_0_3px_#D4AF37] z-20"
-                                >
-                                  <Star size={8} fill="currentColor" />
-                                </motion.div>
-                                <motion.div
-                                  animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.8, 0.3], rotate: [0, -90, -180] }}
-                                  transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-                                  className="absolute -bottom-1 -left-1 text-[#D4AF37] drop-shadow-[0_0_2px_#D4AF37] z-20"
-                                >
-                                  <Star size={6} fill="currentColor" />
-                                </motion.div>
-                              </motion.div>
-                            </>
-                          )}
-                        </div>
-                      </button>
-                    );
-                  })}
-                </div>
-              </motion.section>
-            ))}
-          </div>
+        {/* ── DESKTOP SIDEBAR ────────────────────────────────── */}
+        <aside className="hidden lg:flex w-72 shrink-0 h-full flex-col border-r border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/80 dark:bg-[#0e1117]/80 backdrop-blur-sm">
+          <SidebarContent />
         </aside>
+
+        {/* ── MOBILE DRAWER SIDEBAR ────────────────────────────── */}
+        {isMobileMenuOpen && (
+          <div className="fixed inset-0 z-[100] flex lg:hidden">
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}></div>
+            <motion.aside
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
+              className="w-[300px] max-w-[85vw] h-full flex flex-col bg-[#faf9f6] dark:bg-[#0e1117] relative z-50 shadow-2xl"
+            >
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)} 
+                className="absolute top-4 right-4 p-2 rounded-full bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] z-10 active:bg- md:hover:bg-[rgba(15,17,23,0.1)] transition-colors"
+              >
+                 <X size={20} className="text-[#0f1117] dark:text-[#e8eaf0]" />
+              </button>
+              <SidebarContent />
+            </motion.aside>
+          </div>
+        )}
 
         {/* ── MAIN CONTENT ───────────────────────────── */}
         {/* This is the one true scrollable container */}
@@ -229,7 +265,7 @@ const Academy = ({ lang = 'vi' }) => {
           ref={mainScrollRef}
           className="flex-1 h-full overflow-y-auto custom-scrollbar"
         >
-          <div className="max-w-4xl mx-auto p-6 md:p-10">
+          <div className="max-w-4xl mx-auto p-4 md:p-10">
             <motion.div
               key={selectedLesson.id}
               initial={{ opacity: 0, y: 8 }}
@@ -241,17 +277,17 @@ const Academy = ({ lang = 'vi' }) => {
               <div className="h-[3px] w-full bg-gradient-to-r from-transparent via-[#D4AF37] dark:via-[#00d084] to-transparent" />
 
               {/* Lesson content */}
-              <div className="p-8 md:p-12">
+              <div className="p-4 md:p-12">
                 {selectedLesson.content}
               </div>
 
               {/* Bottom nav */}
-              <div className="px-8 md:px-12 pb-8 md:pb-12 pt-6 border-t border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.08)] flex flex-col gap-4">
+              <div className="px-4 md:px-12 pb-4 md:pb-12 pt-6 border-t border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.08)] flex flex-col gap-4">
                 <button
                   onClick={() => toggleComplete(selectedLesson.id)}
                   className={`w-full py-3.5 rounded-xl font-mono text-[14.5px] tracking-[0.12em] transition-all duration-300 uppercase flex items-center justify-center gap-2 ${completedLessons.has(selectedLesson.id)
                     ? 'bg-transparent border border-[#D4AF37] dark:border-[#00d084]/50 text-[#D4AF37] dark:text-[#00d084]'
-                    : 'bg-[#1C2C44] dark:bg-[#00d084]/10 border border-[#1C2C44] dark:border-[#00d084]/30 text-[#FDFBF7] dark:text-[#00d084] hover:bg-[#2A4365] dark:hover:bg-[#00d084]/20 shadow-md dark:shadow-none'
+                    : 'bg-[#1C2C44] dark:bg-[#00d084]/10 border border-[#1C2C44] dark:border-[#00d084]/30 text-[#FDFBF7] dark:text-[#00d084] active:bg- md:hover:bg-[#2A4365] dark:active:bg- md:hover:bg-[#00d084]/20 shadow-md dark:shadow-none'
                     }`}
                 >
                   {completedLessons.has(selectedLesson.id) ? (
@@ -265,14 +301,14 @@ const Academy = ({ lang = 'vi' }) => {
                   <button
                     disabled={currentIndex === 0}
                     onClick={() => goToLesson(currentIndex - 1)}
-                    className="px-5 py-2.5 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#636878] dark:text-[#9ca3b0] hover:bg-[rgba(15,17,23,0.05)] dark:hover:bg-[rgba(255,255,255,0.05)] hover:text-[#0f1117] dark:hover:text-[#e8eaf0] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
+                    className="px-5 py-2.5 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#636878] dark:text-[#9ca3b0] active:bg- md:hover:bg-[rgba(15,17,23,0.05)] dark:active:bg- md:hover:bg-[rgba(255,255,255,0.05)] active:text- md:hover:text-[#0f1117] dark:active:text- md:hover:text-[#e8eaf0] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
                   >
                     <ChevronLeft size={15} /> {t.prev}
                   </button>
                   <button
                     disabled={currentIndex === allLessons.length - 1}
                     onClick={() => goToLesson(currentIndex + 1)}
-                    className="px-5 py-2.5 rounded-xl bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#0f1117] dark:text-[#e8eaf0] hover:bg-[rgba(15,17,23,0.08)] dark:hover:bg-[rgba(255,255,255,0.08)] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
+                    className="px-5 py-2.5 rounded-xl bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#0f1117] dark:text-[#e8eaf0] active:bg- md:hover:bg-[rgba(15,17,23,0.08)] dark:active:bg- md:hover:bg-[rgba(255,255,255,0.08)] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
                   >
                     {t.next} <ChevronRight size={15} />
                   </button>

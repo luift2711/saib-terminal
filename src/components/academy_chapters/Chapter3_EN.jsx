@@ -21,7 +21,7 @@ const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
         <div className="flex flex-col gap-3">
           {opts.map((opt, i) => {
             const isChosen = selected === i;
-            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
+            let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] active:border- md:hover:border-[#D4AF37] dark:active:border- md:hover:border-[#FCD535] active:shadow- md:hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:active:shadow- md:hover:shadow-none active:bg- md:hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:active:bg- md:hover:bg-none dark:active:bg- md:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
             let letterClass = "bg-gray-100 dark:bg-[#181A20] text-gray-500 dark:text-[#848E9C]";
             if (selected !== null) {
               if (i === correctIdx) { btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]"; letterClass = "bg-green-500 dark:bg-[#0ECB81] text-white"; }
@@ -101,7 +101,7 @@ const FibCalculator = () => {
             </tr></thead>
             <tbody className="text-[17.5px]">
               {rows.map((r, i) => (
-                <tr key={i} className="border-b border-gray-100 dark:border-[#2B3139]/50 last:border-0 hover:bg-white dark:hover:bg-[#1A2639]/30">
+                <tr key={i} className="border-b border-gray-100 dark:border-[#2B3139]/50 last:border-0 active:bg- md:hover:bg-white dark:active:bg- md:hover:bg-[#1A2639]/30">
                   <td className={`p-4 font-bold ${r.color}`}>{r.lbl}</td><td className={`p-4 font-mono font-black ${r.color}`}>${r.val}</td><td className="p-4 text-gray-600 dark:text-[#848E9C]" dangerouslySetInnerHTML={{ __html: r.type }}></td>
                 </tr>
               ))}
@@ -117,8 +117,8 @@ const FibCalculator = () => {
 const PatternCard = ({ svgCandles, name, type, badgeClass, essence, steps, isWarning }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <div className="border border-gray-200 dark:border-[#2B3139] rounded-3xl overflow-hidden mb-6 transition-all shadow-sm hover:shadow-md dark:shadow-none dark:hover:shadow-[0_0_20px_rgba(0,0,0,0.5)] bg-white dark:bg-[#181A20]">
-      <div onClick={() => setIsOpen(!isOpen)} className="flex items-center justify-between p-6 md:p-8 cursor-pointer hover:bg-gray-50 dark:hover:bg-[#2B3139]/50 transition-colors">
+    <div className="border border-gray-200 dark:border-[#2B3139] rounded-3xl overflow-hidden mb-6 transition-all shadow-sm active:shadow- md:hover:shadow-md dark:shadow-none dark:active:shadow- md:hover:shadow-[0_0_20px_rgba(0,0,0,0.5)] bg-white dark:bg-[#181A20]">
+      <div onClick={() => setIsOpen(!isOpen)} className="flex items-center justify-between p-6 md:p-8 cursor-pointer active:bg- md:hover:bg-gray-50 dark:active:bg- md:hover:bg-[#2B3139]/50 transition-colors">
         <div className="flex items-center gap-6">
           <div className="flex items-end gap-2 h-16">{svgCandles}</div>
           <div>
@@ -185,7 +185,7 @@ const FinalQuizCh3 = () => {
               const isSelected = answers[qIdx] === oIdx;
               const isCorrect = showRes && q.c === oIdx;
               const isWrong = showRes && isSelected && q.c !== oIdx;
-              let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
+              let btnClass = "border-gray-200 dark:border-[#2B3139] text-gray-700 dark:text-[#EAECEF] active:border- md:hover:border-[#D4AF37] dark:active:border- md:hover:border-[#FCD535] active:shadow- md:hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:active:shadow- md:hover:shadow-none active:bg- md:hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:active:bg- md:hover:bg-none dark:active:bg- md:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]";
               if (showRes) {
                 if (isCorrect) btnClass = "border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]";
                 else if (isWrong) btnClass = "border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none font-bold relative overflow-hidden opacity-60";
@@ -207,7 +207,7 @@ const FinalQuizCh3 = () => {
         <div className="p-10 bg-gradient-to-br from-white to-gray-50 dark:from-[#0B0E11] dark:to-[#181A20] border border-yellow-500 dark:border-[#FCD535] rounded-3xl text-center shadow-lg mt-8">
           <h2 className="text-4xl font-black text-black dark:text-white mb-4">Score: {score}/{qs.length}</h2>
           <p className="text-gray-600 dark:text-[#848E9C] text-[18.5px] mb-6">{score >= 12 ? <><Trophy size={18} className="inline mr-1 text-yellow-500" /> Excellent! You are ready to learn Risk Management.</> : <><Dumbbell size={48} className="mx-auto text-blue-500 mb-4" /> Did not pass 12/15. Please reread NNN Methods and Confluence.</>}</p>
-          <button onClick={() => { setAnswers({}); setShowRes(false); }} className="bg-gray-800 dark:bg-[#2B3139] text-white px-8 py-3 rounded-xl font-bold uppercase text-sm hover:bg-black transition-colors">Retry</button>
+          <button onClick={() => { setAnswers({}); setShowRes(false); }} className="bg-gray-800 dark:bg-[#2B3139] text-white px-8 py-3 rounded-xl font-bold uppercase text-sm active:bg- md:hover:bg-black transition-colors">Retry</button>
         </div>
       )}
     </div>

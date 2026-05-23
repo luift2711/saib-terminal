@@ -8,6 +8,13 @@
   body {
     font-family: 'Josefin Sans', sans-serif;
   }
+  
+  /* Tự động thu nhỏ font chữ và spacing (vì tailwind dùng rem) trên mobile */
+  @media (max-width: 768px) {
+    html {
+      font-size: 14px;
+    }
+  }
 }
 
 @layer utilities {

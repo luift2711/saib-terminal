@@ -239,9 +239,9 @@ const Flashcards = ({ lang = 'vi' }) => {
   }
 
   return (
-    <div className="max-w-xl mx-auto p-6 bg-[#fff]/80 dark:bg-[#111827]/60 border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] rounded-3xl backdrop-blur-xl shadow-xl dark:shadow-none text-center transition-colors duration-500">
+    <div className="max-w-xl mx-auto p-4 md:p-6 bg-[#fff]/80 dark:bg-[#111827]/60 border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.08)] rounded-3xl backdrop-blur-xl shadow-xl dark:shadow-none text-center transition-colors duration-500">
       <div className="flex flex-col md:flex-row items-center justify-between border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.08)] pb-4 mb-6 gap-4">
-        <h4 className="text-[12.5px] font-black text-[#636878] dark:text-[#9ca3b0] uppercase tracking-[0.2em] flex-1 text-left">
+        <h4 className="text-[12.5px] font-black text-[#636878] dark:text-[#9ca3b0] uppercase tracking-[0.2em] w-full md:w-auto text-center md:text-left">
           <Database size={12} className="inline mr-2" /> {t.system}
         </h4>
         <div className="flex items-center gap-3">
@@ -251,26 +251,26 @@ const Flashcards = ({ lang = 'vi' }) => {
         </div>
       </div>
 
-      <div className="relative w-full h-64 cursor-pointer [perspective:1000px]" onClick={() => setIsFlipped(!isFlipped)}>
+      <div className="relative w-full h-[320px] md:h-64 cursor-pointer [perspective:1000px] active:scale-[0.98] transition-transform" onClick={() => setIsFlipped(!isFlipped)}>
         <div className={`w-full h-full transition-all duration-500 [transform-style:preserve-3d] ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}>
           {/* Mặt trước */}
-          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] bg-[#faf9f6] dark:bg-[#0e1117] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.05)] hover:border-[#d97706]/50 dark:hover:border-[#00d084]/50 rounded-2xl flex flex-col items-center justify-center p-8 shadow-inner transition-colors duration-300">
+          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] bg-[#faf9f6] dark:bg-[#0e1117] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.05)] rounded-2xl flex flex-col items-center justify-center p-6 md:p-8 shadow-inner transition-colors duration-300">
             <p className="font-bold text-lg md:text-xl text-[#0f1117] dark:text-[#e8eaf0] leading-relaxed">{flashcards[cardIndex].front}</p>
             <span className="absolute bottom-4 text-[11.5px] text-[#636878] dark:text-[#9ca3b0] uppercase tracking-wider bg-[#0f1117]/5 dark:bg-[#e8eaf0]/5 px-3 py-1 rounded-full">{t.clickToFlip}</span>
           </div>
           {/* Mặt sau */}
-          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-[rgba(180,83,9,0.08)] to-[#faf9f6] dark:from-[rgba(0,208,132,0.15)] dark:to-[#0e1117] border border-[#d97706]/30 dark:border-[#00d084]/30 rounded-2xl flex items-center justify-center p-8 shadow-xl transition-colors duration-300">
+          <div className="absolute inset-0 w-full h-full [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-[rgba(180,83,9,0.08)] to-[#faf9f6] dark:from-[rgba(0,208,132,0.15)] dark:to-[#0e1117] border border-[#d97706]/30 dark:border-[#00d084]/30 rounded-2xl flex items-center justify-center p-6 md:p-8 shadow-xl transition-colors duration-300">
             <p className="font-bold text-base md:text-lg text-[#d97706] dark:text-[#00d084] leading-relaxed overflow-y-auto max-h-full custom-scrollbar pr-2">{flashcards[cardIndex].back}</p>
           </div>
         </div>
       </div>
 
-      <div className="flex justify-between items-center mt-6 px-2">
-        <button onClick={handlePrev} className="text-[#636878] dark:text-[#9ca3b0] hover:text-[#0f1117] dark:hover:text-white text-[13.5px] font-bold px-5 py-2.5 bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] rounded-xl border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.05)] transition-colors">{t.prev}</button>
-        <span className="text-[13.5px] font-mono font-bold text-[#636878] dark:text-[#9ca3b0] bg-[rgba(15,17,23,0.04)] dark:bg-[rgba(255,255,255,0.05)] px-4 py-1.5 rounded-full">
+      <div className="flex justify-between items-center mt-6 px-1 md:px-2 gap-2">
+        <button onClick={handlePrev} className="flex items-center justify-center min-h-[44px] min-w-[44px] text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#0f1117] dark:active:text- md:hover:text-white text-[13.5px] font-bold px-4 md:px-5 py-2.5 bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] rounded-xl border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.05)] transition-colors active:bg-[rgba(15,17,23,0.08)]">{t.prev}</button>
+        <span className="text-[13.5px] font-mono font-bold text-[#636878] dark:text-[#9ca3b0] bg-[rgba(15,17,23,0.04)] dark:bg-[rgba(255,255,255,0.05)] px-4 py-1.5 rounded-full shrink-0">
           {cardIndex + 1} / {flashcards.length}
         </span>
-        <button onClick={handleNext} className="text-white dark:text-black text-[13.5px] font-bold px-6 py-2.5 bg-[#d97706] dark:bg-[#00d084] rounded-xl hover:brightness-110 shadow-md transition-all">{t.next}</button>
+        <button onClick={handleNext} className="flex items-center justify-center min-h-[44px] min-w-[44px] text-white dark:text-black text-[13.5px] font-bold px-4 md:px-6 py-2.5 bg-[#d97706] dark:bg-[#00d084] rounded-xl active:scale-95 shadow-md transition-all">{t.next}</button>
       </div>
     </div>
   );

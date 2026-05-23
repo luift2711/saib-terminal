@@ -54,7 +54,7 @@ const App = () => {
     const isActive = activeTab === tabName;
     return `px-4 py-1.5 rounded-full text-[11px] font-black transition-all border ${isActive
         ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:from-transparent dark:bg-[#00d084]/15 border-[#D4AF37]/50 dark:border-[#00d084]/30 text-white dark:text-[#00d084] shadow-[0_2px_8px_rgba(212,175,55,0.4)] dark:shadow-sm'
-        : 'border-transparent text-[#636878] dark:text-[#9ca3b0] hover:text-[#1C2C44] dark:hover:text-[#e8eaf0] hover:bg-white/60 dark:hover:bg-[rgba(255,255,255,0.04)]'
+        : 'border-transparent text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#1C2C44] dark:active:text- md:hover:text-[#e8eaf0] active:bg- md:hover:bg-white/60 dark:active:bg- md:hover:bg-[rgba(255,255,255,0.04)]'
       }`;
   };
 
@@ -97,10 +97,25 @@ const App = () => {
       </div>
 
       {/* NAVBAR */}
-      <nav className="bg-[#fff]/80 dark:bg-[#0e1117]/80 backdrop-blur-md border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] px-6 py-3 flex justify-between items-center shrink-0 z-20 transition-colors duration-300">
-        <div className="flex items-center space-x-6">
+      <nav className="bg-[#fff]/80 dark:bg-[#0e1117]/80 backdrop-blur-md border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] px-4 md:px-6 py-3 flex flex-col md:flex-row justify-between items-center shrink-0 z-20 transition-colors duration-300 gap-3 md:gap-0">
+        <div className="flex items-center justify-between w-full md:w-auto">
           <h1 className="text-xl font-black tracking-tighter text-[#1C2C44] dark:text-[#e8eaf0]">SAIB<span className="text-[#D4AF37] dark:text-[#00d084]">.</span></h1>
-          <div className="flex space-x-1 bg-white/50 dark:bg-[rgba(255,255,255,0.03)] p-1 rounded-full border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shadow-sm dark:shadow-none">
+          
+          <div className="flex md:hidden items-center space-x-3">
+             {/* NÚT CÔNG TẮC NGÔN NGỮ EN/VN (Mobile) */}
+             <div className="flex items-center space-x-1 bg-white/50 dark:bg-[rgba(255,255,255,0.03)] p-1 rounded-full border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)]">
+               <button onClick={() => toggleLang('vi')} className={`px-2 py-1 rounded-full text-[9px] font-bold transition-all ${lang === 'vi' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black' : 'text-[#636878] dark:text-[#9ca3b0]'}`}>VN</button>
+               <button onClick={() => toggleLang('en')} className={`px-2 py-1 rounded-full text-[9px] font-bold transition-all ${lang === 'en' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black' : 'text-[#636878] dark:text-[#9ca3b0]'}`}>EN</button>
+             </div>
+             {/* NÚT CÔNG TẮC DARK/LIGHT MODE (Mobile) */}
+             <button onClick={toggleTheme} className="text-lg p-1.5 rounded-full bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)]">
+               {isDarkMode ? '☀️' : '🌙'}
+             </button>
+          </div>
+        </div>
+
+        <div className="w-full md:w-auto overflow-x-auto custom-scrollbar pb-1 md:pb-0">
+          <div className="flex space-x-1 bg-white/50 dark:bg-[rgba(255,255,255,0.03)] p-1 rounded-full border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shadow-sm dark:shadow-none min-w-max">
             <button onClick={() => setActiveTab('academy')} className={getTabClass('academy')}>{t.academy}</button>
             <button onClick={() => setActiveTab('flashcards')} className={getTabClass('flashcards')}>{t.flashcards}</button>
             <button onClick={() => setActiveTab('quiz')} className={getTabClass('quiz')}>{t.quiz}</button>
@@ -108,16 +123,17 @@ const App = () => {
             <button onClick={() => setActiveTab('gym')} className={getTabClass('gym')}>{t.gym}</button>
           </div>
         </div>
-        <div className="flex items-center space-x-4">
+
+        <div className="hidden md:flex items-center space-x-4">
 
           {/* NÚT CÔNG TẮC NGÔN NGỮ EN/VN */}
           <div className="flex items-center space-x-1 bg-white/50 dark:bg-[rgba(255,255,255,0.03)] p-1 rounded-full border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shadow-sm dark:shadow-none">
-            <button onClick={() => toggleLang('vi')} className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'vi' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black shadow-[0_2px_4px_rgba(212,175,55,0.3)] dark:shadow-sm' : 'text-[#636878] dark:text-[#9ca3b0] hover:text-[#1C2C44] dark:hover:text-white'}`}>VN</button>
-            <button onClick={() => toggleLang('en')} className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black shadow-[0_2px_4px_rgba(212,175,55,0.3)] dark:shadow-sm' : 'text-[#636878] dark:text-[#9ca3b0] hover:text-[#1C2C44] dark:hover:text-white'}`}>EN</button>
+            <button onClick={() => toggleLang('vi')} className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'vi' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black shadow-[0_2px_4px_rgba(212,175,55,0.3)] dark:shadow-sm' : 'text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#1C2C44] dark:active:text- md:hover:text-white'}`}>VN</button>
+            <button onClick={() => toggleLang('en')} className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:bg-none dark:bg-[#00d084] text-white dark:text-black shadow-[0_2px_4px_rgba(212,175,55,0.3)] dark:shadow-sm' : 'text-[#636878] dark:text-[#9ca3b0] active:text- md:hover:text-[#1C2C44] dark:active:text- md:hover:text-white'}`}>EN</button>
           </div>
 
           {/* NÚT CÔNG TẮC DARK/LIGHT MODE */}
-          <button onClick={toggleTheme} className="text-xl p-1.5 rounded-full bg-[rgba(15,17,23,0.03)] hover:bg-[rgba(15,17,23,0.08)] dark:bg-[rgba(255,255,255,0.03)] dark:hover:bg-[rgba(255,255,255,0.08)] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] transition-all shadow-sm">
+          <button onClick={toggleTheme} className="text-xl p-1.5 rounded-full bg-[rgba(15,17,23,0.03)] active:bg- md:hover:bg-[rgba(15,17,23,0.08)] dark:bg-[rgba(255,255,255,0.03)] dark:active:bg- md:hover:bg-[rgba(255,255,255,0.08)] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] transition-all shadow-sm">
             {isDarkMode ? '☀️' : '🌙'}
           </button>
 
@@ -132,7 +148,7 @@ const App = () => {
       <main className="flex-1 overflow-y-auto relative custom-scrollbar z-10">
         {activeTab === 'academy' && <Academy lang={lang} />}
         {activeTab !== 'academy' && (
-          <div className="max-w-7xl mx-auto p-6">
+          <div className="max-w-7xl mx-auto p-4 md:p-6">
             {activeTab === 'flashcards' && <Flashcards lang={lang} />}
             {activeTab === 'quiz' && <DailyQuiz lang={lang} />}
             {activeTab === 'journal' && <TradingJournal lang={lang} />}

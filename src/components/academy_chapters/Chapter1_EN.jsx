@@ -92,7 +92,7 @@ const MatchGame = () => {
     if ((side === 'L' && selL === id) || (side === 'R' && selR === id)) {
       return 'border-transparent dark:border-[#378ADD] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#378ADD]/20 text-[#1C2C44] dark:text-[#378ADD] shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]';
     }
-    return 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-[#1C2C44] dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#FCD535]/10 transition-colors';
+    return 'border-gray-200 dark:border-[#2B3139] bg-white dark:bg-[#181A20] text-[#1C2C44] dark:text-[#EAECEF] active:border- md:hover:border-[#D4AF37] dark:active:border- md:hover:border-[#FCD535] active:shadow- md:hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:active:shadow- md:hover:shadow-none active:bg- md:hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:active:bg- md:hover:bg-none dark:active:bg- md:hover:bg-[#FCD535]/10 transition-colors';
   };
 
   return (
@@ -340,7 +340,7 @@ const CandleLab = () => {
           <div
             key={item.name}
             onClick={() => setActive(index)}
-            className={`flex flex-col items-center cursor-pointer transition-all duration-300 hover:scale-110 ${active !== null && active !== index ? 'opacity-30' : 'opacity-100'
+            className={`flex flex-col items-center cursor-pointer transition-all duration-300 active:scale- md:hover:scale-110 ${active !== null && active !== index ? 'opacity-30' : 'opacity-100'
               }`}
           >
             {item.candle}
@@ -532,7 +532,7 @@ const CandleQuiz = () => {
             const isChosen = selected === index;
             const isCorrect = selected !== null && index === q.c;
             const isWrong = selected !== null && isChosen && index !== q.c;
-            let btnClass = 'border-gray-200 dark:border-[#2B3139] text-[#1C2C44] dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#FCD535]/5 bg-white dark:bg-transparent';
+            let btnClass = 'border-gray-200 dark:border-[#2B3139] text-[#1C2C44] dark:text-[#EAECEF] active:border- md:hover:border-[#D4AF37] dark:active:border- md:hover:border-[#FCD535] active:shadow- md:hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:active:shadow- md:hover:shadow-none active:bg- md:hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:active:bg- md:hover:bg-none dark:active:bg- md:hover:bg-[#FCD535]/5 bg-white dark:bg-transparent';
             if (isCorrect) btnClass = 'border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]';
             else if (isWrong) btnClass = 'border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none relative overflow-hidden';
             else if (selected !== null) btnClass = 'border-[rgba(15,17,23,0.1)] dark:border-[#2B3139] text-[#9ba0ad] dark:text-[#64748B] opacity-50 cursor-not-allowed bg-white dark:bg-transparent';
@@ -669,7 +669,7 @@ const FinalQuiz = () => {
               const isSelected = answers[qIdx] === oIdx;
               const isCorrect = showRes && q.c === oIdx;
               const isWrong = showRes && isSelected && q.c !== oIdx;
-              let btnClass = 'border-gray-200 dark:border-[#2B3139] text-[#1C2C44] dark:text-[#EAECEF] hover:border-[#D4AF37] dark:hover:border-[#FCD535] hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:hover:shadow-none hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:hover:bg-none dark:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]';
+              let btnClass = 'border-gray-200 dark:border-[#2B3139] text-[#1C2C44] dark:text-[#EAECEF] active:border- md:hover:border-[#D4AF37] dark:active:border- md:hover:border-[#FCD535] active:shadow- md:hover:shadow-[0_0_15px_rgba(212,175,55,0.3)] dark:active:shadow- md:hover:shadow-none active:bg- md:hover:bg-gradient-to-br hover:from-[#FDFBF7] hover:to-[#F3E5AB] dark:active:bg- md:hover:bg-none dark:active:bg- md:hover:bg-[#0B0E11] bg-white dark:bg-[#0B0E11]';
               if (isCorrect) btnClass = 'border-transparent dark:border-[#0ECB81] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#0ECB81]/10 text-[#1C2C44] dark:text-[#0ECB81] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]';
               if (isWrong) btnClass = 'border-transparent dark:border-[#F6465D] bg-gradient-to-br from-[#F5E6E6] to-[#E6BDBD] dark:bg-none dark:bg-[#F6465D]/10 text-[#5A1A1A] dark:text-[#F6465D] shadow-[0_4px_15px_rgba(181,59,59,0.2)] dark:shadow-none font-bold relative overflow-hidden';
               if (!showRes && isSelected) btnClass = 'border-transparent dark:border-[#378ADD] bg-gradient-to-br from-[#D4AF37] via-[#F3E5AB] to-[#B8860B] dark:bg-none dark:bg-[#378ADD]/10 text-[#1C2C44] dark:text-[#378ADD] font-bold shadow-[0_4px_15px_rgba(212,175,55,0.4)] dark:shadow-none relative overflow-hidden before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.8)_50%,transparent_75%)] before:bg-[length:250%_250%] before:animate-[pulse_2s_infinite]';
@@ -720,7 +720,7 @@ const FinalQuiz = () => {
               setAnswers({});
               setShowRes(false);
             }}
-            className="bg-gray-800 dark:bg-[#2B3139] text-white px-8 py-3 rounded-xl font-bold uppercase text-sm hover:bg-black transition-colors"
+            className="bg-gray-800 dark:bg-[#2B3139] text-white px-8 py-3 rounded-xl font-bold uppercase text-sm active:bg- md:hover:bg-black transition-colors"
           >
             Retry
           </button>
@@ -1170,7 +1170,7 @@ const CHAPTER_1_DATA_EN = [
                 ].map(([tf, candle, purpose, trader, hold, highlight]) => (
                   <tr key={tf} className={`border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] last:border-0 transition-colors ${highlight
                       ? 'bg-[#d97706]/15/50 dark:bg-[#d97706]/10 font-semibold text-[#0f1117] dark:text-[#e8eaf0]'
-                      : 'hover:bg-[#faf9f6] dark:hover:bg-[rgba(255,255,255,0.02)]'
+                      : 'active:bg- md:hover:bg-[#faf9f6] dark:active:bg- md:hover:bg-[rgba(255,255,255,0.02)]'
                     }`}>
                     <td className={`p-4 font-mono font-bold ${highlight ? 'text-[#d97706] dark:text-[#f5a623]' : 'text-[#0f1117] dark:text-[#e8eaf0]'}`}>{tf}</td>
                     <td className="p-4">{candle}</td>
