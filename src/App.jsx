@@ -77,6 +77,16 @@ const App = () => {
     }
   }[lang];
 
+  const [hideNav, setHideNav] = useState(false);
+
+  useEffect(() => {
+    const handleAppScroll = (e) => {
+      setHideNav(e.detail.hide);
+    };
+    window.addEventListener('app-scroll', handleAppScroll);
+    return () => window.removeEventListener('app-scroll', handleAppScroll);
+  }, []);
+
   return (
     <div className="h-screen flex flex-col bg-[#faf9f6] dark:bg-[#0e1117] text-[#0f1117] dark:text-[#e8eaf0] font-sans font-semibold subpixel-antialiased selection:bg-[#d97706]/30 dark:selection:bg-[#00d084]/30 transition-colors duration-300">
 
@@ -97,7 +107,7 @@ const App = () => {
       </div>
 
       {/* NAVBAR */}
-      <nav className="bg-[#fff]/80 dark:bg-[#0e1117]/80 backdrop-blur-md border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] px-4 md:px-6 py-3 flex flex-col md:flex-row justify-between items-center shrink-0 z-20 transition-colors duration-300 gap-3 md:gap-0">
+      <nav className={`shrink-0 w-full bg-[#fff]/80 dark:bg-[#0e1117]/80 backdrop-blur-md border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] px-4 md:px-6 py-3 flex flex-col md:flex-row justify-between items-center z-10 transition-all duration-300 md:gap-0 ${hideNav ? 'gap-0' : 'gap-3'}`}>
         <div className="flex items-center justify-between w-full md:w-auto">
           <h1 className="text-xl font-black tracking-tighter text-[#1C2C44] dark:text-[#e8eaf0]">SAIB<span className="text-[#D4AF37] dark:text-[#00d084]">.</span></h1>
           
@@ -114,7 +124,7 @@ const App = () => {
           </div>
         </div>
 
-        <div className="w-full md:w-auto overflow-x-auto custom-scrollbar pb-1 md:pb-0">
+        <div className={`w-full md:w-auto overflow-x-auto custom-scrollbar transition-all duration-500 ease-in-out origin-top overflow-hidden ${hideNav ? 'max-h-0 opacity-0 pointer-events-none lg:max-h-[100px] lg:opacity-100 lg:pointer-events-auto' : 'max-h-[100px] opacity-100 pb-1 md:pb-0'}`}>
           <div className="flex space-x-1 bg-white/50 dark:bg-[rgba(255,255,255,0.03)] p-1 rounded-full border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shadow-sm dark:shadow-none min-w-max">
             <button onClick={() => setActiveTab('academy')} className={getTabClass('academy')}>{t.academy}</button>
             <button onClick={() => setActiveTab('flashcards')} className={getTabClass('flashcards')}>{t.flashcards}</button>
@@ -145,7 +155,7 @@ const App = () => {
       </nav>
 
       {/* ROUTER NỘI DUNG */}
-      <main className="flex-1 overflow-y-auto relative custom-scrollbar z-10">
+      <main className="flex-1 overflow-y-auto relative custom-scrollbar z-20">
         {activeTab === 'academy' && <Academy lang={lang} />}
         {activeTab !== 'academy' && (
           <div className="max-w-7xl mx-auto p-4 md:p-6">

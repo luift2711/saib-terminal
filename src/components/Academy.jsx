@@ -41,7 +41,25 @@ const Academy = ({ lang = 'vi' }) => {
   const [selectedId, setSelectedId] = useState('0-0');
   const [completedLessons, setCompletedLessons] = useState(readCompletedLessons);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hideNav, setHideNav] = useState(false);
   const mainScrollRef = useRef(null);
+  const lastScrollY = useRef(0);
+
+  const handleScroll = (e) => {
+    const currentScrollY = e.target.scrollTop;
+    if (currentScrollY > 100 && currentScrollY > lastScrollY.current + 10) {
+      if (!hideNav) {
+        setHideNav(true);
+        window.dispatchEvent(new CustomEvent('app-scroll', { detail: { hide: true } }));
+      }
+    } else if (currentScrollY < lastScrollY.current - 10) {
+      if (hideNav) {
+        setHideNav(false);
+        window.dispatchEvent(new CustomEvent('app-scroll', { detail: { hide: false } }));
+      }
+    }
+    lastScrollY.current = currentScrollY;
+  };
 
   // Scroll to top on lesson change — scroll the main content area
   useEffect(() => {
@@ -216,8 +234,35 @@ const Academy = ({ lang = 'vi' }) => {
     // Root: fixed viewport height, no window scroll
     <div className="h-full flex flex-col overflow-hidden bg-[#faf9f6] dark:bg-[#0e1117] text-[#0f1117] dark:text-[#e8eaf0] font-sans selection:bg-[#d97706]/30 dark:selection:bg-[#00d084]/30 transition-colors duration-500">
 
+      {/* ── MOBILE DRAWER SIDEBAR ────────────────────────────── */}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-[100] flex lg:hidden">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}></div>
+          <motion.aside
+            initial={{ x: '-100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '-100%' }}
+            transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
+            className="w-[300px] max-w-[85vw] h-full flex flex-col bg-[#faf9f6] dark:bg-[#0e1117] relative z-50 shadow-2xl"
+          >
+            <div className="flex justify-between items-center p-4 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shrink-0">
+              <h2 className="text-[13px] font-black tracking-[0.15em] text-[#1C2C44] dark:text-[#e8eaf0]">MENU</h2>
+              <button 
+                onClick={() => setIsMobileMenuOpen(false)} 
+                className="p-2 rounded-full bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] z-10 active:bg- md:hover:bg-[rgba(15,17,23,0.1)] transition-colors"
+              >
+                 <X size={20} className="text-[#0f1117] dark:text-[#e8eaf0]" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-hidden flex flex-col">
+              <SidebarContent />
+            </div>
+          </motion.aside>
+        </div>
+      )}
+
       {/* Mobile Header (Only visible on small screens) */}
-      <div className="lg:hidden flex items-center justify-between p-4 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/90 dark:bg-[#0e1117]/90 backdrop-blur-md relative z-20">
+      <div className={`lg:hidden flex items-center justify-between p-4 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/90 dark:bg-[#0e1117]/90 backdrop-blur-md relative z-20 transition-all duration-500 ease-in-out origin-top overflow-hidden ${hideNav ? 'max-h-0 opacity-0 !py-0 !border-0 pointer-events-none' : 'max-h-[100px] opacity-100'}`}>
         <div className="flex items-center gap-3">
           <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 rounded-xl bg-white dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shadow-sm">
              <Menu size={20} className="text-[#0f1117] dark:text-[#e8eaf0]" />
@@ -237,32 +282,11 @@ const Academy = ({ lang = 'vi' }) => {
           <SidebarContent />
         </aside>
 
-        {/* ── MOBILE DRAWER SIDEBAR ────────────────────────────── */}
-        {isMobileMenuOpen && (
-          <div className="fixed inset-0 z-[100] flex lg:hidden">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}></div>
-            <motion.aside
-              initial={{ x: '-100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '-100%' }}
-              transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-              className="w-[300px] max-w-[85vw] h-full flex flex-col bg-[#faf9f6] dark:bg-[#0e1117] relative z-50 shadow-2xl"
-            >
-              <button 
-                onClick={() => setIsMobileMenuOpen(false)} 
-                className="absolute top-4 right-4 p-2 rounded-full bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] z-10 active:bg- md:hover:bg-[rgba(15,17,23,0.1)] transition-colors"
-              >
-                 <X size={20} className="text-[#0f1117] dark:text-[#e8eaf0]" />
-              </button>
-              <SidebarContent />
-            </motion.aside>
-          </div>
-        )}
-
         {/* ── MAIN CONTENT ───────────────────────────── */}
         {/* This is the one true scrollable container */}
         <main
           ref={mainScrollRef}
+          onScroll={handleScroll}
           className="flex-1 h-full overflow-y-auto custom-scrollbar"
         >
           <div className="max-w-4xl mx-auto p-4 md:p-10">
