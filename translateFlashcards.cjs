@@ -2,8 +2,9 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
-const API_KEY = 'AIzaSyA5Bl-q3j0QcJxQ74PXIuTPrA9VZhTHMbk';
-const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
+require('dotenv').config(); // Load biến từ file .env
+const API_KEY = process.env.VITE_GEMINI_API_KEY || 'ĐIỀN_API_KEY_VÀO_ĐÂY';
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`;
 
 const basePath = 'd:/AI_Trading_Apps/trading-gym/src/components/FlashCardsData';
 

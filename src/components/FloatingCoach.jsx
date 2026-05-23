@@ -5,7 +5,7 @@ import { Bot, X, Send, Loader2 } from 'lucide-react';
 // =============================================
 // GEMINI API CONFIG
 // =============================================
-const GEMINI_API_KEY = 'AIzaSyA5Bl-q3j0QcJxQ74PXIuTPrA9VZhTHMbk'; // Replace with your key
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
 const SYSTEM_PROMPT = `
@@ -320,18 +320,18 @@ const FloatingCoach = ({ lang = 'vi' }) => {
     if (triggerPrompt && !isLoading) {
       const userText = triggerPrompt;
       setTriggerPrompt(null);
-      
+
       const sendPrompt = async () => {
-         setIsLoading(true);
-         const newMsg = { id: Date.now(), text: userText, sender: 'user' };
-         const currentMessages = [...messages, newMsg];
-         setMessages(currentMessages);
-         
-         const reply = await callGemini(userText, currentMessages);
-         setMessages(prev => [...prev, { id: Date.now() + 1, text: reply, sender: 'bot' }]);
-         setIsLoading(false);
+        setIsLoading(true);
+        const newMsg = { id: Date.now(), text: userText, sender: 'user' };
+        const currentMessages = [...messages, newMsg];
+        setMessages(currentMessages);
+
+        const reply = await callGemini(userText, currentMessages);
+        setMessages(prev => [...prev, { id: Date.now() + 1, text: reply, sender: 'bot' }]);
+        setIsLoading(false);
       };
-      
+
       sendPrompt();
     }
   }, [triggerPrompt, isLoading, messages, callGemini]);
