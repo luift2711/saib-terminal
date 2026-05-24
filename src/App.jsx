@@ -38,8 +38,8 @@ const App = () => {
     }
   }, []);
 
-  const [user, setUser] = useState(null);
-  const [authLoading, setAuthLoading] = useState(true);
+  const [user, setUser] = useState({ uid: 'stitch_mode', displayName: 'Stitch Designer', photoURL: 'https://via.placeholder.com/30' });
+  const [authLoading, setAuthLoading] = useState(false);
 
   // State cho Form Login/Register
   const [isRegisterMode, setIsRegisterMode] = useState(false);
@@ -76,6 +76,8 @@ const App = () => {
   const [showEditConfirmPassword, setShowEditConfirmPassword] = useState(false);
 
   useEffect(() => {
+    // TẠM THỜI VÔ HIỆU HÓA ĐỂ DÙNG STITCH UI
+    /*
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       setAuthLoading(false);
@@ -120,6 +122,7 @@ const App = () => {
       }
     });
     return () => unsubscribe();
+    */
   }, []);
 
   // Logic Hệ thống Rank
