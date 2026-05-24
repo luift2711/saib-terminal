@@ -17,6 +17,9 @@ import CHAPTER_6_DATA_VN from './academy_chapters/Chapter6_VN';
 import CHAPTER_6_DATA_EN from './academy_chapters/Chapter6_EN';
 
 const STORAGE_KEY = 'SAIB_academy_progress';
+const PASSED_QUIZZES_KEY = 'SAIB_academy_passed_quizzes';
+
+export const AcademyContext = React.createContext(null);
 
 const getChapters = (lang) => [
   { title: lang === 'en' ? 'Curriculum Overview' : 'Tổng quan Lộ trình', data: lang === 'en' ? CHAPTER_0_DATA_EN : CHAPTER_0_DATA_VN },
@@ -85,7 +88,11 @@ const Academy = ({ lang = 'vi' }) => {
   };
 
   useEffect(() => {
-    if (mainScrollRef.current) mainScrollRef.current.scrollTop = 0;
+    if (mainScrollRef.current) {
+      setTimeout(() => {
+        if (mainScrollRef.current) mainScrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    }
   }, [selectedId]);
 
   const selectedLesson = allLessons.find((lesson) => lesson.id === selectedId) || allLessons[0];
