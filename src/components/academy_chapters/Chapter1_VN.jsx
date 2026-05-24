@@ -44,10 +44,22 @@ const MatchGame = () => {
   const [selR, setSelR] = useState(null);
   const [matched, setMatched] = useState([]);
   const [flash, setFlash] = useState(null);
+  const academyCtx = React.useContext(AcademyContext);
+  const exId = React.useId();
+
+  React.useEffect(() => {
+    if (academyCtx?.registerExercise) academyCtx.registerExercise(exId);
+  }, []);
 
   const resolvePair = (leftId, rightId) => {
     if (pairs[leftId] === rightId) {
-      setMatched((prev) => [...prev, leftId]);
+      setMatched((prev) => {
+        const next = [...prev, leftId];
+        if (next.length === 4 && academyCtx?.completeExercise) {
+          academyCtx.completeExercise(exId);
+        }
+        return next;
+      });
       setSelL(null);
       setSelR(null);
       return;
@@ -455,6 +467,12 @@ const CandleQuiz = () => {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const q = candleQuizData[current];
+  const academyCtx = React.useContext(AcademyContext);
+  const exId = React.useId();
+
+  React.useEffect(() => {
+    if (academyCtx?.registerExercise) academyCtx.registerExercise(exId);
+  }, []);
 
   const choose = (index) => {
     if (selected !== null) return;
@@ -465,6 +483,7 @@ const CandleQuiz = () => {
   const next = () => {
     if (current === candleQuizData.length - 1) {
       setFinished(true);
+      if (academyCtx?.completeExercise) academyCtx.completeExercise(exId);
       return;
     }
     setCurrent((prev) => prev + 1);
@@ -645,6 +664,14 @@ const FinalQuiz = () => {
   const [answers, setAnswers] = useState({});
   const [showRes, setShowRes] = useState(false);
   const score = Object.keys(answers).filter((key) => answers[key] === qs[key].c).length;
+  const academyCtx = React.useContext(AcademyContext);
+  const { selectedId, markQuizPassed } = academyCtx || {};
+
+  React.useEffect(() => {
+    if (showRes && score >= 7 && markQuizPassed && selectedId) {
+      markQuizPassed(selectedId);
+    }
+  }, [showRes, score, markQuizPassed, selectedId]);
 
   const handleSelect = (qIdx, oIdx) => {
     if (showRes) return;
@@ -1240,6 +1267,7 @@ const CHAPTER_1_DATA_VN = [
   },
   {
     title: '8. Quiz tổng kết',
+    requireQuizPass: true,
     content: (
       <>
         <SectionHead
