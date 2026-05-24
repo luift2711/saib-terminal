@@ -173,9 +173,17 @@ const Academy = ({ lang = 'vi' }) => {
               {chapter.data.map((lesson, lessonIndex) => {
                 const id = `${chapterIndex}-${lessonIndex}`;
                 const active = selectedLesson.id === id;
+                const isCompleted = completedLessons.has(id);
+                // Hiển thị $ nếu bài có quiz hoặc là Chương 0
+                const hasQuiz = lesson.requireQuizPass || id === '0-0';
+                
                 return (
-                  <button key={id} onClick={() => { setSelectedId(id); setIsMobileMenuOpen(false); }} className={`w-full text-left px-3 py-2.5 rounded-xl ${active ? 'bg-[#D4AF37]/10 dark:bg-[#00d084]/10 border border-[#D4AF37]/50' : ''}`}>
+                  <button key={id} onClick={() => { setSelectedId(id); setIsMobileMenuOpen(false); }} className={`w-full text-left px-3 py-2.5 rounded-xl flex items-center justify-between ${active ? 'bg-[#D4AF37]/10 dark:bg-[#00d084]/10 border border-[#D4AF37]/50' : 'border border-transparent'}`}>
                     <span className="text-[15px]">{lesson.title}</span>
+                    <div className="flex items-center gap-2">
+                      {isCompleted && <Check size={16} className="text-[#00d084]" />}
+                      {hasQuiz && <DollarSign size={14} className="text-[#D4AF37] dark:text-[#00d084]" />}
+                    </div>
                   </button>
                 );
               })}
@@ -200,7 +208,7 @@ const Academy = ({ lang = 'vi' }) => {
                 </AcademyContext.Provider>
               </div>
               <div className="px-4 md:px-12 pb-4 md:pb-12 pt-6 border-t border-[rgba(15,17,23,0.08)] flex flex-col gap-4">
-                <button onClick={() => toggleComplete(selectedLesson.id)} className={`w-full py-3.5 rounded-xl font-mono text-[14.5px] uppercase flex items-center justify-center gap-2 ${completedLessons.has(selectedLesson.id) ? 'border border-[#D4AF37]' : 'bg-[#1C2C44]'}`}>
+                <button onClick={() => toggleComplete(selectedLesson.id)} className={`w-full py-3.5 rounded-xl font-mono text-[14.5px] uppercase flex items-center justify-center gap-2 transition-colors ${completedLessons.has(selectedLesson.id) ? 'border border-[#D4AF37] bg-[#D4AF37]/10 text-[#D4AF37] dark:border-[#00d084] dark:bg-[#00d084]/10 dark:text-[#00d084]' : 'bg-[#1C2C44] text-[#FDFBF7] hover:bg-[#2A4365] dark:bg-[#2B3139] dark:hover:bg-[#363C45] dark:text-white'}`}>
                   {completedLessons.has(selectedLesson.id) ? <><Check size={15} /> {t.completed}</> : <><Cpu size={15} /> {t.markCompleted}</>}
                 </button>
                 <div className="flex justify-between gap-4">
