@@ -28,18 +28,43 @@ const getChapters = (lang) => [
   { title: lang === 'en' ? 'Chapter 6: Building Your System & Going Live' : 'Chương 6: Xây dựng Hệ thống & Thực chiến', data: lang === 'en' ? CHAPTER_6_DATA_EN : CHAPTER_6_DATA_VN },
 ];
 
-const readCompletedLessons = () => {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? new Set(JSON.parse(saved)) : new Set();
-  } catch {
-    return new Set();
-  }
-};
-
 const Academy = ({ lang = 'vi' }) => {
-  const [selectedId, setSelectedId] = useState('0-0');
-  const [completedLessons, setCompletedLessons] = useState(readCompletedLessons);
+  const [completedLessons, setCompletedLessons] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
+
+  const [passedQuizzes, setPassedQuizzes] = useState(() => {
+    try {
+      const saved = localStorage.getItem(PASSED_QUIZZES_KEY);
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch { return new Set(); }
+  });
+
+  const chapters = getChapters(lang);
+  const allLessons = useMemo(() =>
+      chapters.flatMap((chapter, chapterIndex) =>
+        chapter.data.map((lesson, lessonIndex) => ({
+          ...lesson,
+          id: `${chapterIndex}-${lessonIndex}`,
+        }))
+      ),
+    [lang]
+  );
+
+  const initialLessonId = useMemo(() => {
+    let lastCompletedIndex = -1;
+    for (let i = 0; i < allLessons.length; i++) {
+      if (completedLessons.has(allLessons[i].id)) lastCompletedIndex = i;
+    }
+    if (lastCompletedIndex === -1) return allLessons[0].id;
+    if (lastCompletedIndex < allLessons.length - 1) return allLessons[lastCompletedIndex + 1].id;
+    return allLessons[lastCompletedIndex].id;
+  }, [lang, completedLessons, allLessons]);
+
+  const [selectedId, setSelectedId] = useState(initialLessonId);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hideNav, setHideNav] = useState(false);
   const mainScrollRef = useRef(null);
@@ -50,47 +75,28 @@ const Academy = ({ lang = 'vi' }) => {
     if (currentScrollY > 100 && currentScrollY > lastScrollY.current + 10) {
       if (!hideNav) {
         setHideNav(true);
-        window.dispatchEvent(new CustomEvent('app-scroll', { detail: { hide: true } }));
       }
     } else if (currentScrollY < lastScrollY.current - 10) {
       if (hideNav) {
         setHideNav(false);
-        window.dispatchEvent(new CustomEvent('app-scroll', { detail: { hide: false } }));
       }
     }
     lastScrollY.current = currentScrollY;
   };
 
-  // Scroll to top on lesson change — scroll the main content area
   useEffect(() => {
-    if (mainScrollRef.current) {
-      mainScrollRef.current.scrollTop = 0;
-    }
+    if (mainScrollRef.current) mainScrollRef.current.scrollTop = 0;
   }, [selectedId]);
 
-  const chapters = getChapters(lang);
+  const selectedLesson = allLessons.find((lesson) => lesson.id === selectedId) || allLessons[0];
+  const currentIndex = allLessons.findIndex((lesson) => lesson.id === selectedLesson.id);
+  const progressPct = allLessons.length ? Math.round((completedLessons.size / allLessons.length) * 100) : 0;
 
-  const allLessons = useMemo(
-    () =>
-      chapters.flatMap((chapter, chapterIndex) =>
-        chapter.data.map((lesson, lessonIndex) => ({
-          ...lesson,
-          id: `${chapterIndex}-${lessonIndex}`,
-        }))
-      ),
-    [lang]
-  );
+  const [activeExercises, setActiveExercises] = useState(new Set());
+  useEffect(() => { setActiveExercises(new Set()); }, [selectedId]);
 
-  const selectedLesson =
-    allLessons.find((lesson) => lesson.id === selectedId) || allLessons[0];
-
-  const currentIndex = allLessons.findIndex(
-    (lesson) => lesson.id === selectedLesson.id
-  );
-
-  const progressPct = allLessons.length
-    ? Math.round((completedLessons.size / allLessons.length) * 100)
-    : 0;
+  const registerExercise = (exId) => { setActiveExercises(prev => new Set(prev).add(exId)); };
+  const completeExercise = (exId) => { setActiveExercises(prev => { const next = new Set(prev); next.delete(exId); return next; }); };
 
   const toggleComplete = (id) => {
     setCompletedLessons((prev) => {
@@ -101,252 +107,100 @@ const Academy = ({ lang = 'vi' }) => {
     });
   };
 
-  const goToLesson = (nextIndex) => {
+  const markQuizPassed = (id) => {
+    setPassedQuizzes((prev) => {
+      const updated = new Set(prev);
+      updated.add(id);
+      localStorage.setItem(PASSED_QUIZZES_KEY, JSON.stringify([...updated]));
+      return updated;
+    });
+  };
+
+  const hasIncompleteExercises = activeExercises.size > 0 && !completedLessons.has(selectedId);
+  const isNextDisabled = (hasIncompleteExercises) || (selectedLesson.requireQuizPass && !passedQuizzes.has(selectedId));
+
+  const goToLesson = (nextIndex, markCurrentAsCompleted = false) => {
+    if (hasIncompleteExercises) {
+      alert(lang === 'vi' ? 'Vui lòng hoàn thành tất cả bài tập!' : 'Please complete all exercises!');
+      return;
+    }
+    if (selectedLesson.requireQuizPass && !passedQuizzes.has(selectedId)) {
+      alert(lang === 'vi' ? 'Vui lòng hoàn thành bài tập tổng kết!' : 'Please complete the final quiz!');
+      return;
+    }
+    if (markCurrentAsCompleted) {
+      setCompletedLessons((prev) => {
+        const updated = new Set(prev);
+        updated.add(selectedId);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify([...updated]));
+        return updated;
+      });
+    }
     const nextLesson = allLessons[nextIndex];
     if (nextLesson) setSelectedId(nextLesson.id);
   };
 
   const t = {
-    vi: {
-      systemSync: "SYSTEM SYNC",
-      markCompleted: "ĐÁNH DẤU ĐÃ HỌC XONG",
-      completed: "ĐÃ HỌC XONG",
-      prev: "BÀI TRƯỚC",
-      next: "BÀI TIẾP THEO"
-    },
-    en: {
-      systemSync: "SYSTEM SYNC",
-      markCompleted: "MARK MODULE COMPLETED",
-      completed: "MODULE COMPLETED",
-      prev: "PREVIOUS",
-      next: "NEXT MODULE"
-    }
+    vi: { systemSync: "SYSTEM SYNC", markCompleted: "ĐÁNH DẤU ĐÃ HỌC XONG", completed: "ĐÃ HỌC XONG", prev: "BÀI TRƯỚC", next: "BÀI TIẾP THEO" },
+    en: { systemSync: "SYSTEM SYNC", markCompleted: "MARK MODULE COMPLETED", completed: "MODULE COMPLETED", prev: "PREVIOUS", next: "NEXT MODULE" }
   }[lang];
 
   const renderSidebarContent = () => (
     <>
-      {/* System Sync / Progress */}
       <div className="p-5 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/90 dark:bg-[#0e1117]/90 backdrop-blur-md relative z-20 shrink-0">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-          className="bg-[#fff]/60 dark:bg-black/40 backdrop-blur-md rounded-2xl p-5 border border-[#d97706]/40 dark:border-[rgba(255,255,255,0.1)] relative overflow-hidden shadow-sm"
-        >
-          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-[#D4AF37] dark:via-[#00d084] to-transparent"></div>
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="bg-[#fff]/60 dark:bg-black/40 backdrop-blur-md rounded-2xl p-5 border border-[#d97706]/40 dark:border-[rgba(255,255,255,0.1)] relative overflow-hidden shadow-sm">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-[12.5px] font-mono uppercase tracking-[0.2em] text-[#D4AF37] dark:text-[#00d084] flex items-center gap-2 font-black">
-              <Database size={12} /> {t.systemSync}
-            </span>
-            <span className="font-mono text-[#0f1117] dark:text-[#00d084] font-bold dark:font-medium text-sm">{progressPct}%</span>
+            <span className="text-[12.5px] font-mono uppercase tracking-[0.2em] text-[#D4AF37] dark:text-[#00d084] flex items-center gap-2 font-black"><Database size={12} /> {t.systemSync}</span>
+            <span className="font-mono text-[#0f1117] dark:text-[#00d084] font-bold text-sm">{progressPct}%</span>
           </div>
           <div className="h-1 rounded-full bg-[rgba(15,17,23,0.1)] dark:bg-[rgba(255,255,255,0.05)] overflow-hidden relative">
-            <motion.div
-              initial={{ width: 0 }} animate={{ width: `${progressPct}%` }} transition={{ duration: 1, ease: "easeOut" }}
-              className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#C59B27] to-[#D4AF37] dark:from-[#00d084] dark:to-[#00d084] shadow-[0_0_12px_rgba(212,175,55,0.6)] dark:shadow-[0_0_10px_rgba(0,208,132,0.5)]"
-            />
+            <motion.div initial={{ width: 0 }} animate={{ width: `${progressPct}%` }} className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#C59B27] to-[#D4AF37] dark:bg-[#00d084]" />
           </div>
         </motion.div>
       </div>
-
-      {/* Navigation — scrollable */}
       <div className="flex-1 overflow-y-auto py-4 px-3 space-y-6 custom-scrollbar">
         {chapters.map((chapter, chapterIndex) => (
-          <motion.section
-            key={chapterIndex}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: chapterIndex * 0.1 }}
-          >
-            <h3 className="text-[12.5px] font-mono uppercase tracking-[0.18em] text-[#B8860B] dark:text-[#00d084] border-b border-[#D4AF37]/30 dark:border-[#00d084]/20 pb-2 mb-3 px-2 flex items-center gap-2 font-black">
-              <span className="w-1.5 h-1.5 bg-[#D4AF37] dark:bg-[#00d084] rounded-full shadow-[0_0_6px_rgba(212,175,55,0.8)] dark:shadow-[0_0_4px_rgba(0,208,132,0.5)]"></span>
-              {chapter.title}
-            </h3>
+          <section key={chapterIndex}>
+            <h3 className="text-[12.5px] font-mono uppercase tracking-[0.18em] text-[#B8860B] dark:text-[#00d084] border-b border-[#D4AF37]/30 pb-2 mb-3 px-2 font-black">{chapter.title}</h3>
             <div className="space-y-0.5">
               {chapter.data.map((lesson, lessonIndex) => {
                 const id = `${chapterIndex}-${lessonIndex}`;
                 const active = selectedLesson.id === id;
-                const done = completedLessons.has(id);
                 return (
-                  <button
-                    key={id}
-                    onClick={() => {
-                      setSelectedId(id);
-                      setIsMobileMenuOpen(false); // Đóng menu mobile khi chọn bài học
-                    }}
-                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all duration-300 ${active
-                      ? 'bg-gradient-to-r from-[#D4AF37]/15 to-transparent dark:bg-none dark:bg-[#00d084]/10 border border-[#D4AF37]/50 dark:border-[#00d084]/30 text-[#1C2C44] dark:text-[#00d084] shadow-[inset_2px_0_0_#D4AF37] dark:shadow-none'
-                      : 'border border-transparent text-[#636878] dark:text-[#9ca3b0] hover:text-[#1C2C44] dark:hover:text-[#e8eaf0] hover:bg-[#D4AF37]/5 dark:hover:bg-[rgba(255,255,255,0.04)]'
-                      }`}
-                  >
-                    <span className={`text-[15px] leading-snug ${active ? 'font-bold' : 'font-medium'}`}>
-                      {lesson.title.split('. ')[1] || lesson.title}
-                    </span>
-                    <div className="flex items-center gap-1.5 shrink-0 ml-2 perspective-1000">
-                      {done && <Check size={12} className="text-[#d97706] dark:text-[#00d084] opacity-80" />}
-                      {active && (
-                        <>
-                          <DollarSign size={14} className="hidden dark:block text-[#00d084] animate-fade-pulse" />
-                          <motion.div
-                            initial={{ y: 20, opacity: 0, rotateX: 180 }}
-                            animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                            transition={{ type: "spring", stiffness: 300, damping: 15 }}
-                            className="block dark:hidden shrink-0 relative"
-                            style={{ perspective: '800px' }}
-                          >
-                            {/* Vòng sáng nhấp nháy phía sau */}
-                            <div className="absolute -inset-2 bg-gradient-to-r from-[#D4AF37] to-[#F3E5AB] rounded-full blur-md opacity-40 animate-pulse"></div>
-                            
-                            {/* Coin 3D Container (Spin + Bounce) */}
-                            <motion.div
-                              animate={{ 
-                                rotateY: [0, 360], 
-                                y: [0, -6, 0] 
-                              }}
-                              transition={{ 
-                                rotateY: { duration: 3.5, repeat: Infinity, ease: "linear" },
-                                y: { duration: 1.5, repeat: Infinity, ease: "easeInOut" }
-                              }}
-                              style={{ transformStyle: 'preserve-3d' }}
-                              className="w-[28px] h-[28px] relative z-10"
-                            >
-                              {/* 4 layers để tạo độ dày siêu mỏng (khoảng 2px) như đồng xu thật */}
-                              {[...Array(4)].map((_, i) => (
-                                <img 
-                                  key={i}
-                                  src="/bitcoin.png" 
-                                  onError={(e) => { e.target.onerror = null; e.target.src = "https://cryptologos.cc/logos/bitcoin-btc-logo.png"; }}
-                                  alt=""
-                                  className="absolute inset-0 w-full h-full rounded-full"
-                                  style={{ 
-                                    transform: `translateZ(${(i - 1.5) * 0.8}px) ${i === 0 ? 'rotateY(180deg)' : ''}`,
-                                    filter: (i === 1 || i === 2) ? 'brightness(0.6)' : 'drop-shadow(0 2px 4px rgba(212,175,55,0.4))'
-                                  }}
-                                />
-                              ))}
-                            </motion.div>
-                            
-                            {/* Các ngôi sao lấp lánh xung quanh */}
-                            <motion.div animate={{ scale: [1, 1.5, 1], opacity: [0.5, 1, 0.5], rotate: [0, 90, 180] }} transition={{ duration: 2, repeat: Infinity }} className="absolute -top-1 -right-1 text-[#F3E5AB] drop-shadow-[0_0_3px_#D4AF37] z-20">
-                              <Star size={10} fill="currentColor" />
-                            </motion.div>
-                            <motion.div animate={{ scale: [1, 1.3, 1], opacity: [0.3, 0.8, 0.3], rotate: [0, -90, -180] }} transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }} className="absolute -bottom-1 -left-1 text-[#D4AF37] drop-shadow-[0_0_2px_#D4AF37] z-20">
-                              <Star size={8} fill="currentColor" />
-                            </motion.div>
-                          </motion.div>
-                        </>
-                      )}
-                    </div>
+                  <button key={id} onClick={() => { setSelectedId(id); setIsMobileMenuOpen(false); }} className={`w-full text-left px-3 py-2.5 rounded-xl ${active ? 'bg-[#D4AF37]/10 dark:bg-[#00d084]/10 border border-[#D4AF37]/50' : ''}`}>
+                    <span className="text-[15px]">{lesson.title}</span>
                   </button>
                 );
               })}
             </div>
-          </motion.section>
+          </section>
         ))}
       </div>
     </>
   );
 
   return (
-    // Root: fixed viewport height, no window scroll
-    <div className="h-full flex flex-col overflow-hidden bg-[#faf9f6] dark:bg-[#0e1117] text-[#0f1117] dark:text-[#e8eaf0] font-sans selection:bg-[#d97706]/30 dark:selection:bg-[#00d084]/30 transition-colors duration-500">
-
-      {/* ── MOBILE DRAWER SIDEBAR ────────────────────────────── */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-[100] flex lg:hidden">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}></div>
-          <motion.aside
-            initial={{ x: '-100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '-100%' }}
-            transition={{ type: 'spring', bounce: 0, duration: 0.4 }}
-            className="w-[300px] max-w-[85vw] h-full flex flex-col bg-[#faf9f6] dark:bg-[#0e1117] relative z-50 shadow-2xl"
-          >
-            <div className="flex justify-between items-center p-4 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shrink-0">
-              <h2 className="text-[13px] font-black tracking-[0.15em] text-[#1C2C44] dark:text-[#e8eaf0]">MENU</h2>
-              <button 
-                onClick={() => setIsMobileMenuOpen(false)} 
-                className="p-2 rounded-full bg-[rgba(15,17,23,0.05)] dark:bg-[rgba(255,255,255,0.05)] z-10 hover:bg-[rgba(15,17,23,0.1)] transition-colors"
-              >
-                 <X size={20} className="text-[#0f1117] dark:text-[#e8eaf0]" />
-              </button>
-            </div>
-            <div className="flex-1 overflow-hidden flex flex-col">
-              {renderSidebarContent()}
-            </div>
-          </motion.aside>
-        </div>
-      )}
-
-      {/* Mobile Header (Only visible on small screens) */}
-      <div className={`lg:hidden flex items-center justify-between p-4 border-b border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/90 dark:bg-[#0e1117]/90 backdrop-blur-md relative z-20 transition-all duration-500 ease-in-out origin-top overflow-hidden ${hideNav ? 'max-h-0 opacity-0 !py-0 !border-0 pointer-events-none' : 'max-h-[100px] opacity-100'}`}>
-        <div className="flex items-center gap-3">
-          <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 rounded-xl bg-white dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] shadow-sm">
-             <Menu size={20} className="text-[#0f1117] dark:text-[#e8eaf0]" />
-          </button>
-          <span className="font-black text-sm uppercase tracking-widest text-[#D4AF37] dark:text-[#00d084] flex items-center gap-2">
-            <Database size={14} /> {t.systemSync}
-          </span>
-        </div>
-        <span className="font-mono font-bold text-sm text-[#0f1117] dark:text-[#00d084]">{progressPct}%</span>
-      </div>
-
-      {/* Full-height flex layout: sidebar | main */}
+    <div className="h-full flex flex-col overflow-hidden bg-[#faf9f6] dark:bg-[#0e1117] text-[#0f1117] dark:text-[#e8eaf0] font-sans">
       <div className="flex-1 overflow-hidden flex relative z-10">
-
-        {/* ── DESKTOP SIDEBAR ────────────────────────────────── */}
-        <aside className="hidden lg:flex w-72 shrink-0 h-full flex-col border-r border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.06)] bg-[#faf9f6]/80 dark:bg-[#0e1117]/80 backdrop-blur-sm">
-          {renderSidebarContent()}
-        </aside>
-
-        {/* ── MAIN CONTENT ───────────────────────────── */}
-        {/* This is the one true scrollable container */}
-        <main
-          ref={mainScrollRef}
-          onScroll={handleScroll}
-          className="flex-1 h-full overflow-y-auto custom-scrollbar"
-        >
+        <aside className="hidden lg:flex w-72 shrink-0 h-full flex-col border-r border-[rgba(15,17,23,0.08)] bg-[#faf9f6]/80 dark:bg-[#0e1117]/80">{renderSidebarContent()}</aside>
+        <main ref={mainScrollRef} onScroll={handleScroll} className="flex-1 h-full overflow-y-auto custom-scrollbar">
           <div className="max-w-4xl mx-auto p-4 md:p-10">
-            <motion.div
-              key={selectedLesson.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35 }}
-              className="bg-[#FDFBF7]/80 dark:bg-[#111827]/60 backdrop-blur-xl border border-[#D4AF37]/30 dark:border-[rgba(255,255,255,0.08)] rounded-3xl shadow-xl dark:shadow-none relative overflow-hidden"
-            >
-              {/* Top accent line */}
+            <motion.div key={selectedLesson.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="bg-[#FDFBF7]/80 dark:bg-[#111827]/60 border border-[#D4AF37]/30 rounded-3xl overflow-hidden">
               <div className="h-[3px] w-full bg-gradient-to-r from-transparent via-[#D4AF37] dark:via-[#00d084] to-transparent" />
-
-              {/* Lesson content */}
               <div className="p-4 md:p-12">
-                {selectedLesson.content}
+                <AcademyContext.Provider value={{ selectedId, markQuizPassed, registerExercise, completeExercise }}>
+                    {selectedLesson.content}
+                </AcademyContext.Provider>
               </div>
-
-              {/* Bottom nav */}
-              <div className="px-4 md:px-12 pb-4 md:pb-12 pt-6 border-t border-[rgba(15,17,23,0.08)] dark:border-[rgba(255,255,255,0.08)] flex flex-col gap-4">
-                <button
-                  onClick={() => toggleComplete(selectedLesson.id)}
-                  className={`w-full py-3.5 rounded-xl font-mono text-[14.5px] tracking-[0.12em] transition-all duration-300 uppercase flex items-center justify-center gap-2 ${completedLessons.has(selectedLesson.id)
-                    ? 'bg-transparent border border-[#D4AF37] dark:border-[#00d084]/50 text-[#D4AF37] dark:text-[#00d084]'
-                    : 'bg-[#1C2C44] dark:bg-[#00d084]/10 border border-[#1C2C44] dark:border-[#00d084]/30 text-[#FDFBF7] dark:text-[#00d084] hover:bg-[#2A4365] dark:hover:bg-[#00d084]/20 shadow-md dark:shadow-none'
-                    }`}
-                >
-                  {completedLessons.has(selectedLesson.id) ? (
-                    <><Check size={15} /> {t.completed}</>
-                  ) : (
-                    <><Cpu size={15} /> {t.markCompleted}</>
-                  )}
+              <div className="px-4 md:px-12 pb-4 md:pb-12 pt-6 border-t border-[rgba(15,17,23,0.08)] flex flex-col gap-4">
+                <button onClick={() => toggleComplete(selectedLesson.id)} className={`w-full py-3.5 rounded-xl font-mono text-[14.5px] uppercase flex items-center justify-center gap-2 ${completedLessons.has(selectedLesson.id) ? 'border border-[#D4AF37]' : 'bg-[#1C2C44]'}`}>
+                  {completedLessons.has(selectedLesson.id) ? <><Check size={15} /> {t.completed}</> : <><Cpu size={15} /> {t.markCompleted}</>}
                 </button>
-
                 <div className="flex justify-between gap-4">
-                  <button
-                    disabled={currentIndex === 0}
-                    onClick={() => goToLesson(currentIndex - 1)}
-                    className="px-5 py-2.5 rounded-xl border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#636878] dark:text-[#9ca3b0] hover:bg-[rgba(15,17,23,0.05)] dark:hover:bg-[rgba(255,255,255,0.05)] hover:text-[#0f1117] dark:hover:text-[#e8eaf0] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
-                  >
+                  <button disabled={currentIndex === 0} onClick={() => goToLesson(currentIndex - 1)} className="px-5 py-2.5 rounded-xl border border-[rgba(15,17,23,0.1)] flex items-center gap-2">
                     <ChevronLeft size={15} /> {t.prev}
                   </button>
-                  <button
-                    disabled={currentIndex === allLessons.length - 1}
-                    onClick={() => goToLesson(currentIndex + 1)}
-                    className="px-5 py-2.5 rounded-xl bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#0f1117] dark:text-[#e8eaf0] hover:bg-[rgba(15,17,23,0.08)] dark:hover:bg-[rgba(255,255,255,0.08)] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
-                  >
+                  <button disabled={isNextDisabled} onClick={() => goToLesson(currentIndex + 1, true)} className="px-6 py-3 bg-[#1C2C44] dark:bg-[#00d084] text-[#FDFBF7] dark:text-[#0B0E11] rounded-xl font-bold flex items-center gap-2 hover:shadow-lg disabled:opacity-40">
                     {t.next} <ChevronRight size={15} />
                   </button>
                 </div>
