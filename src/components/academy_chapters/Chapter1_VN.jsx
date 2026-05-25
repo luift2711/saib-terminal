@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-
+import React, { useState, useContext, useEffect } from 'react';
+import { AcademyContext } from '../AcademyContext';
 import {
   Calculator,
   Store,
@@ -45,10 +45,20 @@ const MatchGame = () => {
   const [selR, setSelR] = useState(null);
   const [matched, setMatched] = useState([]);
   const [flash, setFlash] = useState(null);
+  const academyCtx = useContext(AcademyContext);
+  const exId = React.useId();
   
+  useEffect(() => {
+    if (academyCtx?.registerExercise) academyCtx.registerExercise(exId);
+  }, []);
+
   const resolvePair = (leftId, rightId) => {
     if (pairs[leftId] === rightId) {
-      setMatched((prev) => [...prev, leftId]);
+      setMatched((prev) => {
+        const next = [...prev, leftId];
+        if (next.length === 4 && academyCtx?.completeExercise) academyCtx.completeExercise(exId);
+        return next;
+      });
       setSelL(null);
       setSelR(null);
       return;
@@ -456,6 +466,12 @@ const CandleQuiz = () => {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const q = candleQuizData[current];
+  const academyCtx = useContext(AcademyContext);
+  const exId = React.useId();
+
+  useEffect(() => {
+    if (academyCtx?.registerExercise) academyCtx.registerExercise(exId);
+  }, []);
   
   const choose = (index) => {
     if (selected !== null) return;
@@ -466,6 +482,7 @@ const CandleQuiz = () => {
   const next = () => {
     if (current === candleQuizData.length - 1) {
       setFinished(true);
+      if (academyCtx?.completeExercise) academyCtx.completeExercise(exId);
       return;
     }
     setCurrent((prev) => prev + 1);
@@ -643,6 +660,12 @@ const FinalQuiz = () => {
       exp: 'Bull trap (Bẫy tăng giá) là khi giá tạo tín hiệu phá vỡ kháng cự giả để dụ trader mua vào, sau đó lập tức quay đầu giảm sâu khiến những người vừa mua bị mắc kẹt.'
     },
   ];
+  const academyCtx = useContext(AcademyContext);
+  const exId = React.useId();
+  useEffect(() => {
+    if (academyCtx?.registerExercise) academyCtx.registerExercise(exId);
+  }, []);
+
   const [answers, setAnswers] = useState({});
   const [showRes, setShowRes] = useState(false);
   const score = Object.keys(answers).filter((key) => answers[key] === qs[key].c).length;
@@ -658,6 +681,7 @@ const FinalQuiz = () => {
       return;
     }
     setShowRes(true);
+    if (academyCtx?.completeExercise) academyCtx.completeExercise(exId);
   };
 
   return (

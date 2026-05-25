@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { AcademyContext } from './AcademyContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Info, AlertTriangle, CheckCircle, XOctagon, ChevronRight, BookOpen, Cpu, Shield, Zap, Target } from 'lucide-react';
 
@@ -100,6 +100,17 @@ export const CyberTable = ({ headers, rows }) => (
 
 export const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
   const [selected, setSelected] = useState(null);
+  const academyCtx = React.useContext(AcademyContext);
+  const exId = React.useId();
+
+  React.useEffect(() => {
+    if (academyCtx?.registerExercise) academyCtx.registerExercise(exId);
+  }, []);
+
+  const handleSelect = (i) => {
+    setSelected(i);
+    if (academyCtx?.completeExercise) academyCtx.completeExercise(exId);
+  };
 
   return (
     <motion.div 
@@ -133,7 +144,7 @@ export const SimpleQuiz = ({ q, context, opts, correctIdx, explanation }) => {
             }
             return (
               <button 
-                key={i} disabled={selected !== null} onClick={() => setSelected(i)} 
+                key={i} disabled={selected !== null} onClick={() => handleSelect(i)} 
                 className={`flex items-start gap-4 p-4 border-2 rounded-xl text-left transition-all duration-300 ${btnClass}`}
               >
                 <div className={`w-7 h-7 rounded-md flex items-center justify-center text-[11px] shrink-0 ${letterClass}`}>{String.fromCharCode(65+i)}</div>

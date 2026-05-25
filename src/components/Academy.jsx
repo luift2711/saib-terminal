@@ -15,8 +15,10 @@ import CHAPTER_5_DATA_VN from './academy_chapters/Chapter5_VN';
 import CHAPTER_5_DATA_EN from './academy_chapters/Chapter5_EN';
 import CHAPTER_6_DATA_VN from './academy_chapters/Chapter6_VN';
 import CHAPTER_6_DATA_EN from './academy_chapters/Chapter6_EN';
+import { AcademyContext } from './AcademyContext';
 
 const STORAGE_KEY = 'SAIB_academy_progress';
+const LAST_LESSON_KEY = 'SAIB_last_lesson_id';
 
 const getChapters = (lang) => [
   { title: lang === 'en' ? 'Curriculum Overview' : 'Tổng quan Lộ trình', data: lang === 'en' ? CHAPTER_0_DATA_EN : CHAPTER_0_DATA_VN },
@@ -38,12 +40,22 @@ const readCompletedLessons = () => {
 };
 
 const Academy = ({ lang = 'vi' }) => {
-  const [selectedId, setSelectedId] = useState('0-0');
+  const [selectedId, setSelectedId] = useState(() => {
+    return localStorage.getItem(LAST_LESSON_KEY) || '0-0';
+  });
   const [completedLessons, setCompletedLessons] = useState(readCompletedLessons);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hideNav, setHideNav] = useState(false);
   const mainScrollRef = useRef(null);
   const lastScrollY = useRef(0);
+
+  const [activeExercises, setActiveExercises] = useState(new Set());
+  const [completedExercises, setCompletedExercises] = useState(new Set());
+
+  const registerExercise = (id) => setActiveExercises((prev) => new Set(prev).add(id));
+  const completeExercise = (id) => setCompletedExercises((prev) => new Set(prev).add(id));
+  
+  const isExercisesCompleted = activeExercises.size === 0 || activeExercises.size <= completedExercises.size;
 
   const handleScroll = (e) => {
     const currentScrollY = e.target.scrollTop;
@@ -61,11 +73,14 @@ const Academy = ({ lang = 'vi' }) => {
     lastScrollY.current = currentScrollY;
   };
 
-  // Scroll to top on lesson change — scroll the main content area
+  // Scroll to top on lesson change & reset exercises & save progress
   useEffect(() => {
     if (mainScrollRef.current) {
       mainScrollRef.current.scrollTop = 0;
     }
+    setActiveExercises(new Set());
+    setCompletedExercises(new Set());
+    localStorage.setItem(LAST_LESSON_KEY, selectedId);
   }, [selectedId]);
 
   const chapters = getChapters(lang);
@@ -101,7 +116,17 @@ const Academy = ({ lang = 'vi' }) => {
     });
   };
 
+  const markLessonCompleted = (id) => {
+    setCompletedLessons((prev) => {
+      const updated = new Set(prev);
+      updated.add(id);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...updated]));
+      return updated;
+    });
+  };
+
   const goToLesson = (nextIndex) => {
+    markLessonCompleted(selectedLesson.id);
     const nextLesson = allLessons[nextIndex];
     if (nextLesson) setSelectedId(nextLesson.id);
   };
@@ -288,6 +313,7 @@ const Academy = ({ lang = 'vi' }) => {
       </div>
 
       {/* Full-height flex layout: sidebar | main */}
+      <AcademyContext.Provider value={{ registerExercise, completeExercise }}>
       <div className="flex-1 overflow-hidden flex relative z-10">
 
         {/* ── DESKTOP SIDEBAR ────────────────────────────────── */}
@@ -343,11 +369,11 @@ const Academy = ({ lang = 'vi' }) => {
                     <ChevronLeft size={15} /> {t.prev}
                   </button>
                   <button
-                    disabled={currentIndex === allLessons.length - 1}
+                    disabled={currentIndex === allLessons.length - 1 || !isExercisesCompleted}
                     onClick={() => goToLesson(currentIndex + 1)}
                     className="px-5 py-2.5 rounded-xl bg-[rgba(15,17,23,0.03)] dark:bg-[rgba(255,255,255,0.03)] border border-[rgba(15,17,23,0.1)] dark:border-[rgba(255,255,255,0.1)] text-[#0f1117] dark:text-[#e8eaf0] hover:bg-[rgba(15,17,23,0.08)] dark:hover:bg-[rgba(255,255,255,0.08)] disabled:opacity-20 disabled:cursor-not-allowed flex items-center gap-2 text-[15.5px] font-medium transition-all"
                   >
-                    {t.next} <ChevronRight size={15} />
+                    {!isExercisesCompleted ? "HOÀN THÀNH BÀI TẬP ĐỂ ĐI TIẾP" : <>{t.next} <ChevronRight size={15} /></>}
                   </button>
                 </div>
               </div>
@@ -356,6 +382,7 @@ const Academy = ({ lang = 'vi' }) => {
         </main>
 
       </div>
+      </AcademyContext.Provider>
 
       <style>{`
         @keyframes spin-y {
