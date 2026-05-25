@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState, useContext } from 'react';
+
 import {
   Calculator,
   Store,
@@ -44,22 +45,10 @@ const MatchGame = () => {
   const [selR, setSelR] = useState(null);
   const [matched, setMatched] = useState([]);
   const [flash, setFlash] = useState(null);
-  const academyCtx = React.useContext(AcademyContext);
-  const exId = React.useId();
-
-  React.useEffect(() => {
-    if (academyCtx?.registerExercise) academyCtx.registerExercise(exId);
-  }, []);
-
+  
   const resolvePair = (leftId, rightId) => {
     if (pairs[leftId] === rightId) {
-      setMatched((prev) => {
-        const next = [...prev, leftId];
-        if (next.length === 4 && academyCtx?.completeExercise) {
-          academyCtx.completeExercise(exId);
-        }
-        return next;
-      });
+      setMatched((prev) => [...prev, leftId]);
       setSelL(null);
       setSelR(null);
       return;
@@ -467,13 +456,7 @@ const CandleQuiz = () => {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const q = candleQuizData[current];
-  const academyCtx = React.useContext(AcademyContext);
-  const exId = React.useId();
-
-  React.useEffect(() => {
-    if (academyCtx?.registerExercise) academyCtx.registerExercise(exId);
-  }, []);
-
+  
   const choose = (index) => {
     if (selected !== null) return;
     setSelected(index);
@@ -483,7 +466,6 @@ const CandleQuiz = () => {
   const next = () => {
     if (current === candleQuizData.length - 1) {
       setFinished(true);
-      if (academyCtx?.completeExercise) academyCtx.completeExercise(exId);
       return;
     }
     setCurrent((prev) => prev + 1);
@@ -664,18 +646,18 @@ const FinalQuiz = () => {
   const [answers, setAnswers] = useState({});
   const [showRes, setShowRes] = useState(false);
   const score = Object.keys(answers).filter((key) => answers[key] === qs[key].c).length;
-  const academyCtx = React.useContext(AcademyContext);
-  const { selectedId, markQuizPassed } = academyCtx || {};
-
-  React.useEffect(() => {
-    if (showRes && score >= 7 && markQuizPassed && selectedId) {
-      markQuizPassed(selectedId);
-    }
-  }, [showRes, score, markQuizPassed, selectedId]);
 
   const handleSelect = (qIdx, oIdx) => {
     if (showRes) return;
     setAnswers((prev) => ({ ...prev, [qIdx]: oIdx }));
+  };
+
+  const submitQuiz = () => {
+    if (Object.keys(answers).length !== qs.length) {
+      alert('Hãy trả lời hết các câu trước khi nộp bài.');
+      return;
+    }
+    setShowRes(true);
   };
 
   return (
@@ -722,11 +704,7 @@ const FinalQuiz = () => {
       ))}
 
       <button
-        onClick={() =>
-          Object.keys(answers).length === qs.length
-            ? setShowRes(true)
-            : alert('Hãy trả lời hết các câu trước khi nộp bài.')
-        }
+        onClick={submitQuiz}
         className="w-full bg-green-500 dark:bg-[#0ECB81] text-white dark:text-black font-black py-5 rounded-2xl text-lg uppercase tracking-widest hover:brightness-110 shadow-lg mt-4"
       >
         Nộp bài kiểm tra

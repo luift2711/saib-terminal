@@ -24,6 +24,77 @@
   .font-serif {
     font-family: 'Playfair Display', serif !important;
   }
+
+  /* High-Tech Custom Scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(233, 196, 0, 0.2); /* Vàng mờ */
+    border-radius: 10px;
+    border: 1px solid rgba(233, 196, 0, 0.1);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(233, 196, 0, 0.6); /* Sáng lên khi di chuột */
+    box-shadow: 0 0 10px rgba(233, 196, 0, 0.5);
+  }
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(233, 196, 0, 0.2) transparent;
+  }
+
+  /* ACADEMY CONTENT VIBE OVERRIDES */
+  .academy-content-vibe {
+    @apply text-on-surface font-body-md;
+  }
+  .academy-content-vibe p {
+    @apply text-on-surface-variant leading-relaxed text-[17px];
+  }
+  .academy-content-vibe strong {
+    @apply text-primary-fixed font-bold;
+  }
+  .academy-content-vibe h2, .academy-content-vibe h3, .academy-content-vibe .font-serif {
+    @apply font-headline-md uppercase tracking-wider !important;
+  }
+  .academy-content-vibe h2 {
+    @apply text-primary-fixed-dim text-2xl mt-8 mb-4;
+  }
+  .academy-content-vibe h3 {
+    @apply text-secondary-fixed text-xl mb-3;
+  }
+  .academy-content-vibe .bg-white, 
+  .academy-content-vibe .dark\:bg-\[\#181A20\] {
+    @apply !bg-surface-container-low;
+  }
+  .academy-content-vibe .bg-gray-50, 
+  .academy-content-vibe .dark\:bg-\[\#0B0E11\] {
+    @apply !bg-surface-container-lowest;
+  }
+  .academy-content-vibe .border-gray-200, 
+  .academy-content-vibe .dark\:border-\[\#2B3139\] {
+    @apply !border-outline-variant/30;
+  }
+  .academy-content-vibe .text-black, 
+  .academy-content-vibe .dark\:text-white {
+    @apply !text-on-surface;
+  }
+  .academy-content-vibe .text-gray-500, 
+  .academy-content-vibe .text-gray-600, 
+  .academy-content-vibe .text-gray-700,
+  .academy-content-vibe .dark\:text-\[\#848E9C\],
+  .academy-content-vibe .dark\:text-gray-400,
+  .academy-content-vibe .dark\:text-gray-300 {
+    @apply !text-on-surface-variant;
+  }
+  .academy-content-vibe .shadow-md,
+  .academy-content-vibe .dark\:shadow-xl,
+  .academy-content-vibe .shadow-sm {
+    @apply !shadow-none;
+  }
 }
 
 @keyframes coin-toss {
