@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Academy from './components/Academy';
 import DailyQuiz from './components/DailyQuiz';
 import TradingGym from './components/TradingGym';
 import Flashcards from './components/Flashcards';
 import TradingJournal from './components/TradingJournal';
 import FloatingCoach from './components/FloatingCoach';
+import Arena from './components/Arena';
 import { auth, provider, db } from './firebase';
-import { signInWithPopup, signOut, onAuthStateChanged, updatePassword, sendPasswordResetEmail, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, EmailAuthProvider, linkWithCredential } from 'firebase/auth';
+import { signInWithPopup, signOut, onAuthStateChanged, updatePassword, sendPasswordResetEmail, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, EmailAuthProvider, linkWithCredential, browserLocalPersistence, browserSessionPersistence, setPersistence } from 'firebase/auth';
 import { doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { Mail, Eye, EyeOff } from 'lucide-react';
 
 const App = () => {
   const [activeTab, setActiveTab] = useState('academy');
   const [balance, setBalance] = useState(10000);
+  const [isBalanceLoaded, setIsBalanceLoaded] = useState(false); // [A3] Guard chặn ghi đè balance
+  const [highestBalance, setHighestBalance] = useState(10000); // [C4] Lưu số dư cao nhất
   const [lastBailoutDate, setLastBailoutDate] = useState(null);
   const [lockedUntil, setLockedUntil] = useState(null);
 
@@ -60,6 +63,17 @@ const App = () => {
   const [userName, setUserName] = useState('');
   const [isFirstLogin, setIsFirstLogin] = useState(false);
 
+  // [B3] Helper quản lý splash timeout tránh memory leak
+  const splashTimeoutRef = useRef(null);
+  const triggerSplash = () => {
+    setShowSplash(true);
+    if (splashTimeoutRef.current) clearTimeout(splashTimeoutRef.current);
+    splashTimeoutRef.current = setTimeout(() => setShowSplash(false), 3000);
+  };
+  useEffect(() => {
+    return () => { if (splashTimeoutRef.current) clearTimeout(splashTimeoutRef.current); };
+  }, []);
+
   // States cho việc tạo mật khẩu lần đầu
   const [setupStep, setSetupStep] = useState(1);
   const [newPassword, setNewPassword] = useState('');
@@ -69,6 +83,8 @@ const App = () => {
 
   // States cho Profile Modal
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profileTab, setProfileTab] = useState('edit'); // 'edit' | 'stats'
+  const [userStats, setUserStats] = useState(null);
   const [editName, setEditName] = useState('');
   const [editPassword, setEditPassword] = useState('');
   const [editConfirmPassword, setEditConfirmPassword] = useState('');
@@ -80,7 +96,7 @@ const App = () => {
       setUser(currentUser);
       setAuthLoading(false);
       if (currentUser) {
-        // --- Tích hợp Firestore: Đọc hoặc tạo Balance ---
+        // --- Tích hợp Firestore: Đọc hoặc tạo dữ liệu người dùng ---
         try {
           const userRef = doc(db, 'users', currentUser.uid);
           const docSnap = await getDoc(userRef);
@@ -97,16 +113,39 @@ const App = () => {
             }
 
             setBalance(currentBalance);
+            setHighestBalance(data.highestBalance || currentBalance);
             setLastBailoutDate(data.lastBailoutDate || null);
             setLockedUntil(currentLock);
+            setIsBalanceLoaded(true);
+
+            // [C16] Hydrate dữ liệu học tập từ Firestore vào localStorage
+            const uid = currentUser.uid;
+            if (data.academyProgress) {
+              localStorage.setItem(`SAIB_academy_progress_${uid}`, JSON.stringify(data.academyProgress));
+            }
+            if (data.lastLessonId) {
+              localStorage.setItem(`SAIB_last_lesson_id_${uid}`, data.lastLessonId);
+            }
+            if (data.quizStreak !== undefined) {
+              localStorage.setItem(`SAIB_day_streak_${uid}`, String(data.quizStreak));
+            }
+            if (data.lastQuizDate) {
+              localStorage.setItem(`SAIB_last_quiz_date_${uid}`, data.lastQuizDate);
+              localStorage.setItem(`SAIB_last_streak_date_${uid}`, data.lastQuizDate);
+            }
+            if (data.tradingLogs) {
+              localStorage.setItem(`SAIB_trading_logs_${uid}`, JSON.stringify(data.tradingLogs));
+            }
           } else {
             await setDoc(userRef, { balance: 10000, lastBailoutDate: null, lockedUntil: null });
             setBalance(10000);
             setLastBailoutDate(null);
             setLockedUntil(null);
+            setIsBalanceLoaded(true);
           }
         } catch (error) {
           console.error("Lỗi đồng bộ Firestore:", error);
+          setIsBalanceLoaded(true);
         }
 
         const storedName = localStorage.getItem(`SAIB_trader_name_${currentUser.uid}`);
@@ -114,9 +153,11 @@ const App = () => {
           setShowNameInput(true);
         } else {
           setUserName(storedName);
-          setShowSplash(true);
-          setTimeout(() => setShowSplash(false), 3000); // Tắt splash sau 3s
+          triggerSplash();
         }
+      } else {
+        // Đăng xuất: reset flag
+        setIsBalanceLoaded(false);
       }
     });
     return () => unsubscribe();
@@ -132,27 +173,42 @@ const App = () => {
   const currentRank = getRank(balance);
 
   // Sync Balance lên Firestore mỗi khi balance thay đổi
+  // [A3] Chỉ sync khi isBalanceLoaded = true để tránh ghi đè balance thật
   useEffect(() => {
-    if (user && balance !== undefined) {
+    if (user && isBalanceLoaded) {
       const userRef = doc(db, 'users', user.uid);
       
+      const newHighest = Math.max(highestBalance, balance);
+      if (newHighest > highestBalance) {
+        setHighestBalance(newHighest);
+      }
+
       // KIỂM TRA HÌNH PHẠT KHÓA TÀI KHOẢN (Chỉ áp dụng cho Beginner khi Balance < 5000)
-      if (balance < 5000 && currentRank.name === 'Beginner' && !lockedUntil) {
+      // [C4] Chỉ khóa nếu rank cao nhất từng đạt chưa vượt qua mức Beginner (< 20000)
+      if (balance < 5000 && currentRank.name === 'Beginner' && highestBalance < 20000 && !lockedUntil) {
         const lockTime = Date.now() + 2 * 24 * 60 * 60 * 1000; // Khóa 2 ngày
         setLockedUntil(lockTime);
-        updateDoc(userRef, { balance, lockedUntil: lockTime }).catch(console.error);
+        updateDoc(userRef, { balance, lockedUntil: lockTime, highestBalance: newHighest }).catch(console.error);
       } else {
-        updateDoc(userRef, { balance }).catch(console.error);
+        updateDoc(userRef, { balance, highestBalance: newHighest }).catch(console.error);
       }
     }
-  }, [balance, user, currentRank.name, lockedUntil]);
+  }, [balance, user, isBalanceLoaded, currentRank.name, lockedUntil, highestBalance]);
 
   const handleSaveName = () => {
     if (tempName.trim() && user) {
       const name = tempName.trim();
       localStorage.setItem(`SAIB_trader_name_${user.uid}`, name);
       setUserName(name);
-      setSetupStep(2); // Luôn chuyển qua bước 2 vì đây là luồng đăng nhập mới
+      // [C6] Google users đã có account, không cần tạo mật khẩu
+      const isGoogleUser = user.providerData.some(p => p.providerId === 'google.com');
+      if (isGoogleUser) {
+        setShowNameInput(false);
+        setIsFirstLogin(true);
+        triggerSplash();
+      } else {
+        setSetupStep(2); // Non-Google users cần tạo mật khẩu
+      }
     }
   };
 
@@ -175,8 +231,7 @@ const App = () => {
       }
       setIsFirstLogin(true);
       setShowNameInput(false);
-      setShowSplash(true);
-      setTimeout(() => setShowSplash(false), 3000);
+      triggerSplash();
     } catch (error) {
       console.error(error);
       if (error.code === 'auth/requires-recent-login') {
@@ -187,11 +242,24 @@ const App = () => {
     }
   };
 
-  const handleOpenProfile = () => {
-    setEditName(userName || user.displayName || '');
+  const handleOpenProfile = async () => {
+    setEditName(userName || user?.displayName || '');
     setEditPassword('');
     setEditConfirmPassword('');
+    setProfileTab('edit');
     setShowProfileModal(true);
+    // [C14] Luôn fetch stats mới nhất mỗi khi mở Profile
+    if (user) {
+      try {
+        const userRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(userRef);
+        if (docSnap.exists()) {
+          setUserStats(docSnap.data());
+        }
+      } catch (e) {
+        console.error('Lỗi fetch stats:', e);
+      }
+    }
   };
 
   const handleSaveProfile = async () => {
@@ -279,11 +347,12 @@ const App = () => {
       return;
     }
     
-    // Xử lý nếu người dùng nhập Username thay vì Email
     const cleanEmail = email.trim();
     const loginEmail = cleanEmail.includes('@') ? cleanEmail : `${cleanEmail}@saib.user`;
 
     try {
+      // [C12] Remember Me: set Firebase persistence
+      await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
       await signInWithEmailAndPassword(auth, loginEmail, password);
     } catch (error) {
       console.error(error);
@@ -296,9 +365,17 @@ const App = () => {
       alert(lang === 'vi' ? 'Vui lòng nhập Email để nhận link đổi mật khẩu!' : 'Please enter your Email to reset password!');
       return;
     }
+    // [C5] Cảnh báo khi dùng Username thay vì Email thật
+    const cleanEmail = email.trim();
+    if (!cleanEmail.includes('@') || cleanEmail.includes('@saib.user')) {
+      alert(lang === 'vi'
+        ? '⚠️ Tài khoản Username không hỗ trợ đổi mật khẩu qua email.\nVui lòng liên hệ admin hoặc đăng nhập bằng Google.'
+        : '⚠️ Username accounts do not support email password reset.\nPlease contact admin or sign in with Google.');
+      return;
+    }
     try {
-      await sendPasswordResetEmail(auth, email);
-      alert(lang === 'vi' ? `Đã gửi link đổi mật khẩu tới ${email}. Vui lòng kiểm tra hộp thư (hoặc thư mục Spam).` : `Password reset link sent to ${email}. Please check your inbox (or Spam folder).`);
+      await sendPasswordResetEmail(auth, cleanEmail);
+      alert(lang === 'vi' ? `Đã gửi link đổi mật khẩu tới ${cleanEmail}. Vui lòng kiểm tra hộp thư (hoặc thư mục Spam).` : `Password reset link sent to ${cleanEmail}. Please check your inbox (or Spam folder).`);
     } catch (error) {
       console.error(error);
       alert('Lỗi: ' + error.message);
@@ -330,8 +407,7 @@ const App = () => {
       localStorage.setItem(`SAIB_trader_name_${user.uid}`, regName);
       setUserName(regName);
       setIsFirstLogin(true); // Gắn cờ hiện splash lần đầu
-      setShowSplash(true);
-      setTimeout(() => setShowSplash(false), 3000);
+      triggerSplash();
     } catch (error) {
       console.error(error);
       alert(lang === 'vi' ? `Đăng ký thất bại: ${error.code}` : `Registration failed: ${error.code}`);
@@ -379,6 +455,7 @@ const App = () => {
       quiz: "🎯 DAILY PUZZLES",
       journal: "📊 NHẬT KÝ TRADING & HUẤN LUYỆN",
       gym: "⚔️ TRADING GYM",
+      arena: "🔥 ĐẤU TRƯỜNG 1v1",
       capital: "Vốn Cấp Phát"
     },
     en: {
@@ -387,6 +464,7 @@ const App = () => {
       quiz: "🎯 DAILY PUZZLES",
       journal: "📊 JOURNAL & COACH",
       gym: "⚔️ TRADING GYM",
+      arena: "🔥 1V1 ARENA",
       capital: "Allocated Capital"
     }
   }[lang];
@@ -697,6 +775,7 @@ const App = () => {
             <button onClick={() => setActiveTab('quiz')} className={getTabClass('quiz')}>{t.quiz}</button>
             <button onClick={() => setActiveTab('journal')} className={getTabClass('journal')}>{t.journal}</button>
             <button onClick={() => setActiveTab('gym')} className={getTabClass('gym')}>{t.gym}</button>
+            <button onClick={() => setActiveTab('arena')} className={getTabClass('arena')}>{t.arena}</button>
           </div>
         </div>
 
@@ -718,7 +797,11 @@ const App = () => {
               <span className={`text-[8px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full border ${currentRank.style}`}>
                 {currentRank.name}
               </span>
-              <img src={user.photoURL || 'https://via.placeholder.com/30'} alt="Avatar" className="w-4 h-4 rounded-full ml-1" />
+              <img 
+                src={user.photoURL || `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="30" height="30"><circle cx="15" cy="15" r="15" fill="%23D4AF37" /><text x="50%" y="50%" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="white">${(userName || user.displayName || 'T').charAt(0).toUpperCase()}</text></svg>`} 
+                alt="Avatar" 
+                className="w-4 h-4 rounded-full ml-1" 
+              />
               <span 
                 className="text-[10px] font-bold text-[#1C2C44] dark:text-[#e8eaf0] truncate max-w-[80px] cursor-pointer hover:text-[#D4AF37] dark:hover:text-[#00d084] transition-colors"
                 onClick={handleOpenProfile}
@@ -730,7 +813,13 @@ const App = () => {
             </div>
             <div className="flex items-baseline gap-2">
               <p className="text-[9px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase tracking-widest">{t.capital}</p>
-              <p className="text-base font-mono font-bold text-[#D4AF37] dark:text-[#00d084] drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] dark:drop-shadow-none">${balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
+              <p className="text-base font-mono font-bold text-[#D4AF37] dark:text-[#00d084] drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] dark:drop-shadow-none">
+                {!isBalanceLoaded ? (
+                  <span className="inline-block w-20 h-5 bg-gray-200 dark:bg-[#111827] animate-pulse rounded"></span>
+                ) : (
+                  `$${balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+                )}
+              </p>
             </div>
           </div>
         </div>
@@ -738,121 +827,295 @@ const App = () => {
 
       {/* ROUTER NỘI DUNG */}
       <main className="flex-1 overflow-y-auto relative custom-scrollbar z-20">
-        {activeTab === 'academy' && <Academy lang={lang} />}
+        {activeTab === 'academy' && <Academy lang={lang} user={user} />}
         {activeTab !== 'academy' && (
           <div className="max-w-7xl mx-auto p-4 md:p-6">
-            {activeTab === 'flashcards' && <Flashcards lang={lang} />}
-            {activeTab === 'quiz' && <DailyQuiz lang={lang} />}
-            {activeTab === 'journal' && <TradingJournal lang={lang} />}
-            {activeTab === 'gym' && <TradingGym lang={lang} balance={balance} setBalance={setBalance} isDarkMode={isDarkMode} />}
+            {activeTab === 'flashcards' && <Flashcards lang={lang} user={user} />}
+            {activeTab === 'quiz' && <DailyQuiz lang={lang} user={user} />}
+            {activeTab === 'journal' && <TradingJournal lang={lang} user={user} />}
+            {activeTab === 'gym' && <TradingGym lang={lang} balance={balance} setBalance={setBalance} isDarkMode={isDarkMode} user={user} />}
+            {activeTab === 'arena' && <Arena lang={lang} balance={balance} setBalance={setBalance} isDarkMode={isDarkMode} user={user} />}
           </div>
         )}
       </main>
 
-      <FloatingCoach lang={lang} />
+      <FloatingCoach lang={lang} isVisible={activeTab !== 'arena'} />
 
       {/* PROFILE EDIT MODAL */}
       {showProfileModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
-          <div className="bg-[#faf9f6] dark:bg-[#111827] w-full max-w-sm rounded-[2rem] p-8 border border-[rgba(15,17,23,0.1)] dark:border-white/10 shadow-2xl relative">
+          <div className="bg-[#faf9f6] dark:bg-[#111827] w-full max-w-sm rounded-[2rem] p-8 border border-[rgba(15,17,23,0.1)] dark:border-white/10 shadow-2xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
             <button onClick={() => setShowProfileModal(false)} className="absolute top-4 right-5 text-2xl font-bold text-[#1C2C44]/50 dark:text-white/50 hover:text-red-500 transition-colors">&times;</button>
-            <h2 className="text-2xl font-black text-[#1C2C44] dark:text-white mb-6 uppercase tracking-widest text-center">
+            <h2 className="text-2xl font-black text-[#1C2C44] dark:text-white mb-4 uppercase tracking-widest text-center">
               {lang === 'vi' ? 'Hồ Sơ Của Bạn' : 'Your Profile'}
             </h2>
 
-            {/* Nút Xin Trợ Cấp Hàng Tháng */}
-            <div className="mb-6 p-4 rounded-xl bg-[#D4AF37]/10 dark:bg-[#00d084]/10 border border-[#D4AF37]/20 dark:border-[#00d084]/20 text-center">
-              <p className="text-xs font-bold text-[#D4AF37] dark:text-[#00d084] mb-2">
-                {lang === 'vi' ? 'Đặc quyền Trợ Cấp Vốn (1 lần/tháng)' : 'Monthly Funding Allowance'}
-              </p>
-              <button 
-                onClick={async () => {
-                  const now = Date.now();
-                  const thirtyDays = 30 * 24 * 60 * 60 * 1000;
-                  
-                  if (lastBailoutDate && (now - lastBailoutDate < thirtyDays)) {
-                    const daysLeft = Math.ceil((thirtyDays - (now - lastBailoutDate)) / (1000 * 60 * 60 * 24));
-                    alert(lang === 'vi' ? `Đặc quyền đã được sử dụng. Vui lòng quay lại sau ${daysLeft} ngày nữa!` : `Allowance used. Please come back in ${daysLeft} days!`);
-                    return;
-                  }
-
-                  let bailoutAmount = 2000; // Beginner
-                  if (currentRank.name === 'Intermediate') bailoutAmount = 4000;
-                  if (currentRank.name === 'Professional') bailoutAmount = 10000;
-                  if (currentRank.name === 'Grandmaster') bailoutAmount = 20000;
-
-                  if (window.confirm(lang === 'vi' ? `Nhận ngay trợ cấp $${bailoutAmount.toLocaleString()} cho Rank ${currentRank.name}?` : `Receive $${bailoutAmount.toLocaleString()} allowance for ${currentRank.name}?`)) {
-                    const newBalance = balance + bailoutAmount;
-                    setBalance(newBalance);
-                    setLastBailoutDate(now);
-                    
-                    try {
-                      const userRef = doc(db, 'users', user.uid);
-                      await updateDoc(userRef, { balance: newBalance, lastBailoutDate: now });
-                      alert(lang === 'vi' ? `Đã cộng thêm $${bailoutAmount.toLocaleString()} vào tài khoản!` : `Added $${bailoutAmount.toLocaleString()}!`);
-                    } catch (e) {
-                      console.error(e);
-                    }
-                  }
-                }}
-                className="w-full bg-[#1C2C44] dark:bg-white text-white dark:text-[#0e1117] hover:scale-[1.02] font-black uppercase text-xs tracking-widest py-3 rounded-lg transition-transform shadow-md"
+            {/* TAB NAVIGATION */}
+            <div className="flex bg-[#f0ece4] dark:bg-[#0B0E11] p-1 rounded-xl mb-6 border border-[rgba(15,17,23,0.05)] dark:border-[rgba(255,255,255,0.05)]">
+              <button
+                onClick={() => setProfileTab('edit')}
+                className={`flex-1 py-2 rounded-lg font-black uppercase text-[10px] tracking-widest transition-all ${
+                  profileTab === 'edit'
+                    ? 'bg-white dark:bg-[#1C2C44] text-[#1C2C44] dark:text-white shadow-sm'
+                    : 'text-[#636878] dark:text-[#848E9C] hover:text-[#1C2C44] dark:hover:text-white'
+                }`}
               >
-                {lang === 'vi' ? 'Nhận Trợ Cấp Ngay' : 'Claim Allowance'}
+                {lang === 'vi' ? '✏️ Chỉnh Sửa' : '✏️ Edit'}
+              </button>
+              <button
+                onClick={() => setProfileTab('stats')}
+                className={`flex-1 py-2 rounded-lg font-black uppercase text-[10px] tracking-widest transition-all ${
+                  profileTab === 'stats'
+                    ? 'bg-white dark:bg-[#1C2C44] text-[#1C2C44] dark:text-white shadow-sm'
+                    : 'text-[#636878] dark:text-[#848E9C] hover:text-[#1C2C44] dark:hover:text-white'
+                }`}
+              >
+                {lang === 'vi' ? '📊 Thống Kê' : '📊 Stats'}
               </button>
             </div>
-            
-            <div className="space-y-4 mb-8">
-              {/* Tên */}
-              <div>
-                <label className="text-[10px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase tracking-widest mb-2 block">
-                  {lang === 'vi' ? 'Tên hiển thị' : 'Display Name'}
-                </label>
-                <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
-                  <input
-                    type="text"
-                    value={editName}
-                    onChange={e => setEditName(e.target.value)}
-                    className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white focus:outline-none"
-                  />
-                </div>
-              </div>
 
-              {/* Mật khẩu */}
-              <div className="pt-4">
-                <label className="text-[10px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase tracking-widest mb-2 block">
-                  {lang === 'vi' ? 'Đổi mật khẩu (Bỏ trống nếu không đổi)' : 'Change Password (Leave blank to keep)'}
-                </label>
-                <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 mb-4 focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
-                  <input
-                    type={showEditPassword ? "text" : "password"}
-                    placeholder={lang === 'vi' ? 'Mật khẩu mới...' : 'New password...'}
-                    value={editPassword}
-                    onChange={e => setEditPassword(e.target.value)}
-                    className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/30 dark:placeholder-white/30 focus:outline-none pr-8"
-                  />
-                  <button onClick={() => setShowEditPassword(!showEditPassword)} className="absolute right-0 text-[#1C2C44]/40 dark:text-white/40 hover:text-[#1C2C44] dark:hover:text-white">
-                    {showEditPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+
+            {profileTab === 'edit' ? (
+              <>
+                {/* Nút Xin Trợ Cấp Hàng Tháng */}
+                <div className="mb-6 p-4 rounded-xl bg-[#D4AF37]/10 dark:bg-[#00d084]/10 border border-[#D4AF37]/20 dark:border-[#00d084]/20 text-center">
+                  <p className="text-xs font-bold text-[#D4AF37] dark:text-[#00d084] mb-2">
+                    {lang === 'vi' ? 'Đặc quyền Trợ Cấp Vốn (1 lần/tháng)' : 'Monthly Funding Allowance'}
+                  </p>
+                  <button
+                    onClick={async () => {
+                      const now = Date.now();
+                      const thirtyDays = 30 * 24 * 60 * 60 * 1000;
+
+                      if (lastBailoutDate && (now - lastBailoutDate < thirtyDays)) {
+                        const daysLeft = Math.ceil((thirtyDays - (now - lastBailoutDate)) / (1000 * 60 * 60 * 24));
+                        alert(lang === 'vi' ? `Đặc quyền đã được sử dụng. Vui lòng quay lại sau ${daysLeft} ngày nữa!` : `Allowance used. Please come back in ${daysLeft} days!`);
+                        return;
+                      }
+
+                      let bailoutAmount = 2000;
+                      if (currentRank.name === 'Intermediate') bailoutAmount = 4000;
+                      if (currentRank.name === 'Professional') bailoutAmount = 10000;
+                      if (currentRank.name === 'Grandmaster') bailoutAmount = 20000;
+
+                      if (window.confirm(lang === 'vi' ? `Nhận ngay trợ cấp $${bailoutAmount.toLocaleString()} cho Rank ${currentRank.name}?` : `Receive $${bailoutAmount.toLocaleString()} allowance for ${currentRank.name}?`)) {
+                        const newBalance = balance + bailoutAmount;
+                        setBalance(newBalance);
+                        setLastBailoutDate(now);
+
+                        try {
+                          const userRef = doc(db, 'users', user.uid);
+                          await updateDoc(userRef, { balance: newBalance, lastBailoutDate: now });
+                          alert(lang === 'vi' ? `Đã cộng thêm $${bailoutAmount.toLocaleString()} vào tài khoản!` : `Added $${bailoutAmount.toLocaleString()}!`);
+                        } catch (e) {
+                          console.error(e);
+                        }
+                      }
+                    }}
+                    className="w-full bg-[#1C2C44] dark:bg-white text-white dark:text-[#0e1117] hover:scale-[1.02] font-black uppercase text-xs tracking-widest py-3 rounded-lg transition-transform shadow-md"
+                  >
+                    {lang === 'vi' ? 'Nhận Trợ Cấp Ngay' : 'Claim Allowance'}
                   </button>
                 </div>
 
-                <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
-                  <input
-                    type={showEditConfirmPassword ? "text" : "password"}
-                    placeholder={lang === 'vi' ? 'Xác nhận mật khẩu mới...' : 'Confirm new password...'}
-                    value={editConfirmPassword}
-                    onChange={e => setEditConfirmPassword(e.target.value)}
-                    className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/30 dark:placeholder-white/30 focus:outline-none pr-8"
-                  />
-                  <button onClick={() => setShowEditConfirmPassword(!showEditConfirmPassword)} className="absolute right-0 text-[#1C2C44]/40 dark:text-white/40 hover:text-[#1C2C44] dark:hover:text-white">
-                    {showEditConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </div>
-            </div>
+                <div className="space-y-4 mb-8">
+                  {/* Tên */}
+                  <div>
+                    <label className="text-[10px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase tracking-widest mb-2 block">
+                      {lang === 'vi' ? 'Tên hiển thị' : 'Display Name'}
+                    </label>
+                    <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                      <input
+                        type="text"
+                        value={editName}
+                        onChange={e => setEditName(e.target.value)}
+                        className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white focus:outline-none"
+                      />
+                    </div>
+                  </div>
 
-            <button onClick={handleSaveProfile} className="w-full bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:from-[#00d084] dark:to-[#00a86b] text-white dark:text-[#0e1117] py-3.5 rounded-xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-md">
-              {lang === 'vi' ? 'Lưu thay đổi' : 'Save Changes'}
-            </button>
+                  {/* Mật khẩu */}
+                  <div className="pt-4">
+                    <label className="text-[10px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase tracking-widest mb-2 block">
+                      {lang === 'vi' ? 'Đổi mật khẩu (Bỏ trống nếu không đổi)' : 'Change Password (Leave blank to keep)'}
+                    </label>
+                    <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 mb-4 focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                      <input
+                        type={showEditPassword ? "text" : "password"}
+                        placeholder={lang === 'vi' ? 'Mật khẩu mới...' : 'New password...'}
+                        value={editPassword}
+                        onChange={e => setEditPassword(e.target.value)}
+                        className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/30 dark:placeholder-white/30 focus:outline-none pr-8"
+                      />
+                      <button onClick={() => setShowEditPassword(!showEditPassword)} className="absolute right-0 text-[#1C2C44]/40 dark:text-white/40 hover:text-[#1C2C44] dark:hover:text-white">
+                        {showEditPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+
+                    <div className="relative border-b border-[#1C2C44]/20 dark:border-white/20 pb-2 focus-within:border-[#D4AF37] dark:focus-within:border-[#00d084] transition-colors">
+                      <input
+                        type={showEditConfirmPassword ? "text" : "password"}
+                        placeholder={lang === 'vi' ? 'Xác nhận mật khẩu mới...' : 'Confirm new password...'}
+                        value={editConfirmPassword}
+                        onChange={e => setEditConfirmPassword(e.target.value)}
+                        className="w-full bg-transparent text-sm font-bold text-[#1C2C44] dark:text-white placeholder-[#1C2C44]/30 dark:placeholder-white/30 focus:outline-none pr-8"
+                      />
+                      <button onClick={() => setShowEditConfirmPassword(!showEditConfirmPassword)} className="absolute right-0 text-[#1C2C44]/40 dark:text-white/40 hover:text-[#1C2C44] dark:hover:text-white">
+                        {showEditConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <button onClick={handleSaveProfile} className="w-full bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:from-[#00d084] dark:to-[#00a86b] text-white dark:text-[#0e1117] py-3.5 rounded-xl font-black uppercase tracking-widest hover:scale-[1.02] transition-transform shadow-md">
+                  {lang === 'vi' ? 'Lưu thay đổi' : 'Save Changes'}
+                </button>
+              </>
+            ) : (
+              /* TAB THỐNG KÊ */
+              <div className="space-y-4">
+                {/* RANK & BALANCE */}
+                <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#C59B27]/5 dark:from-[#00d084]/10 dark:to-[#00a86b]/5 rounded-2xl p-5 border border-[#D4AF37]/20 dark:border-[#00d084]/20">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-[#636878] dark:text-[#9ca3b0] mb-3">{lang === 'vi' ? '🏅 Rank & Tài Sản' : '🏅 Rank & Balance'}</p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className={`text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full border ${currentRank.style}`}>
+                        {currentRank.name}
+                      </span>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xl font-mono font-black text-[#D4AF37] dark:text-[#00d084]">
+                        {!isBalanceLoaded ? (
+                          <span className="inline-block w-24 h-6 bg-gray-200 dark:bg-[#111827] animate-pulse rounded"></span>
+                        ) : (
+                          `$${balance.toLocaleString(undefined, { minimumFractionDigits: 2 })}`
+                        )}
+                      </p>
+                      <p className="text-[9px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase">{lang === 'vi' ? 'Tổng vốn' : 'Total Capital'}</p>
+                    </div>
+                  </div>
+
+                  {/* Progress bar tới rank tiếp theo */}
+                  {(() => {
+                    const thresholds = [0, 20000, 50000, 100000];
+                    const labels = ['Beginner', 'Intermediate', 'Professional', 'Grandmaster'];
+                    const currentIdx = balance >= 100000 ? 3 : balance >= 50000 ? 2 : balance >= 20000 ? 1 : 0;
+                    if (currentIdx < 3) {
+                      const from = thresholds[currentIdx];
+                      const to = thresholds[currentIdx + 1];
+                      const progress = Math.min(100, ((balance - from) / (to - from)) * 100);
+                      return (
+                        <div className="mt-3">
+                          <div className="flex justify-between text-[9px] font-bold text-[#636878] dark:text-[#848E9C] mb-1">
+                            <span>{labels[currentIdx]}</span>
+                            <span>{labels[currentIdx + 1]} — ${to.toLocaleString()}</span>
+                          </div>
+                          <div className="w-full h-2 bg-[#1C2C44]/10 dark:bg-white/10 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-gradient-to-r from-[#D4AF37] to-[#C59B27] dark:from-[#00d084] dark:to-[#00b371] rounded-full transition-all duration-500"
+                              style={{ width: `${progress}%` }}
+                            />
+                          </div>
+                          <p className="text-[9px] font-bold text-[#D4AF37] dark:text-[#00d084] mt-1 text-right">{progress.toFixed(1)}%</p>
+                        </div>
+                      );
+                    }
+                    return <p className="text-[9px] font-black text-purple-400 mt-2 text-center uppercase tracking-widest">🏆 Rank tối đa đạt được!</p>;
+                  })()}
+                </div>
+
+                {/* PvP STATS */}
+                <div className="bg-[#F6465D]/5 dark:bg-[#F6465D]/10 rounded-2xl p-5 border border-[#F6465D]/20">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-[#F6465D] mb-3">⚔️ {lang === 'vi' ? 'Đấu Trường PvP' : 'PvP Arena'}</p>
+                  <div className="grid grid-cols-3 gap-3 text-center">
+                    <div>
+                      <p className="text-xl font-mono font-black text-[#1C2C44] dark:text-white">{userStats?.totalArenaMatches || 0}</p>
+                      <p className="text-[9px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase">{lang === 'vi' ? 'Trận' : 'Matches'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xl font-mono font-black text-[#0ECB81]">{userStats?.arenaWins || 0}</p>
+                      <p className="text-[9px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase">{lang === 'vi' ? 'Thắng' : 'Wins'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xl font-mono font-black text-[#D4AF37] dark:text-[#00d084]">
+                        {userStats?.totalArenaMatches ? `${(userStats.arenaWinRate || 0).toFixed(1)}%` : 'N/A'}
+                      </p>
+                      <p className="text-[9px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase">Win Rate</p>
+                    </div>
+                  </div>
+                  {/* Win Rate Bar */}
+                  {userStats?.totalArenaMatches > 0 && (
+                    <div className="mt-3">
+                      <div className="w-full h-2 bg-[#1C2C44]/10 dark:bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-[#0ECB81] to-[#00a86b] rounded-full transition-all duration-500"
+                          style={{ width: `${Math.min(100, userStats?.arenaWinRate || 0)}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* PvE STATS */}
+                <div className="bg-[#0ECB81]/5 dark:bg-[#0ECB81]/10 rounded-2xl p-5 border border-[#0ECB81]/20">
+                  <p className="text-[9px] font-black uppercase tracking-widest text-[#0ECB81] mb-3">🤖 {lang === 'vi' ? 'Đấu Máy PvE' : 'PvE vs AI'}</p>
+                  <div className="grid grid-cols-3 gap-3 text-center">
+                    <div>
+                      <p className="text-xl font-mono font-black text-[#1C2C44] dark:text-white">{userStats?.totalPveMatches || 0}</p>
+                      <p className="text-[9px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase">{lang === 'vi' ? 'Trận' : 'Matches'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xl font-mono font-black text-[#0ECB81]">{userStats?.pveWins || 0}</p>
+                      <p className="text-[9px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase">{lang === 'vi' ? 'Thắng' : 'Wins'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xl font-mono font-black text-[#D4AF37] dark:text-[#00d084]">
+                        {userStats?.totalPveMatches ? `${(userStats.pveWinRate || 0).toFixed(1)}%` : 'N/A'}
+                      </p>
+                      <p className="text-[9px] font-bold text-[#636878] dark:text-[#9ca3b0] uppercase">Win Rate</p>
+                    </div>
+                  </div>
+                  {userStats?.totalPveMatches > 0 && (
+                    <div className="mt-3">
+                      <div className="w-full h-2 bg-[#1C2C44]/10 dark:bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-[#0ECB81] to-[#00a86b] rounded-full transition-all duration-500"
+                          style={{ width: `${Math.min(100, userStats?.pveWinRate || 0)}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* BAILOUT HISTORY */}
+                {lastBailoutDate && (
+                  <div className="bg-[#1C2C44]/5 dark:bg-white/5 rounded-2xl p-4 border border-[#1C2C44]/10 dark:border-white/10">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-[#636878] dark:text-[#9ca3b0] mb-2">💰 {lang === 'vi' ? 'Lần nhận trợ cấp gần nhất' : 'Last Bailout'}</p>
+                    <p className="text-sm font-bold text-[#1C2C44] dark:text-white">
+                      {new Date(lastBailoutDate).toLocaleDateString(lang === 'vi' ? 'vi-VN' : 'en-US', { day: '2-digit', month: 'long', year: 'numeric' })}
+                    </p>
+                    <p className="text-[9px] text-[#636878] dark:text-[#9ca3b0] mt-1">
+                      {lang === 'vi' ? 'Trợ cấp tiếp theo sau:' : 'Next allowance in:'} {
+                        Math.max(0, Math.ceil((30 * 24 * 60 * 60 * 1000 - (Date.now() - lastBailoutDate)) / (1000 * 60 * 60 * 24)))
+                      } {lang === 'vi' ? 'ngày' : 'days'}
+                    </p>
+                  </div>
+                )}
+
+                {/* No data placeholder */}
+                {!userStats?.totalArenaMatches && !userStats?.totalPveMatches && (
+                  <div className="text-center py-4">
+                    <p className="text-4xl mb-2">🎯</p>
+                    <p className="text-sm font-bold text-[#636878] dark:text-[#9ca3b0]">
+                      {lang === 'vi' ? 'Chưa có dữ liệu đấu trường.' : 'No arena data yet.'}
+                    </p>
+                    <p className="text-xs text-[#636878]/70 dark:text-[#9ca3b0]/70 mt-1">
+                      {lang === 'vi' ? 'Hãy vào Đấu Trường 1v1 để bắt đầu!' : 'Head to the 1v1 Arena to start!'}
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}

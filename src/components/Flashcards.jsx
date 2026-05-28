@@ -119,7 +119,12 @@ function shuffleArray(array) {
   return newArr;
 }
 
-const Flashcards = ({ lang = 'vi' }) => {
+const Flashcards = ({ lang = 'vi', user }) => {
+  const ACADEMY_KEY = `SAIB_academy_progress_${user?.uid || 'guest'}`;
+  const DATE_KEY = `SAIB_flashcards_date_${user?.uid || 'guest'}`;
+  const PROGRESS_KEY = `SAIB_flashcards_progress_${user?.uid || 'guest'}`;
+  const INDICES_KEY = `SAIB_flashcards_indices_${user?.uid || 'guest'}`;
+
   const [cardIndex, setCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [flashcards, setFlashcards] = useState([]);
@@ -151,7 +156,7 @@ const Flashcards = ({ lang = 'vi' }) => {
 
   useEffect(() => {
     // 1. Read completed lessons from localStorage
-    const saved = localStorage.getItem('SAIB_academy_progress');
+    const saved = localStorage.getItem(ACADEMY_KEY);
     const completedSet = saved ? new Set(JSON.parse(saved)) : new Set();
 
     // 2. Find which files are unlocked
@@ -179,12 +184,12 @@ const Flashcards = ({ lang = 'vi' }) => {
     // 3. Select up to 15 cards randomly, with Daily Cache
     if (unlockedCards.length > 0) {
       const todayStr = new Date().toISOString().split('T')[0];
-      const cachedDate = localStorage.getItem('SAIB_flashcards_date');
-      const cachedProgress = localStorage.getItem('SAIB_flashcards_progress');
+      const cachedDate = localStorage.getItem(DATE_KEY);
+      const cachedProgress = localStorage.getItem(PROGRESS_KEY);
 
       // Nếu cùng ngày và số lượng bài học đã mở khóa không đổi, load lại đúng các index thẻ đó
       if (cachedDate === todayStr && cachedProgress === String(unlockedModuleCount)) {
-        const cachedIndices = JSON.parse(localStorage.getItem('SAIB_flashcards_indices') || '[]');
+        const cachedIndices = JSON.parse(localStorage.getItem(INDICES_KEY) || '[]');
         if (cachedIndices.length > 0) {
           const loadedCards = cachedIndices.map(i => unlockedCards[i]).filter(Boolean);
           if (loadedCards.length > 0) {
@@ -200,9 +205,9 @@ const Flashcards = ({ lang = 'vi' }) => {
       const shuffledIndices = shuffleArray(allIndices);
       const selectedIndices = shuffledIndices.slice(0, 15);
 
-      localStorage.setItem('SAIB_flashcards_date', todayStr);
-      localStorage.setItem('SAIB_flashcards_progress', String(unlockedModuleCount));
-      localStorage.setItem('SAIB_flashcards_indices', JSON.stringify(selectedIndices));
+      localStorage.setItem(DATE_KEY, todayStr);
+      localStorage.setItem(PROGRESS_KEY, String(unlockedModuleCount));
+      localStorage.setItem(INDICES_KEY, JSON.stringify(selectedIndices));
 
       const selectedCards = selectedIndices.map(i => unlockedCards[i]);
       setFlashcards(selectedCards);

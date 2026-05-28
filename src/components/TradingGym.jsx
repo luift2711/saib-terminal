@@ -90,6 +90,17 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
 
   const [challengeStatus, setChallengeStatus] = useState('ACTIVE');
 
+  // [C7] Tracking daily loss: lưu balance đầu ngày vào localStorage
+  const todayKey = `SAIB_gym_daily_start_${new Date().toISOString().split('T')[0]}`;
+  const getDailyStartBalance = () => {
+    const stored = localStorage.getItem(todayKey);
+    if (stored) return Number(stored);
+    // Ngày mới: lưu balance hiện tại làm mốc
+    localStorage.setItem(todayKey, String(balance));
+    return balance;
+  };
+  const dailyStartBalance = getDailyStartBalance();
+
   // Tính PnL cho TẤT CẢ lệnh đang mở
   const totalPnL = positions.reduce((acc, pos) => {
     const cp = prices[pos.coin] || pos.entryPrice;
@@ -101,7 +112,8 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
 
   // Giới hạn
   const profitTarget = INITIAL_BALANCE * (1 + PROFIT_TARGET_PERCENT / 100);
-  const maxDailyLossLimit = INITIAL_BALANCE * (1 - DAILY_LOSS_PERCENT / 100);
+  // [C7] Daily loss tính từ balance đầu ngày (dailyStartBalance), không phải từ INITIAL_BALANCE cố định
+  const maxDailyLossLimit = dailyStartBalance * (1 - DAILY_LOSS_PERCENT / 100);
   const maxTotalLossLimit = INITIAL_BALANCE * (1 - MAX_LOSS_PERCENT / 100);
 
   // 1. CẬP NHẬT GIÁ LIVE CHO TẤT CẢ COIN
@@ -137,7 +149,18 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
     // A. Quét Luật Quỹ
     if (equity <= maxTotalLossLimit) {
       setChallengeStatus('FAILED_MAX');
-      if (positions.length > 0) { setBalance(equity); setPositions([]); setPendingOrders([]); }
+      // [C8] Đóng và xóa tất cả lệnh khi thất bại
+      setBalance(equity);
+      setPositions([]);
+      setPendingOrders([]);
+      return;
+    }
+    // [C7] Kiểm tra daily loss
+    if (equity <= maxDailyLossLimit && challengeStatus === 'ACTIVE') {
+      setChallengeStatus('FAILED_DAILY');
+      setBalance(equity);
+      setPositions([]);
+      setPendingOrders([]);
       return;
     }
 
@@ -199,8 +222,19 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
     const sl = Number(slInput); const tp = Number(tpInput);
     if (!sl) return alert(t.slAlert);
 
+    // [A5] Chặn SL quá gần giá hiện tại (để tránh volume = Infinity)
+    const slDiff = Math.abs(currentPrice - sl);
+    if (slDiff < 0.0001 || !isFinite(slDiff)) {
+      return alert(lang === 'vi'
+        ? 'SL không được đặt bằng giá hiện tại!'
+        : 'SL cannot equal the current price!');
+    }
+
     const riskAmount = balance * (riskPercent / 100);
-    const volume = riskAmount / Math.abs(currentPrice - sl);
+    const volume = riskAmount / slDiff;
+    if (!isFinite(volume) || volume <= 0) {
+      return alert(lang === 'vi' ? 'Không thể tính khối lượng lệnh. Kiểm tra lại SL!' : 'Cannot calculate volume. Check your SL!');
+    }
     setPositions(prev => [...prev, { id: Date.now() + Math.random(), type, entryPrice: currentPrice, coin: activeCoin.symbol, sl, tp, volume, riskAmount }]);
   };
 
@@ -222,7 +256,14 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
     }
     
     const riskAmount = balance * (riskPercent / 100);
-    const volume = riskAmount / Math.abs(entry - sl);
+    const slDiffPending = Math.abs(entry - sl);
+    if (slDiffPending < 0.0001 || !isFinite(slDiffPending)) {
+      return alert(lang === 'vi' ? 'SL không hợp lệ!' : 'Invalid SL!');
+    }
+    const volume = riskAmount / slDiffPending;
+    if (!isFinite(volume) || volume <= 0) {
+      return alert(lang === 'vi' ? 'Không thể tính khối lượng. Kiểm tra lại High/Low!' : 'Cannot calculate volume. Check High/Low!');
+    }
     setPendingOrders(prev => [...prev, { id: Date.now() + Math.random(), type, entryPrice: entry, coin: activeCoin.symbol, sl, tp, volume, riskAmount }]);
   };
 
@@ -240,6 +281,8 @@ const TradingGym = ({ balance, setBalance, isDarkMode, lang = 'vi' }) => {
     setPositions([]);
     setPendingOrders([]);
     setChallengeStatus('ACTIVE');
+    // [C7] Reset daily start balance khi restart challenge
+    localStorage.setItem(todayKey, String(INITIAL_BALANCE));
   };
 
   return (

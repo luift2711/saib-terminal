@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Target, CheckCircle, XCircle, RefreshCw, BarChart2, AlertTriangle, TrendingUp, TrendingDown, MinusCircle, Dices, PartyPopper, Dumbbell, Library, Trophy, Users, Radio, ShoppingCart, BookOpen, Zap, Landmark, DollarSign, Brain, Scale, FileText, Clock, Lightbulb, Lock, ArrowRight, Skull, Flame, Edit2, Compass, Star, Shield, Activity, Flag, Award, Crosshair, Hammer, Wind, Eye, Sun, Moon } from 'lucide-react';
-
 import { createChart } from 'lightweight-charts';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 // --- ENGINE SINH TÌNH HUỐNG NGẪU NHIÊN ---
 const SYMBOLS = ['BTC', 'ETH', 'XAU', 'NVDA', 'VNINDEX'];
@@ -24,7 +25,11 @@ const generateDynamicScenario = (lang) => {
   };
 };
 
-const DailyQuiz = ({ lang = 'vi' }) => {
+const DailyQuiz = ({ lang = 'vi', user }) => {
+  const UID = user?.uid || 'guest';
+  const QUIZ_DATE_KEY = `SAIB_last_quiz_date_${UID}`;
+  const STREAK_KEY = `SAIB_day_streak_${UID}`;
+  const STREAK_DATE_KEY = `SAIB_last_streak_date_${UID}`;
   const TOTAL_QUESTIONS = 10;
   const todayStr = new Date().toISOString().split('T')[0];
 
@@ -52,7 +57,7 @@ const DailyQuiz = ({ lang = 'vi' }) => {
 useEffect(() => {
   const checkStatus = () => {
     const todayStr = new Date().toISOString().split('T')[0];
-    const lastQuizDate = localStorage.getItem('SAIB_last_quiz_date');
+    const lastQuizDate = localStorage.getItem(QUIZ_DATE_KEY);
     if (lastQuizDate === todayStr) {
       setIsLockedToday(true);
     } else {
@@ -64,7 +69,7 @@ useEffect(() => {
   // Lắng nghe sự kiện quay lại tab
   window.addEventListener('focus', checkStatus);
   return () => window.removeEventListener('focus', checkStatus);
-}, []);
+}, [QUIZ_DATE_KEY]);
 
   const startQuiz = () => {
     if (isLockedToday) return;
@@ -78,14 +83,24 @@ useEffect(() => {
 
   const handleNext = () => {
     if (questionIndex >= TOTAL_QUESTIONS) {
-      localStorage.setItem('SAIB_last_quiz_date', todayStr);
+      localStorage.setItem(QUIZ_DATE_KEY, todayStr);
       setIsLockedToday(true);
       setQuizActive(false);
       
       // Kích hoạt cộng điểm streak
-      const currentStreak = Number(localStorage.getItem('SAIB_day_streak') || 0);
-      localStorage.setItem('SAIB_day_streak', currentStreak + 1);
-      localStorage.setItem('SAIB_last_streak_date', todayStr);
+      const currentStreak = Number(localStorage.getItem(STREAK_KEY) || 0);
+      const newStreak = currentStreak + 1;
+      localStorage.setItem(STREAK_KEY, newStreak);
+      localStorage.setItem(STREAK_DATE_KEY, todayStr);
+
+      // [C16] Sync streak lên Firestore
+      if (user?.uid) {
+        const userRef = doc(db, 'users', user.uid);
+        updateDoc(userRef, {
+          quizStreak: newStreak,
+          lastQuizDate: todayStr
+        }).catch(console.error);
+      }
       return;
     }
     

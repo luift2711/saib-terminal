@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Lock, ArrowRight, Skull, Flame, Edit2, Compass, Star, Shield, Activity, Flag, Award, Crosshair, Hammer, Zap, Wind, Eye, Sun, Moon, Bot } from 'lucide-react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 
-const TradingJournal = ({ lang = 'vi' }) => {
+const TradingJournal = ({ lang = 'vi', user }) => {
+  const UID = user?.uid || 'guest';
+  const LOGS_KEY = `SAIB_trading_logs_${UID}`;
+  const STREAK_KEY = `SAIB_day_streak_${UID}`;
+  const STREAK_DATE_KEY = `SAIB_last_streak_date_${UID}`;
   const [logs, setLogs] = useState([]);
   const [note, setNote] = useState('');
   const [streak, setStreak] = useState(0);
@@ -76,12 +82,12 @@ const TradingJournal = ({ lang = 'vi' }) => {
 
   useEffect(() => {
     // Tải dữ liệu từ LocalStorage ổ cứng
-    const savedLogs = JSON.parse(localStorage.getItem('SAIB_trading_logs') || '[]');
+    const savedLogs = JSON.parse(localStorage.getItem(LOGS_KEY) || '[]');
     setLogs(savedLogs);
     
     // Đồng bộ Day-streak
-    const savedStreak = Number(localStorage.getItem('SAIB_day_streak') || 0);
-    const lastStreakDate = localStorage.getItem('SAIB_last_streak_date');
+    const savedStreak = Number(localStorage.getItem(STREAK_KEY) || 0);
+    const lastStreakDate = localStorage.getItem(STREAK_DATE_KEY);
     const todayStr = new Date().toISOString().split('T')[0];
     
     // Nếu quá 2 ngày không luyện tập -> Reset streak về 0
@@ -89,7 +95,7 @@ const TradingJournal = ({ lang = 'vi' }) => {
       const diffTime = Math.abs(new Date(todayStr) - new Date(lastStreakDate));
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       if (diffDays > 1) {
-        localStorage.setItem('SAIB_day_streak', 0);
+        localStorage.setItem(STREAK_KEY, 0);
         setStreak(0);
       } else {
         setStreak(savedStreak);
@@ -140,7 +146,13 @@ const TradingJournal = ({ lang = 'vi' }) => {
 
     const updatedLogs = [newLog, ...logs];
     setLogs(updatedLogs);
-    localStorage.setItem('SAIB_trading_logs', JSON.stringify(updatedLogs));
+    localStorage.setItem(LOGS_KEY, JSON.stringify(updatedLogs));
+    
+    // [C16] Sync nhật ký lên Firestore
+    if (user?.uid) {
+      const userRef = doc(db, 'users', user.uid);
+      updateDoc(userRef, { tradingLogs: updatedLogs }).catch(console.error);
+    }
     setNote('');
   };
 

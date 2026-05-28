@@ -164,7 +164,7 @@ const BOX_H = 400;
 const BTN_SIZE = 56;
 const MARGIN = 12; // minimum gap from screen edge
 
-const FloatingCoach = ({ lang = 'vi' }) => {
+const FloatingCoach = ({ lang = 'vi', isVisible = true }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [inputText, setInputText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -337,9 +337,17 @@ const FloatingCoach = ({ lang = 'vi' }) => {
   }, [triggerPrompt, isLoading, messages, callGemini]);
 
   return (
-    <>
-      {/* ---- CHATBOX (smart-positioned, follows bot) ---- */}
-      <AnimatePresence>
+    <AnimatePresence>
+      {isVisible && (
+        <motion.div
+          key="floating-coach-wrapper"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {/* ---- CHATBOX (smart-positioned, follows bot) ---- */}
+          <AnimatePresence>
         {isOpen && (
           <motion.div
             key="chatbox"
@@ -459,7 +467,9 @@ const FloatingCoach = ({ lang = 'vi' }) => {
           )}
         </motion.button>
       </motion.div>
-    </>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 };
 

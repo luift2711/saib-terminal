@@ -1,6 +1,8 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight, Database, Check, ChevronLeft, Cpu, Bitcoin, DollarSign, Star, Menu, X } from 'lucide-react';
+import { doc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 import CHAPTER_0_DATA_VN from './academy_chapters/Chapter0_VN';
 import CHAPTER_0_DATA_EN from './academy_chapters/Chapter0_EN';
 import CHAPTER_1_DATA_VN from './academy_chapters/Chapter1_VN';
@@ -17,8 +19,7 @@ import CHAPTER_6_DATA_VN from './academy_chapters/Chapter6_VN';
 import CHAPTER_6_DATA_EN from './academy_chapters/Chapter6_EN';
 import { AcademyContext } from './AcademyContext';
 
-const STORAGE_KEY = 'SAIB_academy_progress';
-const LAST_LESSON_KEY = 'SAIB_last_lesson_id';
+
 
 const getChapters = (lang) => [
   { title: lang === 'en' ? 'Curriculum Overview' : 'Tổng quan Lộ trình', data: lang === 'en' ? CHAPTER_0_DATA_EN : CHAPTER_0_DATA_VN },
@@ -30,16 +31,35 @@ const getChapters = (lang) => [
   { title: lang === 'en' ? 'Chapter 6: Building Your System & Going Live' : 'Chương 6: Xây dựng Hệ thống & Thực chiến', data: lang === 'en' ? CHAPTER_6_DATA_EN : CHAPTER_6_DATA_VN },
 ];
 
-const readCompletedLessons = () => {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? new Set(JSON.parse(saved)) : new Set();
-  } catch {
-    return new Set();
-  }
-};
 
-const Academy = ({ lang = 'vi' }) => {
+
+const Academy = ({ lang = 'vi', user }) => {
+  const STORAGE_KEY = `SAIB_academy_progress_${user?.uid || 'guest'}`;
+  const LAST_LESSON_KEY = `SAIB_last_lesson_id_${user?.uid || 'guest'}`;
+
+  // [C16] Helper sync lên Firestore (debounce nhẹ bằng timeout)
+  const syncTimeout = useRef(null);
+  const syncToCloud = (progressSet, lessonId) => {
+    if (!user?.uid) return;
+    clearTimeout(syncTimeout.current);
+    syncTimeout.current = setTimeout(() => {
+      const userRef = doc(db, 'users', user.uid);
+      const payload = {};
+      if (progressSet !== undefined) payload.academyProgress = [...progressSet];
+      if (lessonId !== undefined) payload.lastLessonId = lessonId;
+      updateDoc(userRef, payload).catch(console.error);
+    }, 800); // debounce 800ms tránh spam Firestore
+  };
+
+  const readCompletedLessons = () => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? new Set(JSON.parse(saved)) : new Set();
+    } catch {
+      return new Set();
+    }
+  };
+
   const [selectedId, setSelectedId] = useState(() => {
     return localStorage.getItem(LAST_LESSON_KEY) || '0-0';
   });
@@ -73,14 +93,13 @@ const Academy = ({ lang = 'vi' }) => {
     lastScrollY.current = currentScrollY;
   };
 
-  // Scroll to top on lesson change & reset exercises & save progress
+  // Scroll to top on lesson change & save progress
   useEffect(() => {
     if (mainScrollRef.current) {
       mainScrollRef.current.scrollTop = 0;
     }
-    setActiveExercises(new Set());
-    setCompletedExercises(new Set());
     localStorage.setItem(LAST_LESSON_KEY, selectedId);
+    syncToCloud(undefined, selectedId); // [C16] Sync vị trí bài đang học
   }, [selectedId]);
 
   const chapters = getChapters(lang);
@@ -112,6 +131,7 @@ const Academy = ({ lang = 'vi' }) => {
       const updated = new Set(prev);
       updated.has(id) ? updated.delete(id) : updated.add(id);
       localStorage.setItem(STORAGE_KEY, JSON.stringify([...updated]));
+      syncToCloud(updated, undefined); // [C16]
       return updated;
     });
   };
@@ -121,6 +141,7 @@ const Academy = ({ lang = 'vi' }) => {
       const updated = new Set(prev);
       updated.add(id);
       localStorage.setItem(STORAGE_KEY, JSON.stringify([...updated]));
+      syncToCloud(updated, undefined); // [C16]
       return updated;
     });
   };
@@ -128,7 +149,11 @@ const Academy = ({ lang = 'vi' }) => {
   const goToLesson = (nextIndex) => {
     markLessonCompleted(selectedLesson.id);
     const nextLesson = allLessons[nextIndex];
-    if (nextLesson) setSelectedId(nextLesson.id);
+    if (nextLesson) {
+      setActiveExercises(new Set());
+      setCompletedExercises(new Set());
+      setSelectedId(nextLesson.id);
+    }
   };
 
   const t = {
@@ -192,8 +217,10 @@ const Academy = ({ lang = 'vi' }) => {
                   <button
                     key={id}
                     onClick={() => {
+                      setActiveExercises(new Set());
+                      setCompletedExercises(new Set());
                       setSelectedId(id);
-                      setIsMobileMenuOpen(false); // Đóng menu mobile khi chọn bài học
+                      if (window.innerWidth < 1024) setIsMobileMenuOpen(false);
                     }}
                     className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left transition-all duration-300 ${active
                       ? 'bg-gradient-to-r from-[#D4AF37]/15 to-transparent dark:bg-none dark:bg-[#00d084]/10 border border-[#D4AF37]/50 dark:border-[#00d084]/30 text-[#1C2C44] dark:text-[#00d084] shadow-[inset_2px_0_0_#D4AF37] dark:shadow-none'
